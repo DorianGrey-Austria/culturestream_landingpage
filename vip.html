@@ -3,19 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CultureStream - VIP Portal</title>
+    <title>CultureStream - Unterstützerbereich</title>
     <style>
         :root {
-            --primary-blue: #40B4E5;
-            --secondary-blue: #8AD9F2;
-            --light-blue: #C1E8F7;
-            --dark-bg: #121212;
-            --dark-panel: #1E1E1E;
-            --text-light: #FFFFFF;
-            --text-muted: #9E9E9E;
-            --gold: #FFD700;
-            --gold-accent: #FFC107;
-            --premium-gradient: linear-gradient(135deg, #000000, #333333);
+            --primary-color: #3D7B80; /* Tiefes Türkis */
+            --secondary-color: #A4C2A5; /* Moosgrün */
+            --accent-color: #D65108; /* Terrakotta */
+            --light-accent: #F2A65A; /* Sanftes Orange */
+            --dark-bg: #0F1A20; /* Fast-Schwarz mit Blauton */
+            --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
+            --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
+            --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
         }
         
         * {
@@ -33,7 +31,7 @@
         }
         
         header {
-            background: var(--premium-gradient);
+            background: linear-gradient(135deg, var(--dark-panel), #131b23);
             padding: 20px;
             display: flex;
             justify-content: space-between;
@@ -41,7 +39,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
             position: relative;
             z-index: 10;
-            border-bottom: 1px solid var(--gold-accent);
+            border-bottom: 1px solid var(--primary-color);
         }
         
         .logo-area {
@@ -58,14 +56,14 @@
             font-size: 24px;
             font-weight: 600;
             letter-spacing: 0.5px;
-            background: linear-gradient(90deg, var(--text-light), var(--gold));
+            background: linear-gradient(90deg, var(--text-light), var(--primary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
         
-        .vip-badge {
-            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
-            color: #000;
+        .supporter-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
             font-size: 12px;
             font-weight: bold;
             padding: 4px 10px;
@@ -76,7 +74,7 @@
             align-items: center;
         }
         
-        .vip-badge i {
+        .supporter-badge i {
             margin-right: 5px;
         }
         
@@ -89,14 +87,14 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             display: flex;
             justify-content: center;
             align-items: center;
             margin-right: 15px;
             font-weight: 600;
-            color: #000;
-            border: 2px solid var(--gold-accent);
+            color: var(--text-light);
+            border: 2px solid var(--accent-color);
         }
         
         .user-name {
@@ -106,16 +104,16 @@
         .logout-btn {
             padding: 8px 15px;
             background-color: transparent;
-            border: 1px solid var(--gold);
+            border: 1px solid var(--primary-color);
             border-radius: 4px;
-            color: var(--gold);
+            color: var(--primary-color);
             cursor: pointer;
             transition: all 0.3s;
         }
         
         .logout-btn:hover {
-            background-color: var(--gold);
-            color: #000;
+            background-color: var(--primary-color);
+            color: var(--text-light);
         }
         
         .main-container {
@@ -125,9 +123,9 @@
         
         nav {
             width: 250px;
-            background: linear-gradient(180deg, #1a1a1a, #0e0e0e);
+            background: linear-gradient(180deg, #1a2530, #0f1a20);
             padding: 20px 0;
-            border-right: 1px solid rgba(255, 215, 0, 0.1);
+            border-right: 1px solid rgba(61, 123, 128, 0.1);
         }
         
         .nav-item {
@@ -141,9 +139,9 @@
         }
         
         .nav-item:hover, .nav-item.active {
-            background-color: rgba(255, 215, 0, 0.05);
-            color: var(--gold);
-            border-left-color: var(--gold);
+            background-color: rgba(61, 123, 128, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
         }
         
         .nav-item i {
@@ -157,64 +155,64 @@
             flex: 1;
             padding: 30px;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(64, 180, 229, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 20%);
+                radial-gradient(circle at 10% 20%, rgba(61, 123, 128, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(214, 81, 8, 0.03) 0%, transparent 20%);
         }
         
-        .vip-banner {
-            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(10, 10, 10, 0.9));
+        .supporter-banner {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
             border-radius: 10px;
             padding: 30px;
             margin-bottom: 30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(61, 123, 128, 0.1);
         }
         
-        .vip-banner::before {
+        .supporter-banner::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 L80,50 M50,20 L50,80" stroke="%23FFD700" stroke-width="0.5" opacity="0.2"/></svg>') repeat;
-            opacity: 0.1;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 L80,50 M50,20 L50,80" stroke="%233D7B80" stroke-width="0.5" opacity="0.2"/></svg>') repeat;
+            opacity: 0.05;
         }
         
-        .vip-banner::after {
+        .supporter-banner::after {
             content: '';
             position: absolute;
             width: 200px;
             height: 200px;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(61, 123, 128, 0.3) 0%, transparent 70%);
             top: -100px;
             right: -50px;
-            opacity: 0.3;
+            opacity: 0.2;
             border-radius: 50%;
         }
         
-        .vip-banner h1 {
+        .supporter-banner h1 {
             font-size: 28px;
             margin-bottom: 10px;
             font-weight: 600;
-            color: var(--gold);
+            color: var(--primary-color);
             position: relative;
             display: inline-block;
         }
         
-        .vip-banner h1::after {
+        .supporter-banner h1::after {
             content: '';
             position: absolute;
             bottom: -8px;
             left: 0;
             width: 60px;
             height: 2px;
-            background: linear-gradient(90deg, var(--gold), transparent);
+            background: linear-gradient(90deg, var(--primary-color), transparent);
         }
         
-        .vip-banner p {
+        .supporter-banner p {
             color: var(--text-muted);
             font-size: 16px;
             max-width: 600px;
@@ -222,25 +220,25 @@
             margin-bottom: 20px;
         }
         
-        .vip-stats {
+        .supporter-stats {
             display: flex;
             gap: 15px;
             margin-top: 25px;
         }
         
-        .vip-stat {
-            background-color: rgba(0, 0, 0, 0.3);
+        .supporter-stat {
+            background-color: rgba(15, 26, 32, 0.5);
             padding: 15px;
             border-radius: 8px;
             flex: 1;
             text-align: center;
-            border: 1px solid rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(61, 123, 128, 0.1);
         }
         
         .stat-value {
             font-size: 28px;
             font-weight: bold;
-            color: var(--gold);
+            color: var(--primary-color);
             margin-bottom: 5px;
         }
         
@@ -249,10 +247,10 @@
             color: var(--text-muted);
         }
         
-        .premium-label {
+        .exclusive-label {
             display: inline-block;
-            background: linear-gradient(90deg, var(--gold), var(--gold-accent));
-            color: #000;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
             font-size: 11px;
             padding: 3px 8px;
             border-radius: 20px;
@@ -270,26 +268,26 @@
         }
         
         .card {
-            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.9));
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(61, 123, 128, 0.1);
         }
         
         .card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: rgba(255, 215, 0, 0.3);
+            border-color: rgba(61, 123, 128, 0.3);
         }
         
         .card h3 {
             font-size: 18px;
             margin-bottom: 15px;
-            color: var(--gold);
+            color: var(--primary-color);
             display: flex;
             align-items: center;
         }
@@ -298,29 +296,29 @@
             margin-right: 10px;
         }
         
-        .vip-event-list {
+        .special-event-list {
             margin-top: 20px;
         }
         
-        .vip-event {
+        .special-event {
             display: flex;
             align-items: center;
             padding: 15px;
-            background-color: rgba(0, 0, 0, 0.2);
+            background-color: rgba(15, 26, 32, 0.5);
             margin-bottom: 15px;
             border-radius: 8px;
             transition: all 0.3s ease;
-            border-left: 3px solid rgba(255, 215, 0, 0.3);
+            border-left: 3px solid rgba(61, 123, 128, 0.3);
         }
         
-        .vip-event:hover {
-            background-color: rgba(0, 0, 0, 0.3);
-            border-left-color: var(--gold);
+        .special-event:hover {
+            background-color: rgba(15, 26, 32, 0.7);
+            border-left-color: var(--primary-color);
         }
         
-        .vip-event-date {
-            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
-            color: #000;
+        .special-event-date {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
             width: 60px;
             height: 60px;
             border-radius: 8px;
@@ -335,32 +333,32 @@
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
         }
         
-        .vip-event-date .day {
+        .special-event-date .day {
             font-size: 22px;
         }
         
-        .vip-event-content {
+        .special-event-content {
             flex: 1;
         }
         
-        .vip-event-title {
+        .special-event-title {
             font-size: 16px;
             margin-bottom: 5px;
             color: var(--text-light);
             font-weight: 500;
         }
         
-        .vip-event-desc {
+        .special-event-desc {
             color: var(--text-muted);
             font-size: 14px;
         }
         
-        .vip-exclusive {
+        .exclusive-tag {
             position: absolute;
             top: 15px;
             right: 15px;
-            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
-            color: #000;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
             font-size: 11px;
             padding: 3px 8px;
             border-radius: 20px;
@@ -369,11 +367,11 @@
             z-index: 1;
         }
         
-        .vip-btn {
+        .art-btn {
             display: inline-block;
             padding: 8px 16px;
-            background: linear-gradient(90deg, var(--gold), var(--gold-accent));
-            color: #000;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
             border: none;
             border-radius: 4px;
             font-weight: 600;
@@ -384,96 +382,96 @@
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
         }
         
-        .vip-btn:hover {
+        .art-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
         }
         
-        .vip-benefits {
+        .supporter-benefits {
             list-style: none;
             margin-top: 15px;
         }
         
-        .vip-benefits li {
+        .supporter-benefits li {
             padding: 10px 0;
             display: flex;
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        .vip-benefits li:last-child {
+        .supporter-benefits li:last-child {
             border-bottom: none;
         }
         
-        .vip-benefits i {
-            color: var(--gold);
+        .supporter-benefits i {
+            color: var(--primary-color);
             margin-right: 10px;
         }
         
-        .vip-gallery {
+        .art-gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
         
-        .vip-gallery-item {
+        .art-gallery-item {
             height: 100px;
             border-radius: 8px;
             overflow: hidden;
             position: relative;
             cursor: pointer;
-            border: 1px solid rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(61, 123, 128, 0.1);
             transition: all 0.3s;
         }
         
-        .vip-gallery-item:hover {
+        .art-gallery-item:hover {
             transform: scale(1.05);
-            border-color: var(--gold);
+            border-color: var(--primary-color);
         }
         
-        .vip-gallery-item img {
+        .art-gallery-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: all 0.3s;
         }
         
-        .vip-gallery-item:hover img {
+        .art-gallery-item:hover img {
             filter: brightness(1.2);
         }
         
-        .vip-gallery-item .gallery-label {
+        .art-gallery-item .gallery-label {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
             padding: 5px 10px;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(15, 26, 32, 0.7);
             font-size: 12px;
             color: var(--text-light);
         }
         
-        .vip-gallery-item:nth-child(1) {
-            background-color: #ff6b6b;
+        .art-gallery-item:nth-child(1) {
+            background-color: #3D7B80;
         }
         
-        .vip-gallery-item:nth-child(2) {
-            background-color: #4ecdc4;
+        .art-gallery-item:nth-child(2) {
+            background-color: #A4C2A5;
         }
         
-        .vip-gallery-item:nth-child(3) {
-            background-color: #1a535c;
+        .art-gallery-item:nth-child(3) {
+            background-color: #D65108;
         }
         
-        .vip-gallery-item:nth-child(4) {
-            background-color: #ff9f1c;
+        .art-gallery-item:nth-child(4) {
+            background-color: #F2A65A;
         }
         
         .see-all {
             display: block;
             text-align: right;
-            color: var(--gold);
+            color: var(--primary-color);
             text-decoration: none;
             font-size: 14px;
             margin-top: 15px;
@@ -481,7 +479,7 @@
         }
         
         .see-all:hover {
-            color: var(--gold-accent);
+            color: var(--secondary-color);
             text-decoration: underline;
         }
         
@@ -499,54 +497,70 @@
             position: absolute;
             width: 4px;
             height: 4px;
-            background-color: var(--gold);
+            background-color: var(--primary-color);
             border-radius: 50%;
         }
         
-        .portal-effect {
+        .art-interaction {
             position: fixed;
             bottom: 30px;
             right: 30px;
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #000;
+            color: var(--text-light);
             font-size: 22px;
             cursor: pointer;
-            box-shadow: 0 0 0 rgba(255, 215, 0, 0.4);
+            box-shadow: 0 0 0 rgba(61, 123, 128, 0.4);
             animation: pulse 2s infinite;
             z-index: 100;
         }
         
         @keyframes pulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+                box-shadow: 0 0 0 0 rgba(61, 123, 128, 0.4);
             }
             70% {
-                box-shadow: 0 0 0 20px rgba(255, 215, 0, 0);
+                box-shadow: 0 0 0 20px rgba(61, 123, 128, 0);
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+                box-shadow: 0 0 0 0 rgba(61, 123, 128, 0);
             }
         }
         
-        .vip-tooltip {
+        .art-tooltip {
             position: absolute;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(15, 26, 32, 0.9);
             color: var(--text-light);
             padding: 8px 12px;
             border-radius: 4px;
             font-size: 12px;
             z-index: 1000;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 215, 0, 0.3);
+            border: 1px solid rgba(61, 123, 128, 0.3);
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.3s;
+        }
+        
+        .insider-note {
+            background: linear-gradient(135deg, rgba(61, 123, 128, 0.1), rgba(164, 194, 165, 0.1));
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-muted);
+            position: relative;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .insider-note i {
+            color: var(--primary-color);
+            margin-right: 8px;
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -556,7 +570,7 @@
         <div class="logo-area">
             <img src="logo.png" alt="CultureStream Logo" class="logo">
             <div class="logo-text">CultureStream</div>
-            <div class="vip-badge"><i class="fas fa-crown"></i> VIP</div>
+            <div class="supporter-badge"><i class="fas fa-seedling"></i> Förderer</div>
         </div>
         
         <div class="user-area">
@@ -569,28 +583,28 @@
     <div class="main-container">
         <nav>
             <a href="#" class="nav-item active">
-                <i class="fas fa-crown"></i>
-                VIP-Übersicht
+                <i class="fas fa-seedling"></i>
+                Förderer-Übersicht
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-calendar-star"></i>
+                <i class="fas fa-calendar-alt"></i>
                 Exklusive Events
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-video"></i>
-                Premium Portale
+                <i class="fas fa-palette"></i>
+                Kunst-Ateliers
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-users-crown"></i>
-                VIP Community
+                <i class="fas fa-users"></i>
+                Künstlergespräche
             </a>
             <a href="#" class="nav-item">
                 <i class="fas fa-compass"></i>
                 Kulturelle Entdeckungen
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-gem"></i>
-                Vorteile & Angebote
+                <i class="fas fa-handshake"></i>
+                Förderprogramme
             </a>
             <a href="#" class="nav-item">
                 <i class="fas fa-cog"></i>
@@ -599,25 +613,25 @@
         </nav>
         
         <main>
-            <div class="vip-banner">
-                <h1>Willkommen im VIP-Portal, Viktoria!</h1>
-                <p>Genieße deine exklusiven Vorteile als Premium-Mitglied und entdecke neue kulturelle Horizonte mit CultureStream. Dein persönliches Portal zu einzigartigen kulturellen Erlebnissen steht dir jederzeit zur Verfügung.</p>
-                <a href="#" class="vip-btn">Persönliche Portal-Session starten</a>
+            <div class="supporter-banner">
+                <h1>Willkommen im Fördererbereich, Viktoria!</h1>
+                <p>Vielen Dank für deine wertvolle Unterstützung unseres Kunstvereins. Durch dein Engagement helfen wir Künstlern, ihre Visionen zu verwirklichen und Kulturen zu verbinden. Der Förderbereich bietet dir exklusive Einblicke und besondere Teilhabemöglichkeiten.</p>
+                <a href="#" class="art-btn">Künstler-Gespräch planen</a>
                 
-                <div class="vip-stats">
-                    <div class="vip-stat">
+                <div class="supporter-stats">
+                    <div class="supporter-stat">
                         <div class="stat-value">8</div>
                         <div class="stat-label">Exklusive Events</div>
                     </div>
-                    <div class="vip-stat">
+                    <div class="supporter-stat">
                         <div class="stat-value">3</div>
-                        <div class="stat-label">Premium-Portale</div>
+                        <div class="stat-label">Geförderte Künstler</div>
                     </div>
-                    <div class="vip-stat">
+                    <div class="supporter-stat">
                         <div class="stat-value">12</div>
-                        <div class="stat-label">Verfügbare Credits</div>
+                        <div class="stat-label">Atelierstunden</div>
                     </div>
-                    <div class="vip-stat">
+                    <div class="supporter-stat">
                         <div class="stat-value">5</div>
                         <div class="stat-label">Neue Nachrichten</div>
                     </div>
@@ -626,108 +640,108 @@
             
             <div class="card-grid">
                 <div class="card">
-                    <div class="vip-exclusive">NUR FÜR VIPs</div>
-                    <h3><i class="fas fa-star"></i> Premium-Events</h3>
-                    <div class="vip-event-list">
-                        <div class="vip-event">
-                            <div class="vip-event-date">
+                    <div class="exclusive-tag">EXKLUSIV</div>
+                    <h3><i class="fas fa-star"></i> Kommende Förderer-Events</h3>
+                    <div class="special-event-list">
+                        <div class="special-event">
+                            <div class="special-event-date">
                                 <span class="day">12</span>
                                 <span>Mai</span>
                             </div>
-                            <div class="vip-event-content">
-                                <div class="vip-event-title">Private Führung: Louvre nach Stunden</div>
-                                <div class="vip-event-desc">Exklusive virtuelle Führung durch den Louvre, wenn die Türen für die Öffentlichkeit geschlossen sind.</div>
-                                <a href="#" class="vip-btn">Reservieren</a>
+                            <div class="special-event-content">
+                                <div class="special-event-title">Vorabbesichtigung: "Grenzenlos" Ausstellung</div>
+                                <div class="special-event-desc">Exklusive Führung durch die neue Ausstellung mit den Kuratoren, einen Tag vor der offiziellen Eröffnung.</div>
+                                <a href="#" class="art-btn">Teilnehmen</a>
                             </div>
                         </div>
-                        <div class="vip-event">
-                            <div class="vip-event-date">
+                        <div class="special-event">
+                            <div class="special-event-date">
                                 <span class="day">19</span>
                                 <span>Mai</span>
                             </div>
-                            <div class="vip-event-content">
-                                <div class="vip-event-title">Gespräch mit Weltraumarchitekten</div>
-                                <div class="vip-event-desc">Interaktive Session mit führenden Architekten der internationalen Raumstation.</div>
-                                <a href="#" class="vip-btn">Reservieren</a>
+                            <div class="special-event-content">
+                                <div class="special-event-title">Künstlergespräch: Tatsuo Miyajima</div>
+                                <div class="special-event-desc">Virtuelles Gespräch mit dem internationalen Lichtkünstler über sein neuestes Projekt "Time and Space".</div>
+                                <a href="#" class="art-btn">Anmelden</a>
                             </div>
                         </div>
-                        <div class="vip-event">
-                            <div class="vip-event-date">
+                        <div class="special-event">
+                            <div class="special-event-date">
                                 <span class="day">25</span>
                                 <span>Mai</span>
                             </div>
-                            <div class="vip-event-content">
-                                <div class="vip-event-title">Weinverkostung mit Sommeliers</div>
-                                <div class="vip-event-desc">Gemeinsames Wein-Tasting über Portale mit Experten aus Frankreich, Italien und Chile.</div>
-                                <a href="#" class="vip-btn">Reservieren</a>
+                            <div class="special-event-content">
+                                <div class="special-event-title">Workshop: Experimentelle Drucktechniken</div>
+                                <div class="special-event-desc">Hands-on Workshop mit der Künstlerin Maria Neves zu innovativen Drucktechniken mit nachhaltigen Materialien.</div>
+                                <a href="#" class="art-btn">Reservieren</a>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="see-all">Alle Premium-Events anzeigen <i class="fas fa-arrow-right"></i></a>
+                    <a href="#" class="see-all">Alle Förderer-Events anzeigen <i class="fas fa-arrow-right"></i></a>
                 </div>
                 
                 <div class="card">
-                    <h3><i class="fas fa-gem"></i> Deine VIP-Vorteile</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">Als VIP-Mitglied genießt du diese exklusiven Vorteile bei CultureStream:</p>
+                    <h3><i class="fas fa-handshake"></i> Deine Förderervorteile</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Als Fördermitglied genießt du diese besonderen Möglichkeiten:</p>
                     
-                    <ul class="vip-benefits">
-                        <li><i class="fas fa-check-circle"></i> Unbegrenzter Zugang zu allen Premium-Portalen</li>
-                        <li><i class="fas fa-check-circle"></i> Priorisierte Buchung für kulturelle Events</li>
-                        <li><i class="fas fa-check-circle"></i> Persönliche Echtzeit-Übersetzung in 12 Sprachen</li>
-                        <li><i class="fas fa-check-circle"></i> Dedizierte VIP-Hosts für private Sessions</li>
-                        <li><i class="fas fa-check-circle"></i> Fortgeschrittene AR-Funktionen für immersive Erlebnisse</li>
-                        <li><i class="fas fa-check-circle"></i> Monatliche Credits für Premium-Inhalte</li>
+                    <ul class="supporter-benefits">
+                        <li><i class="fas fa-check-circle"></i> Früher Zugang zu neuen Ausstellungen und Events</li>
+                        <li><i class="fas fa-check-circle"></i> Persönliche Gespräche mit Künstlern und Kuratoren</li>
+                        <li><i class="fas fa-check-circle"></i> Teilnahme an exklusiven Workshops und Masterclasses</li>
+                        <li><i class="fas fa-check-circle"></i> Einblicke in Entstehungsprozesse neuer Kunstwerke</li>
+                        <li><i class="fas fa-check-circle"></i> Zugang zum digitalen Atelier-Archiv mit Prozessdokumentationen</li>
+                        <li><i class="fas fa-check-circle"></i> Jährliches limitiertes Kunstwerk eines geförderten Künstlers</li>
                     </ul>
                     
-                    <div style="margin-top: 20px; padding: 15px; background-color: rgba(255, 215, 0, 0.1); border-radius: 8px; position: relative; border-left: 3px solid var(--gold);">
-                        <i class="fas fa-lightbulb" style="color: var(--gold); margin-right: 10px;"></i>
-                        <span style="color: var(--text-muted); font-size: 14px;">Insider-Tipp: Nutze deine monatlichen Credits für eine private Portal-Session mit unserem Kulturexperten Marco, der diese Woche live aus Kyoto berichtet!</span>
+                    <div class="insider-note">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Tipp: Im geschützten Bereich "Künstlergespräche" kannst du direkt Termine mit unseren aktuell geförderten Künstlern vereinbaren. Die Künstlerin Sophie Taeuber-Arp hat diese Woche besondere Zeitfenster für Förderer freigehalten.</span>
                     </div>
                 </div>
             </div>
             
             <div class="card">
-                <h3><i class="fas fa-globe"></i> Exklusive Kultur-Einblicke</h3>
-                <p style="color: var(--text-muted); margin-bottom: 20px;">Unsere neuesten Premium-Inhalte, kuratiert speziell für VIP-Mitglieder:</p>
+                <h3><i class="fas fa-palette"></i> Aktuelle Förderprojekte</h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Diese Kunstprojekte werden aktuell durch deine Unterstützung ermöglicht:</p>
                 
-                <div class="vip-gallery">
-                    <div class="vip-gallery-item">
-                        <div class="gallery-label">Kyoto Garden</div>
+                <div class="art-gallery">
+                    <div class="art-gallery-item">
+                        <div class="gallery-label">Clara Mondlicht</div>
                     </div>
-                    <div class="vip-gallery-item">
-                        <div class="gallery-label">Santorini Portal</div>
+                    <div class="art-gallery-item">
+                        <div class="gallery-label">KollektivX</div>
                     </div>
-                    <div class="vip-gallery-item">
-                        <div class="gallery-label">NY Philharmonic</div>
+                    <div class="art-gallery-item">
+                        <div class="gallery-label">Takumi Ito</div>
                     </div>
-                    <div class="vip-gallery-item">
-                        <div class="gallery-label">Machu Picchu</div>
+                    <div class="art-gallery-item">
+                        <div class="gallery-label">Grenzgänger</div>
                     </div>
-                    <div class="vip-gallery-item">
-                        <div class="gallery-label">Arctic Lights</div>
+                    <div class="art-gallery-item">
+                        <div class="gallery-label">Sonja Wavell</div>
                     </div>
-                    <div class="vip-gallery-item">
-                        <div class="gallery-label">Dubai Future</div>
+                    <div class="art-gallery-item">
+                        <div class="gallery-label">Neue Residenz</div>
                     </div>
                 </div>
                 
-                <div style="margin-top: 25px; background-color: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.1);">
-                    <h4 style="color: var(--gold); margin-bottom: 15px; font-size: 16px;"><i class="fas fa-star"></i> Feature der Woche</h4>
-                    <p style="color: var(--text-muted); margin-bottom: 15px; font-size: 14px;">Unsere neue Echtzeit-Hologramm-Funktion erlaubt es dir, 3D-Objekte aus anderen Kulturen in deinen eigenen Raum zu projizieren. Perfekt für tiefergehende kulturelle Studien und immersive Erlebnisse.</p>
+                <div class="insider-note" style="margin-top: 25px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px; font-size: 16px;"><i class="fas fa-seedling"></i> Projekt des Monats</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 15px; font-size: 14px;">Das Projekt "Grenzgänger" von Maria Eichhorn erforscht die unsichtbaren Grenzen unserer Gesellschaft durch eine Kombination aus Fotografie, Klanginstallation und partizipativen Elementen. Die Arbeiten werden im Juni in unserer Hauptgalerie ausgestellt.</p>
                     <p style="color: var(--text-muted); font-size: 14px; font-style: italic;">
-                        "Mit der Hologramm-Funktion konnte ich antike ägyptische Artefakte in meinem Wohnzimmer studieren - eine vollkommen neue Dimension des kulturellen Lernens!" <br>
-                        <span style="color: var(--gold); font-weight: 500;">- Maria K., VIP-Mitglied seit 2022</span>
+                        "Die Unterstützung des Förderprogramms hat mir die Freiheit gegeben, meine künstlerische Vision ohne Kompromisse zu verfolgen. Der Austausch mit den Förderern war dabei eine unerwartete Bereicherung." <br>
+                        <span style="color: var(--primary-color); font-weight: 500;">- Maria Eichhorn, geförderte Künstlerin 2023</span>
                     </p>
-                    <a href="#" class="vip-btn" style="margin-top: 15px;">Funktion aktivieren</a>
+                    <a href="#" class="art-btn" style="margin-top: 15px;">Projektverlauf ansehen</a>
                 </div>
                 
-                <a href="#" class="see-all">Alle Premium-Inhalte erkunden <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="see-all">Alle geförderten Projekte entdecken <i class="fas fa-arrow-right"></i></a>
             </div>
         </main>
     </div>
     
-    <div class="portal-effect" title="Premium-Portal aktivieren">
-        <i class="fas fa-crown"></i>
+    <div class="art-interaction" title="Künstlerdialog starten">
+        <i class="fas fa-comments"></i>
     </div>
     
     <div class="digital-dots">
@@ -752,31 +766,31 @@
             }
         });
         
-        // Premium-Portal-Button
-        document.querySelector('.portal-effect').addEventListener('click', function() {
-            alert('✨ Premium-Portal wird aktiviert! Verbinde dich mit exklusiven VIP-Inhalten und kulturellen Erlebnissen. Diese Funktion wird in Kürze freigeschaltet.');
+        // Kunstinteraktions-Button
+        document.querySelector('.art-interaction').addEventListener('click', function() {
+            alert('🎨 Künstlerdialog wird vorbereitet! Verbinde dich mit unseren geförderten Künstlern und erhalte Einblicke in ihre aktuellen Projekte. Diese Funktion wird in Kürze freigeschaltet.');
         });
         
-        // Tooltip für VIP-Gallery-Items
-        const galleryItems = document.querySelectorAll('.vip-gallery-item');
+        // Tooltip für Galerie-Elemente
+        const galleryItems = document.querySelectorAll('.art-gallery-item');
         const tooltipTexts = [
-            "Erlebe die verzaubernden Gärten Kyotos in einer privaten Portal-Session mit lokalen Gärtnern.",
-            "Genieße den Sonnenuntergang über Santorini mit einem privaten Kulturführer und lerne die lokalen Traditionen kennen.",
-            "Exklusives virtuelles Konzert der New York Philharmonic mit VIP-Backstage-Zugang.",
-            "Archäologie-Expedition nach Machu Picchu mit führenden Experten der Inka-Kultur.",
-            "Erlebe das Nordlicht in Echtzeit mit unserem Portal in Norwegen - inkl. wissenschaftlicher Erklärungen.",
-            "Futuristische Architektur-Tour durch Dubai mit exklusivem Zugang zu noch nicht eröffneten Gebäuden."
+            "Clara Mondlicht erforscht in ihrer neuen Lichtskulpturen-Serie das Zusammenspiel von natürlichem und künstlichem Licht in urbanen Räumen.",
+            "Das KollektivX hat ein partizipatives Projekt gestartet, das Bewohner aus fünf europäischen Städten vernetzt und ihre Alltagsgeschichten dokumentiert.",
+            "Takumi Ito arbeitet an einer Serie von Holzschnitten, die traditionelle japanische Techniken mit zeitgenössischen Themen verbindet.",
+            "Das interdisziplinäre Projekt 'Grenzgänger' kombiniert Fotografie, Klanginstallation und partizipative Elemente.",
+            "Sonja Wavell erforscht in ihren textilen Arbeiten die Verbindung zwischen industrieller Fertigung und traditionellem Handwerk.",
+            "In unserer neuen Künstlerresidenz werden drei internationale Künstler für sechs Monate zusammenarbeiten und ein gemeinsames Projekt entwickeln."
         ];
         
         // Tooltip erstellen und anhängen
         const tooltip = document.createElement('div');
-        tooltip.classList.add('vip-tooltip');
+        tooltip.classList.add('art-tooltip');
         document.body.appendChild(tooltip);
         
-        // Event-Listener für Gallery-Items
+        // Event-Listener für Galerie-Elemente
         galleryItems.forEach((item, index) => {
             item.addEventListener('mouseenter', function(e) {
-                tooltip.textContent = tooltipTexts[index] || "Exklusiver VIP-Inhalt";
+                tooltip.textContent = tooltipTexts[index] || "Aktuelles Förderprojekt";
                 tooltip.style.top = `${e.clientY + 20}px`;
                 tooltip.style.left = `${e.clientX + 10}px`;
                 tooltip.style.opacity = 1;

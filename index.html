@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CultureStream - Portal Login</title>
+    <title>CultureStream - Kunstverein</title>
     <style>
         :root {
-            --primary-blue: #40B4E5;
-            --secondary-blue: #8AD9F2;
-            --light-blue: #C1E8F7;
-            --dark-bg: #121212;
-            --dark-panel: #1E1E1E;
-            --text-light: #FFFFFF;
-            --text-muted: #9E9E9E;
+            --primary-color: #3D7B80; /* Tiefes Türkis */
+            --secondary-color: #A4C2A5; /* Moosgrün */
+            --accent-color: #D65108; /* Terrakotta */
+            --light-accent: #F2A65A; /* Sanftes Orange */
+            --dark-bg: #0F1A20; /* Fast-Schwarz mit Blauton */
+            --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
+            --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
+            --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
         }
         
         * {
@@ -33,26 +34,46 @@
             position: relative;
         }
 
-        /* Hintergrund-Effekt mit digitalen Linien */
-        .bg-lines {
+        /* Künstlerischer Hintergrund */
+        .bg-canvas {
             position: absolute;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
             z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-brush {
+            position: absolute;
+            background: linear-gradient(45deg, var(--primary-color), transparent);
+            border-radius: 50%;
             opacity: 0.05;
         }
         
-        .bg-lines:before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(90deg, var(--primary-blue) 1px, transparent 1px) 0 0,
-                linear-gradient(180deg, var(--primary-blue) 1px, transparent 1px) 0 0;
-            background-size: 20px 20px;
+        .bg-brush:nth-child(1) {
+            width: 800px;
+            height: 800px;
+            top: -200px;
+            left: -200px;
+        }
+        
+        .bg-brush:nth-child(2) {
+            width: 600px;
+            height: 600px;
+            bottom: -100px;
+            right: -100px;
+            background: linear-gradient(135deg, var(--accent-color), transparent);
+        }
+        
+        .bg-brush:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            right: 10%;
+            background: linear-gradient(90deg, var(--secondary-color), transparent);
+            opacity: 0.03;
         }
         
         .container {
@@ -91,14 +112,14 @@
             position: absolute;
             width: 150%;
             height: 150%;
-            background: radial-gradient(circle, var(--primary-blue) 0%, transparent 70%);
+            background: radial-gradient(circle, var(--primary-color) 0%, transparent 70%);
             top: -25%;
             left: -25%;
             opacity: 0.07;
         }
         
         .logo {
-            width: 220px;
+            width: 180px;
             margin-bottom: 30px;
         }
         
@@ -112,49 +133,50 @@
             line-height: 1.5;
         }
         
-        .portal-quote {
+        .art-quote {
             font-style: italic;
             text-align: center;
             margin: 0 auto 30px;
             max-width: 80%;
-            color: var(--secondary-blue);
+            color: var(--secondary-color);
             font-size: 14px;
             position: relative;
             padding: 0 20px;
+            line-height: 1.6;
         }
         
-        .portal-quote::before,
-        .portal-quote::after {
+        .art-quote::before,
+        .art-quote::after {
             content: '"';
             font-size: 24px;
             position: absolute;
-            color: var(--primary-blue);
-            opacity: 0.5;
+            color: var(--accent-color);
+            opacity: 0.7;
         }
         
-        .portal-quote::before {
+        .art-quote::before {
             left: 0;
             top: -5px;
         }
         
-        .portal-quote::after {
+        .art-quote::after {
             right: 0;
             bottom: -15px;
         }
         
-        .fun-fact {
-            background: linear-gradient(135deg, rgba(64, 180, 229, 0.1), rgba(138, 217, 242, 0.1));
+        .insider-note {
+            background: linear-gradient(135deg, rgba(61, 123, 128, 0.1), rgba(164, 194, 165, 0.1));
             border-radius: 8px;
             padding: 15px;
             margin-top: 20px;
             font-size: 14px;
             color: var(--text-muted);
             position: relative;
-            border-left: 3px solid var(--primary-blue);
+            border-left: 3px solid var(--primary-color);
         }
         
-        .fun-fact i {
-            color: var(--primary-blue);
+        .insider-note i {
+            color: var(--primary-color);
             margin-right: 8px;
         }
         
@@ -171,7 +193,7 @@
             position: absolute;
             width: 60px;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             left: 0;
             bottom: -10px;
             border-radius: 3px;
@@ -203,8 +225,8 @@
         
         .form-control:focus {
             outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: 0 0 0 2px rgba(64, 180, 229, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(61, 123, 128, 0.2);
         }
         
         .form-control::placeholder {
@@ -237,7 +259,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(64, 180, 229, 0.2) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(61, 123, 128, 0.2) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.5s;
             pointer-events: none;
@@ -257,13 +279,13 @@
         
         .login-option i {
             font-size: 24px;
-            color: var(--primary-blue);
+            color: var(--primary-color);
         }
         
         .btn {
             display: inline-block;
             padding: 15px 30px;
-            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
             color: white;
             border: none;
             border-radius: 8px;
@@ -281,7 +303,7 @@
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(64, 180, 229, 0.4);
+            box-shadow: 0 5px 15px rgba(61, 123, 128, 0.4);
         }
         
         .btn:after {
@@ -315,49 +337,128 @@
         }
         
         .help-links a {
-            color: var(--primary-blue);
+            color: var(--primary-color);
             text-decoration: none;
             transition: all 0.3s;
         }
         
         .help-links a:hover {
-            color: var(--secondary-blue);
+            color: var(--secondary-color);
             text-decoration: underline;
         }
         
-        .portal-description {
-            background-color: rgba(0, 0, 0, 0.3);
+        .window-description {
+            background-color: rgba(15, 26, 32, 0.5);
             padding: 20px;
             border-radius: 8px;
             margin-top: 20px;
             display: none;
             position: relative;
             overflow: hidden;
-            border-left: 3px solid var(--primary-blue);
+            border-left: 3px solid var(--primary-color);
             animation: fadeInUp 0.5s forwards;
         }
         
-        .portal-description::after {
+        .window-description::after {
             content: '';
             position: absolute;
             top: 0;
             right: 0;
             width: 100px;
             height: 100px;
-            background: radial-gradient(circle, rgba(64, 180, 229, 0.2) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(61, 123, 128, 0.2) 0%, transparent 70%);
             opacity: 0.5;
         }
         
-        .portal-description h3 {
+        .window-description h3 {
             font-size: 18px;
             margin-bottom: 10px;
-            color: var(--primary-blue);
+            color: var(--primary-color);
         }
         
-        .portal-description p {
+        .window-description p {
             font-size: 14px;
             color: var(--text-muted);
             line-height: 1.5;
+        }
+        
+        .art-element {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 120px;
+            opacity: 0.4;
+        }
+        
+        .art-stroke {
+            position: absolute;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+            animation: expandStroke 6s infinite;
+        }
+        
+        .art-stroke:nth-child(1) {
+            width: 2px;
+            height: 60px;
+            top: 20%;
+            left: 20%;
+            transform: rotate(-30deg);
+            animation-delay: 0s;
+        }
+        
+        .art-stroke:nth-child(2) {
+            width: 80px;
+            height: 2px;
+            top: 40%;
+            left: 10%;
+            animation-delay: 0.5s;
+        }
+        
+        .art-stroke:nth-child(3) {
+            width: 2px;
+            height: 40px;
+            top: 50%;
+            left: 60%;
+            transform: rotate(20deg);
+            animation-delay: 1s;
+        }
+        
+        .art-stroke:nth-child(4) {
+            width: 60px;
+            height: 2px;
+            top: 70%;
+            left: 40%;
+            transform: rotate(-10deg);
+            animation-delay: 1.5s;
+            background-color: var(--accent-color);
+        }
+        
+        .art-frame {
+            position: absolute;
+            border: 2px solid var(--secondary-color);
+            width: 100px;
+            height: 70px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.3;
+        }
+        
+        @keyframes expandStroke {
+            0% {
+                opacity: 0.3;
+                transform: scale(0.8) rotate(var(--rotation, 0deg));
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1) rotate(var(--rotation, 0deg));
+            }
+            100% {
+                opacity: 0.3;
+                transform: scale(0.8) rotate(var(--rotation, 0deg));
+            }
         }
         
         .digital-dots {
@@ -373,7 +474,7 @@
             position: absolute;
             width: 4px;
             height: 4px;
-            background-color: var(--primary-blue);
+            background-color: var(--primary-color);
             border-radius: 50%;
         }
         
@@ -423,152 +524,62 @@
             animation: fadeInUp 0.6s forwards;
         }
 
-        /* Stile für die Portal-Beschreibungen */
-        #member-desc, #vip-desc, #sales-desc, #marketing-desc, #admin-desc {
+        /* Stile für die Beschreibungen der Fenster */
+        #member-desc, #supporter-desc, #exhibition-desc, #community-desc, #admin-desc {
             display: none;
-        }
-
-        /* Artistic elements */
-        .portal-visuals {
-            position: absolute;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 120px;
-            opacity: 0.4;
-        }
-
-        .portal-dot {
-            position: absolute;
-            background-color: var(--primary-blue);
-            border-radius: 50%;
-            animation: pulsePortal 4s infinite;
-        }
-
-        .portal-dot:nth-child(1) {
-            width: 12px;
-            height: 12px;
-            top: 20%;
-            left: 20%;
-            animation-delay: 0s;
-        }
-
-        .portal-dot:nth-child(2) {
-            width: 8px;
-            height: 8px;
-            top: 40%;
-            left: 60%;
-            animation-delay: 0.5s;
-        }
-
-        .portal-dot:nth-child(3) {
-            width: 10px;
-            height: 10px;
-            top: 70%;
-            left: 30%;
-            animation-delay: 1s;
-        }
-
-        .portal-dot:nth-child(4) {
-            width: 6px;
-            height: 6px;
-            top: 30%;
-            left: 80%;
-            animation-delay: 1.5s;
-        }
-
-        .portal-line {
-            position: absolute;
-            background: linear-gradient(90deg, transparent, var(--primary-blue), transparent);
-            height: 1px;
-            width: 100%;
-            top: 50%;
-            animation: portalLine 6s infinite;
-            opacity: 0.6;
-        }
-
-        @keyframes pulsePortal {
-            0% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-            50% {
-                transform: scale(1.3);
-                opacity: 0.9;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0.7;
-            }
-        }
-
-        @keyframes portalLine {
-            0% {
-                opacity: 0;
-                transform: translateY(-10px) scaleX(0.3);
-            }
-            40% {
-                opacity: 0.6;
-                transform: translateY(0) scaleX(1);
-            }
-            60% {
-                opacity: 0.6;
-                transform: translateY(0) scaleX(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(10px) scaleX(0.3);
-            }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
 <body>
-    <div class="bg-lines"></div>
+    <div class="bg-canvas">
+        <div class="bg-brush"></div>
+        <div class="bg-brush"></div>
+        <div class="bg-brush"></div>
+    </div>
     
     <div class="container">
         <div class="left-panel">
             <img src="logo.png" alt="CultureStream Logo" class="logo">
-            <p class="tagline">Verbinde Kulturen. Baue Brücken. Schaffe globale Gemeinschaften.</p>
-            <p class="portal-quote">Die Portale sind nicht einfach nur Technologie, sie sind Fenster in andere Welten, die uns helfen, Vorurteile abzubauen und Verständnis zu fördern.</p>
+            <p class="tagline">Kunst verbindet. Kulturen vermischen. Perspektiven erweitern.</p>
+            <p class="art-quote">Unsere kulturellen Fenster sind nicht nur Durchblicke, sondern Einladungen zur Teilnahme, zum Dialog und zur gemeinsamen kreativen Entfaltung.</p>
             
-            <div id="member-desc" class="portal-description">
-                <h3>Mitglieder-Portal</h3>
-                <p>Herzlich willkommen im Mitgliederbereich von CultureStream. Hier findest du Zugang zu virtuellen Kultur-Events, exklusiven Inhalten und kannst an unserer globalen Community teilnehmen.</p>
-                <div class="fun-fact"><i class="fas fa-lightbulb"></i> Wusstest du schon? Über 12.000 Mitglieder haben bereits an interkulturellen Portal-Events teilgenommen und dabei 47 verschiedene Länder virtuell besucht!</div>
+            <div id="member-desc" class="window-description">
+                <h3>Mitglieder-Fenster</h3>
+                <p>Willkommen im Herzen unseres Kunstvereins. Hier findest du Zugang zu unseren Veranstaltungen, digitalen Ausstellungen und kannst dich mit der Community austauschen.</p>
+                <div class="insider-note"><i class="fas fa-palette"></i> Aktuell: Unsere neue Ausstellung "Grenzenlos" vereint 28 Künstler aus 14 Ländern und wird ab nächster Woche auch digital durch unser kulturelles Fenster erlebbar sein.</div>
             </div>
             
-            <div id="vip-desc" class="portal-description">
-                <h3>VIP-Zugang</h3>
-                <p>Exklusive Inhalte für unsere Premium-Mitglieder. Genieße den direkten Kontakt zu Kulturschaffenden, persönliche Portal-Sessions und Zugang zu allen Premium-Events.</p>
-                <div class="fun-fact"><i class="fas fa-crown"></i> Insider-Info: VIP-Mitglieder erhalten nächsten Monat exklusiven Zugang zum virtuellen Konzert "Klänge der Welt" mit Live-Übersetzung in 8 Sprachen!</div>
+            <div id="supporter-desc" class="window-description">
+                <h3>Unterstützer-Fenster</h3>
+                <p>Herzlichen Dank für deine Förderung! In diesem Bereich erhältst du exklusive Einblicke in Entstehungsprozesse, direkten Austausch mit Künstlern und Zugang zu speziellen Veranstaltungen.</p>
+                <div class="insider-note"><i class="fas fa-seedling"></i> Durch die Unterstützung unserer Fördermitglieder konnten wir dieses Jahr bereits drei aufstrebende Künstler mit Stipendien fördern und eine interkulturelle Residenz ins Leben rufen.</div>
             </div>
             
-            <div id="sales-desc" class="portal-description">
-                <h3>Schauraum</h3>
-                <p>Entdecke unsere Produkte, Preislisten und Informationsmaterialien. Hier findest du alles, was du über unsere Portal-Technologie und Einsatzmöglichkeiten wissen musst.</p>
-                <div class="fun-fact"><i class="fas fa-store"></i> Fun Fact: Unser Mini-Portal ist so kompakt, dass ein Kunde es in seinem Vintage-Koffer auf Weltreise mitnimmt und spontane kulturelle Begegnungen streamt!</div>
+            <div id="exhibition-desc" class="window-description">
+                <h3>Ausstellungsraum</h3>
+                <p>Entdecke unsere aktuellen und vergangenen Ausstellungen, virtuelle Räume und kuratierte Sammlungen. Ein digitaler Rundgang durch die vielfältige Welt der Kunst.</p>
+                <div class="insider-note"><i class="fas fa-eye"></i> Wusstest du? Unser digitaler Ausstellungsraum nutzt eine speziell entwickelte Technik, die es ermöglicht, Texturen und Materialien von Kunstwerken fast haptisch erfahrbar zu machen.</div>
             </div>
             
-            <div id="marketing-desc" class="portal-description">
-                <h3>Marketing-Ressourcen</h3>
-                <p>Zugriff auf Pressematerialien, Bilder, Videos und Kampagnen-Ressourcen für unsere Partner und Medienvertreter. Hier findest du alles für deine Kommunikationsarbeit.</p>
-                <div class="fun-fact"><i class="fas fa-bullhorn"></i> Marketing-Geheimnis: Der "Portal-Effekt" in unserer letzten Kampagne sorgte für 300% mehr Engagement. Die Leute lieben es, wenn sich virtuelle Türen zu anderen Kulturen öffnen!</div>
+            <div id="community-desc" class="window-description">
+                <h3>Community-Raum</h3>
+                <p>Der Ort für Austausch, gemeinsame Projekte und Vernetzung. Hier findest du Materialien für die Öffentlichkeitsarbeit, Bildungsinhalte und Werkzeuge für kollaborative künstlerische Prozesse.</p>
+                <div class="insider-note"><i class="fas fa-comments"></i> Die "Offene Studio"-Initiative hat bereits über 200 virtuelle Treffen organisiert, bei denen Künstler ihre Arbeitsprozesse teilen und gemeinsam mit der Community experimentieren.</div>
             </div>
             
-            <div id="admin-desc" class="portal-description">
+            <div id="admin-desc" class="window-description">
                 <h3>Verwaltungsbereich</h3>
-                <p>Zentrale Verwaltung aller CultureStream-Aktivitäten, Nutzerdaten und System-Einstellungen. Nur für autorisierte Vorstandsmitglieder und Administratoren.</p>
-                <div class="fun-fact"><i class="fas fa-shield-alt"></i> Vorstandsgeflüster: Der "Notfall-Knopf" wurde bisher nur einmal gedrückt – als sich ein übermütiger Praktikant versehentlich in alle Portale gleichzeitig eingewählt hat!</div>
+                <p>Zentrale Verwaltung aller Vereinsaktivitäten, Mitgliederdaten und Systemeinstellungen. Nur für autorisierte Vorstandsmitglieder und Administratoren.</p>
+                <div class="insider-note"><i class="fas fa-chart-line"></i> Kuratorischer Hinweis: Die neue Funktion "Förderungsimpact" visualisiert, wie jede Unterstützung direkt in künstlerische Projekte fließt – für maximale Transparenz im Verein.</div>
             </div>
 
-            <div class="portal-visuals">
-                <div class="portal-dot"></div>
-                <div class="portal-dot"></div>
-                <div class="portal-dot"></div>
-                <div class="portal-dot"></div>
-                <div class="portal-line"></div>
+            <div class="art-element">
+                <div class="art-stroke"></div>
+                <div class="art-stroke"></div>
+                <div class="art-stroke"></div>
+                <div class="art-stroke"></div>
+                <div class="art-frame"></div>
             </div>
 
             <div class="digital-dots">
@@ -578,28 +589,28 @@
         
         <div class="right-panel">
             <div class="login-form">
-                <h2>Portal-Zugang</h2>
+                <h2>Fenster öffnen</h2>
                 
                 <div class="login-options">
                     <div class="login-option" data-target="member">
                         <i class="fas fa-users"></i>
                         <span>Mitglieder</span>
                     </div>
-                    <div class="login-option" data-target="vip">
-                        <i class="fas fa-crown"></i>
-                        <span>VIP</span>
+                    <div class="login-option" data-target="supporter">
+                        <i class="fas fa-seedling"></i>
+                        <span>Unterstützer</span>
                     </div>
-                    <div class="login-option" data-target="sales">
-                        <i class="fas fa-store"></i>
-                        <span>Schauraum</span>
+                    <div class="login-option" data-target="exhibition">
+                        <i class="fas fa-cube"></i>
+                        <span>Ausstellung</span>
                     </div>
-                    <div class="login-option" data-target="marketing">
-                        <i class="fas fa-bullhorn"></i>
-                        <span>Marketing</span>
+                    <div class="login-option" data-target="community">
+                        <i class="fas fa-comments"></i>
+                        <span>Community</span>
                     </div>
                     <div class="login-option" data-target="admin">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>Admin</span>
+                        <i class="fas fa-cog"></i>
+                        <span>Verwaltung</span>
                     </div>
                 </div>
                 
@@ -613,7 +624,7 @@
                     <input type="password" id="password" class="form-control" placeholder="Dein Passwort" required>
                 </div>
                 
-                <button type="submit" class="btn">Einloggen</button>
+                <button type="submit" class="btn">Eintreten</button>
                 
                 <div class="help-links">
                     <a href="#">Passwort vergessen?</a>
@@ -624,7 +635,7 @@
     </div>
 
     <script>
-        // Generiere die digitalen Punkte im Hintergrund
+        // Generiere die künstlerischen Punkte im Hintergrund
         const dotsContainer = document.querySelector('.digital-dots');
         for (let i = 0; i < 30; i++) {
             const dot = document.createElement('div');
@@ -636,24 +647,24 @@
 
         // Login-Option Auswahl
         const loginOptions = document.querySelectorAll('.login-option');
-        const portalDescriptions = {
+        const windowDescriptions = {
             'member': document.getElementById('member-desc'),
-            'vip': document.getElementById('vip-desc'),
-            'sales': document.getElementById('sales-desc'),
-            'marketing': document.getElementById('marketing-desc'),
+            'supporter': document.getElementById('supporter-desc'),
+            'exhibition': document.getElementById('exhibition-desc'),
+            'community': document.getElementById('community-desc'),
             'admin': document.getElementById('admin-desc')
         };
         
-        // Test-Passwörter für die Demonstration (würden in Produktion natürlich durch echte Auth ersetzt)
+        // Test-Passwörter für die Demonstration (würden in Produktion durch echte Auth ersetzt)
         const testCredentials = {
             'member': 'KulturDialog2023',
-            'vip': 'GlobalPortal!VIP',
-            'sales': 'Schauraum#Tech',
-            'marketing': 'Stream&Connect',
+            'supporter': 'GlobalPortal!VIP',
+            'exhibition': 'Schauraum#Tech',
+            'community': 'Stream&Connect',
             'admin': 'Vorstand@CS24'
         };
 
-        let currentPortal = null;
+        let currentWindow = null;
 
         loginOptions.forEach(option => {
             option.addEventListener('click', function() {
@@ -661,25 +672,25 @@
                 loginOptions.forEach(opt => opt.classList.remove('active'));
                 this.classList.add('active');
                 
-                // Portal-Beschreibung anzeigen
+                // Fenster-Beschreibung anzeigen
                 const target = this.getAttribute('data-target');
                 
                 // Alle Beschreibungen ausblenden
-                Object.values(portalDescriptions).forEach(desc => {
+                Object.values(windowDescriptions).forEach(desc => {
                     desc.style.display = 'none';
                 });
                 
                 // Aktuelle Beschreibung einblenden mit Animation
-                if (portalDescriptions[target]) {
-                    portalDescriptions[target].style.display = 'block';
-                    portalDescriptions[target].style.opacity = 0;
+                if (windowDescriptions[target]) {
+                    windowDescriptions[target].style.display = 'block';
+                    windowDescriptions[target].style.opacity = 0;
                     setTimeout(() => {
-                        portalDescriptions[target].style.opacity = 1;
+                        windowDescriptions[target].style.opacity = 1;
                     }, 10);
                 }
                 
-                // Aktuelles Portal für den Login speichern
-                currentPortal = target;
+                // Aktuelles Fenster für den Login speichern
+                currentWindow = target;
                 
                 // Demo: Benutzernamen automatisch füllen (nur für Demo-Zwecke)
                 document.getElementById('username').value = target + "@culturestream.org";
@@ -694,21 +705,24 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            if (!currentPortal) {
-                alert('Bitte wähle einen Portal-Bereich aus.');
+            if (!currentWindow) {
+                alert('Bitte wähle einen Bereich aus.');
                 return;
             }
             
             // Demo-Login überprüfen (nur für Demo-Zwecke)
-            if (password === testCredentials[currentPortal]) {
+            if (password === testCredentials[currentWindow]) {
                 // Success animation
                 this.innerHTML = '<i class="fas fa-check"></i> Erfolgreich!';
                 this.style.background = 'linear-gradient(90deg, #4CAF50, #8BC34A)';
                 
-                // Redirect to internal page (would be implemented in real app)
+                // Redirect to internal page
                 setTimeout(() => {
-                    alert(`Login erfolgreich! Du wirst zum ${currentPortal}-Bereich weitergeleitet.`);
-                    // window.location.href = `${currentPortal}.html`;
+                    let targetPage = currentWindow + '.html';
+                    if (currentWindow === 'supporter') targetPage = 'vip.html';
+                    if (currentWindow === 'exhibition') targetPage = 'exhibition.html';
+                    if (currentWindow === 'community') targetPage = 'community.html';
+                    window.location.href = targetPage;
                 }, 1500);
             } else {
                 // Fehler-Animation
@@ -716,8 +730,8 @@
                 this.style.background = 'linear-gradient(90deg, #f44336, #e91e63)';
                 
                 setTimeout(() => {
-                    this.innerHTML = 'Einloggen';
-                    this.style.background = 'linear-gradient(90deg, var(--primary-blue), var(--secondary-blue))';
+                    this.innerHTML = 'Eintreten';
+                    this.style.background = 'linear-gradient(90deg, var(--primary-color), var(--secondary-color))';
                 }, 1500);
             }
         });
