@@ -1,0 +1,316 @@
+/**
+ * CultureStream Accessibility Styles
+ * 
+ * Diese Datei enthält alle CSS-Styles zur Verbesserung der Barrierefreiheit
+ * auf der CultureStream-Plattform.
+ */
+
+/* ========== Screen Reader Unterstützung ========== */
+
+/* Für Screenreader-only Elemente */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Für Screenreader-Elemente, die bei Fokus sichtbar werden */
+.sr-only-focusable:active,
+.sr-only-focusable:focus {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    margin: 0;
+}
+
+/* ========== Fokus-Stile ========== */
+
+/* Verbesserte Fokus-Stile für Tastaturbenutzer */
+:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Bessere Button-Fokus-Styles */
+button:focus, 
+.btn:focus,
+[role="button"]:focus {
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.5);
+    outline: 2px solid transparent;
+}
+
+/* Focus-Stile für Tastaturnutzer (für Elemente, die via Maus anders aussehen sollten) */
+.keyboard-focus {
+    outline: 3px solid var(--color-primary) !important;
+    outline-offset: 3px !important;
+}
+
+/* ========== Skip-Links ========== */
+
+/* Skip-Link für Tastaturbenutzer, um zum Hauptinhalt zu springen */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--color-primary);
+    color: white;
+    padding: 8px 15px;
+    z-index: 100;
+    transition: top 0.2s ease;
+    text-decoration: none;
+    border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+    top: 0;
+    outline: none;
+}
+
+/* ========== ARIA-Unterstützung ========== */
+
+/* Hervorhebung für aktive Navigationslinks */
+[aria-current="page"] {
+    font-weight: bold;
+    position: relative;
+}
+
+[aria-current="page"]::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-primary);
+    border-radius: 3px;
+}
+
+/* Styles für expandierbare Elemente */
+[aria-expanded="true"] .icon-expand::before {
+    content: "▼";
+}
+
+[aria-expanded="false"] .icon-expand::before {
+    content: "►";
+}
+
+/* ========== Kontrast und Text ========== */
+
+/* Hoher Kontrast für wichtigen Text */
+.high-contrast {
+    color: var(--color-dark);
+    background-color: var(--color-light);
+    border: 1px solid var(--color-dark);
+}
+
+/* Text-Größe-Anpassungen für Leserlichkeit */
+.text-large {
+    font-size: 120%;
+}
+
+.text-xl {
+    font-size: 140%;
+}
+
+/* ========== Validierung und Feedback ========== */
+
+/* Validierungs-Nachrichten mit ARIA für Screenreader */
+.validation-error {
+    color: var(--color-danger);
+    border-left: 3px solid var(--color-danger);
+    padding-left: 10px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.validation-success {
+    color: var(--color-success);
+    border-left: 3px solid var(--color-success);
+    padding-left: 10px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+/* Verbesserte Fehlermeldungen für Screenreader */
+[role="alert"] {
+    border-radius: 4px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+[role="alert"].error {
+    background-color: rgba(var(--color-danger-rgb), 0.1);
+    border-left: 4px solid var(--color-danger);
+}
+
+[role="alert"].success {
+    background-color: rgba(var(--color-success-rgb), 0.1);
+    border-left: 4px solid var(--color-success);
+}
+
+/* ========== Formulare ========== */
+
+/* Größere Klickbereiche für Checkboxen und Radio-Buttons */
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+    padding: 5px;
+    cursor: pointer;
+}
+
+/* Bessere Visualisierung des Fokus bei Formularfeldern */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.25);
+}
+
+/* ========== Tooltips und Dropdowns ========== */
+
+/* Barrierefreie Tooltips */
+.tooltip {
+    position: relative;
+}
+
+.tooltip:hover::after,
+.tooltip:focus::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    padding: 5px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 10;
+    font-size: 14px;
+}
+
+/* Barrierefreie Dropdowns */
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown-menu.active,
+.dropdown-toggle:focus + .dropdown-menu,
+.dropdown-toggle[aria-expanded="true"] + .dropdown-menu {
+    display: block;
+}
+
+/* ========== Responsive Design für Accessibility ========== */
+
+/* Anpassungen für mobile Geräte */
+@media (max-width: 768px) {
+    /* Größere Touch-Ziele für Mobilgeräte */
+    button, 
+    .btn,
+    [role="button"],
+    a.nav-link,
+    input[type="checkbox"] + label,
+    input[type="radio"] + label {
+        min-height: 44px;
+        min-width: 44px;
+        padding: 10px 15px;
+    }
+    
+    /* Mehr Abstand zwischen interaktiven Elementen */
+    .nav-item, 
+    .form-check,
+    .btn + .btn {
+        margin: 10px 0;
+    }
+}
+
+/* ========== Reduced Motion ========== */
+
+/* Reduzierte Animationen für Nutzer, die Animationen reduzieren möchten */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .animated,
+    .fade-in,
+    .fade-out {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+/* ========== Dark Mode Unterstützung ========== */
+
+@media (prefers-color-scheme: dark) {
+    .high-contrast {
+        color: white;
+        background-color: black;
+        border-color: white;
+    }
+    
+    [role="alert"].error {
+        background-color: rgba(255, 100, 100, 0.2);
+    }
+    
+    [role="alert"].success {
+        background-color: rgba(100, 255, 100, 0.2);
+    }
+}
+
+/* ========== Print Styles ========== */
+
+@media print {
+    /* Verstecke unwichtige Elemente beim Drucken */
+    .nav,
+    .footer,
+    .sidebar,
+    .action-buttons,
+    button.print-hide {
+        display: none !important;
+    }
+    
+    /* Verbessere Textlesbarkeit beim Drucken */
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+        color: #000;
+        background: #fff;
+    }
+    
+    /* Links beim Drucken lesbar machen */
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 90%;
+        color: #333;
+    }
+    
+    /* Interne Links nicht mit URL drucken */
+    a[href^="#"]::after,
+    a[href^="javascript:"]::after {
+        content: "";
+    }
+    
+    /* Bilder beim Drucken optimieren */
+    img {
+        max-width: 100% !important;
+        page-break-inside: avoid;
+    }
+    
+    /* Seitenumbrüche kontrollieren */
+    h1, h2, h3, h4, h5, h6 {
+        page-break-after: avoid;
+    }
+    
+    table {
+        page-break-inside: avoid;
+    }
+} 

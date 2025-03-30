@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CultureStream Unterstützerbereich - Fördern Sie Kunst und Kultur in unserem Kunstverein">
+    <meta name="csrf-token" content="12345678">
+    <title>CultureStream - Unterstützerbereich</title>
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    
+    <style>
+        /* Seitenspezifische Stile */
+        :root {
+            --primary-color: #3D7B80; /* Tiefes Türkis */
+            --secondary-color: #A4C2A5; /* Moosgrün */
+            --accent-color: #D65108; /* Terrakotta */
+            --light-accent: #F2A65A; /* Sanftes Orange */
+            --dark-bg: #0F1A20; /* Fast-Schwarz mit Blauton */
+            --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
+            --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
+            --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
+            
+            /* Standardfarben für gemeinsame Komponenten */
+            --color-primary: #3D7B80;
+            --color-primary-rgb: 61, 123, 128;
+            --color-secondary: #A4C2A5;
+            --color-accent: #D65108;
+            --color-info: #38BDF8;
+            --color-success: #4ADE80;
+            --color-warning: #F2A65A;
+            --color-danger: #EF4444;
+        }
+        
+        /* Spezifische Stile für den Unterstützerbereich */        
+        .supporter-badge {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 15px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+        }
+        
+        .supporter-badge i {
+            margin-right: 5px;
+        }
+        
+        .supporter-banner {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
+            border-radius: var(--radius-md);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(61, 123, 128, 0.1);
+        }
+        
+        .supporter-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 L80,50 M50,20 L50,80" stroke="%233D7B80" stroke-width="0.5" opacity="0.2"/></svg>') repeat;
+            opacity: 0.05;
+        }
+        
+        .supporter-banner::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(61, 123, 128, 0.3) 0%, transparent 70%);
+            top: -100px;
+            right: -50px;
+            opacity: 0.2;
+            border-radius: 50%;
+        }
+        
+        .supporter-banner h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .supporter-banner p {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+        
+        .supporter-level {
+            display: inline-block;
+            padding: 5px 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        .impact-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .impact-item {
+            flex: 1;
+            min-width: 200px;
+            background: rgba(31, 40, 51, 0.5);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .impact-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+        
+        .impact-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .impact-label {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--text-light);
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            bottom: 5px;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+        
+        .funding-projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .project-card {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+        
+        .project-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+        
+        .project-category {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(15, 26, 32, 0.8);
+            color: var(--text-light);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+        
+        .project-details {
+            padding: 20px;
+        }
+        
+        .project-details h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: var(--text-light);
+        }
+        
+        .project-description {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .funding-progress {
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: rgba(15, 26, 32, 0.5);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
+        }
+        
+        .progress-stat {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        
+        .project-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .supporter-count {
+            color: var(--primary-color);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .supporter-count i {
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        
+        .patron-benefits {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
+            border-radius: var(--radius-md);
+            padding: 25px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(61, 123, 128, 0.1);
+        }
+        
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            background: rgba(15, 26, 32, 0.3);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(61, 123, 128, 0.05);
+        }
+        
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .benefit-info h4 {
+            margin-bottom: 5px;
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        
+        .benefit-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .benefit-item.locked {
+            opacity: 0.6;
+        }
+        
+        .benefit-item.locked .benefit-icon {
+            background: linear-gradient(135deg, #4b5563, #6b7280);
+        }
+        
+        .benefit-item.locked .benefit-info h4::after {
+            content: ' 🔒';
+            font-size: 12px;
+        }
+        
+        .upcoming-events {
+            margin-bottom: 40px;
+        }
+        
+        .event-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .event-card {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-color);
+        }
+        
+        .event-image {
+            height: 160px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .event-card:hover .event-image img {
+            transform: scale(1.05);
+        }
+        
+        .event-date {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-light);
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .event-exclusive {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+            color: var(--text-light);
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .event-details {
+            padding: 20px;
+        }
+        
+        .event-details h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: var(--text-light);
+        }
+        
+        .event-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .event-meta div {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        
+        .event-meta i {
+            margin-right: 5px;
+        }
+        
+        .event-description {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .event-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .event-status {
+            color: var(--primary-color);
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .impact-numbers {
+                flex-direction: column;
+            }
+            
+            .funding-projects, 
+            .benefits-list,
+            .event-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <link rel="stylesheet" href="accessibility.css">
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
+            <div class="logo-text">CultureStream</div>
+            <div class="supporter-badge">
+                <i class="fa fa-star"></i> Unterstützer
+            </div>
+        </div>
+        <div class="user-area">
+            <div class="user-avatar">S</div>
+            <div class="user-name">Sabine Meyer</div>
+            <button class="btn logout-btn">Abmelden</button>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <nav>
+            <a href="#" class="nav-item active">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-palette"></i>
+                <span>Förderprojekte</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-calendar"></i>
+                <span>Exklusive Events</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-user-friends"></i>
+                <span>Künstlerkontakte</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-images"></i>
+                <span>Ausstellungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-certificate"></i>
+                <span>Vorteile & Status</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-user"></i>
+                <span>Profil</span>
+            </a>
+        </nav>
+        
+        <main>
+            <div class="supporter-banner">
+                <h1>Willkommen im Unterstützerbereich, Sabine!</h1>
+                <p>Dank deines Engagements können wir Künstler fördern und kulturelle Vielfalt unterstützen. In deinem persönlichen Bereich siehst du, welche Projekte durch deine Unterstützung ermöglicht werden und welche exklusiven Vorteile du genießt.</p>
+                <div class="supporter-level">Förderniveau: Kulturbewahrer</div>
+                
+                <div class="impact-numbers">
+                    <div class="impact-item">
+                        <div class="impact-number">12</div>
+                        <div class="impact-label">Unterstützte Projekte</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-number">8</div>
+                        <div class="impact-label">Monate Engagement</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-number">5</div>
+                        <div class="impact-label">Exklusive Events besucht</div>
+                    </div>
+                    <div class="impact-item">
+                        <div class="impact-number">3</div>
+                        <div class="impact-label">Künstler direkt gefördert</div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Aktuelle Förderprojekte</h2>
+            <div class="funding-projects">
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://source.unsplash.com/random/600x400?art,exhibition" alt="Digitale Kunstgalerie für benachteiligte Jugendliche">
+                        <div class="project-category">Bildung</div>
+                    </div>
+                    <div class="project-details">
+                        <h3>Digitale Kunstgalerie für benachteiligte Jugendliche</h3>
+                        <p class="project-description">Schaffung einer digitalen Plattform für junge Talente aus sozialen Brennpunkten, um ihre Werke zu präsentieren.</p>
+                        <div class="funding-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 75%;"></div>
+                            </div>
+                            <div class="progress-stat">
+                                <span>15.600 € gesammelt</span>
+                                <span>Ziel: 20.000 €</span>
+                            </div>
+                        </div>
+                        <div class="project-actions">
+                            <div class="supporter-count">
+                                <i class="fa fa-users"></i> 128 Unterstützer
+                            </div>
+                            <button class="btn btn-primary btn-sm">Fördern</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://source.unsplash.com/random/600x400?sculpture" alt="Skulpturenpfad im städtischen Raum">
+                        <div class="project-category">Öffentlicher Raum</div>
+                    </div>
+                    <div class="project-details">
+                        <h3>Skulpturenpfad im städtischen Raum</h3>
+                        <p class="project-description">Installation von zehn Skulpturen lokaler Künstler entlang eines öffentlichen Pfades zur Belebung des Stadtbilds.</p>
+                        <div class="funding-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%;"></div>
+                            </div>
+                            <div class="progress-stat">
+                                <span>18.000 € gesammelt</span>
+                                <span>Ziel: 40.000 €</span>
+                            </div>
+                        </div>
+                        <div class="project-actions">
+                            <div class="supporter-count">
+                                <i class="fa fa-users"></i> 215 Unterstützer
+                            </div>
+                            <button class="btn btn-primary btn-sm">Fördern</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://source.unsplash.com/random/600x400?artist,painting" alt="Nachwuchskünstler-Stipendium">
+                        <div class="project-category">Förderung</div>
+                    </div>
+                    <div class="project-details">
+                        <h3>Nachwuchskünstler-Stipendium</h3>
+                        <p class="project-description">Jährliche Förderung für zwei aufstrebende Künstler, die ein halbjähriges Arbeitsstipendium und eine Ausstellung erhalten.</p>
+                        <div class="funding-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 90%;"></div>
+                            </div>
+                            <div class="progress-stat">
+                                <span>27.000 € gesammelt</span>
+                                <span>Ziel: 30.000 €</span>
+                            </div>
+                        </div>
+                        <div class="project-actions">
+                            <div class="supporter-count">
+                                <i class="fa fa-users"></i> 96 Unterstützer
+                            </div>
+                            <button class="btn btn-primary btn-sm">Fördern</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Deine Unterstützer-Vorteile</h2>
+            <div class="patron-benefits">
+                <div class="benefits-list">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fa fa-ticket-alt"></i>
+                        </div>
+                        <div class="benefit-info">
+                            <h4>Exklusive Veranstaltungen</h4>
+                            <p>Zugang zu besonderen Vernissagen, Künstlergesprächen und Workshops, die nur für Unterstützer zugänglich sind.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fa fa-handshake"></i>
+                        </div>
+                        <div class="benefit-info">
+                            <h4>Direkter Künstlerkontakt</h4>
+                            <p>Persönlicher Austausch mit Künstlern in virtuellen und physischen Meet-and-Greet-Sessions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fa fa-book-open"></i>
+                        </div>
+                        <div class="benefit-info">
+                            <h4>Digitales Kunstarchiv</h4>
+                            <p>Vollständiger Zugriff auf unser digitales Archiv mit exklusiven Inhalten und Dokumentationen.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fa fa-gift"></i>
+                        </div>
+                        <div class="benefit-info">
+                            <h4>Kunst-Edition jährlich</h4>
+                            <p>Eine jährliche limitierte Kunstdruck-Edition eines geförderten Künstlers exklusiv für Unterstützer.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item locked">
+                        <div class="benefit-icon">
+                            <i class="fa fa-paint-brush"></i>
+                        </div>
+                        <div class="benefit-info">
+                            <h4>Atelierfonds-Mitsprache</h4>
+                            <p>Abstimmungsmöglichkeit bei der Vergabe von Atelierräumen (ab Förderniveau "Kunstmäzen").</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item locked">
+                        <div class="benefit-icon">
+                            <i class="fa fa-palette"></i>
+                        </div>
+                        <div class="benefit-info">
+                            <h4>Persönlicher Kunstberater</h4>
+                            <p>Individuelle Beratung für deinen eigenen Kunstkauf (ab Förderniveau "Kunstförderer").</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <h2 class="section-title">Exklusive Veranstaltungen für Unterstützer</h2>
+            <div class="upcoming-events">
+                <div class="event-list">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://source.unsplash.com/random/600x400?art,gallery" alt="Exklusive Vorbesichtigung: Neue Horizonte">
+                            <div class="event-date">15. Juni 2023</div>
+                            <div class="event-exclusive">Exklusiv</div>
+                        </div>
+                        <div class="event-details">
+                            <h3>Exklusive Vorbesichtigung: Neue Horizonte</h3>
+                            <div class="event-meta">
+                                <div><i class="fa fa-clock"></i> 19:00 Uhr</div>
+                                <div><i class="fa fa-map-marker-alt"></i> Digitale Galerie</div>
+                            </div>
+                            <p class="event-description">Sehen Sie die neue Ausstellung "Neue Horizonte" einen Tag vor der offiziellen Eröffnung in einem virtuellen Rundgang mit der Kuratorin.</p>
+                            <div class="event-footer">
+                                <div class="event-status">Nur 15 Plätze verfügbar</div>
+                                <button class="btn btn-secondary btn-sm">Teilnehmen</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://source.unsplash.com/random/600x400?artist,studio" alt="Ateliergespräch mit Maria Schmidt">
+                            <div class="event-date">22. Juni 2023</div>
+                            <div class="event-exclusive">Exklusiv</div>
+                        </div>
+                        <div class="event-details">
+                            <h3>Ateliergespräch mit Maria Schmidt</h3>
+                            <div class="event-meta">
+                                <div><i class="fa fa-clock"></i> 16:00 Uhr</div>
+                                <div><i class="fa fa-map-marker-alt"></i> Virtuelles Atelier</div>
+                            </div>
+                            <p class="event-description">Maria Schmidt öffnet ihr Atelier virtuell und diskutiert ihre aktuelle Werkreihe "Fragmente der Erinnerung" mit unterstützenden Mitgliedern.</p>
+                            <div class="event-footer">
+                                <div class="event-status">Unbegrenzte Teilnehmerzahl</div>
+                                <button class="btn btn-secondary btn-sm">Teilnehmen</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://source.unsplash.com/random/600x400?workshop,art" alt="Workshop: Digitalkunst">
+                            <div class="event-date">5. Juli 2023</div>
+                            <div class="event-exclusive">Exklusiv</div>
+                        </div>
+                        <div class="event-details">
+                            <h3>Workshop: Digitalkunst & KI</h3>
+                            <div class="event-meta">
+                                <div><i class="fa fa-clock"></i> 14:00 - 16:30 Uhr</div>
+                                <div><i class="fa fa-map-marker-alt"></i> Online-Workshop</div>
+                            </div>
+                            <p class="event-description">Praktischer Workshop zur Erstellung digitaler Kunst mit KI-Unterstützung, geleitet vom Künstler Thomas Winter.</p>
+                            <div class="event-footer">
+                                <div class="event-status">5 von 20 Plätzen frei</div>
+                                <button class="btn btn-secondary btn-sm">Anmelden</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts einbinden -->
+    <script src="scripts.js"></script>
+    <script src="form-validation.js"></script>
+    <script>
+        CultureStream.ready(function() {
+            // Navigation-Handling
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktive Klasse entfernen
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
+                    
+                    // Benachrichtigung anzeigen für Demo-Zwecke
+                    const section = this.querySelector('span').textContent;
+                    CultureStream.notifications.info(`Navigiere zu: ${section}`);
+                });
+            });
+            
+            // Projekt-Fördern-Buttons
+            const fundButtons = document.querySelectorAll('.project-actions .btn');
+            
+            fundButtons.forEach(button => {
+                CultureStream.dom.on(button, 'click', function() {
+                    const projectTitle = this.closest('.project-details').querySelector('h3').textContent;
+                    
+                    // Öffne Förderformular (Demo)
+                    CultureStream.notifications.success(`Vielen Dank für dein Interesse an "${projectTitle}". Das Förderformular wird vorbereitet...`);
+                    
+                    // Simuliere Formularöffnung mit Verzögerung
+                    setTimeout(() => {
+                        alert(`Hier würde ein Förderformular für "${projectTitle}" geöffnet werden. In der vollständigen Anwendung kannst du hier einen Betrag auswählen und deine Förderung abschließen.`);
+                    }, 1500);
+                });
+            });
+            
+            // Event-Anmelde-Buttons
+            const eventButtons = document.querySelectorAll('.event-footer .btn');
+            
+            eventButtons.forEach(button => {
+                CultureStream.dom.on(button, 'click', function() {
+                    const eventTitle = this.closest('.event-details').querySelector('h3').textContent;
+                    const buttonText = this.textContent.trim();
+                    
+                    if (buttonText === 'Teilnehmen') {
+                        CultureStream.notifications.success(`Du nimmst nun an "${eventTitle}" teil. Die Details werden dir per E-Mail zugesandt.`);
+                        this.textContent = 'Zugesagt';
+                        this.classList.add('btn-primary');
+                        this.classList.remove('btn-secondary');
+                    } else if (buttonText === 'Anmelden') {
+                        CultureStream.notifications.success(`Du wurdest erfolgreich für "${eventTitle}" angemeldet. Die Details werden dir per E-Mail zugesandt.`);
+                        this.textContent = 'Angemeldet';
+                        this.classList.add('btn-primary');
+                        this.classList.remove('btn-secondary');
+                    }
+                });
+            });
+            
+            // Logout-Button
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            CultureStream.dom.on(logoutBtn, 'click', function() {
+                if (confirm('Möchtest du dich wirklich abmelden?')) {
+                    CultureStream.notifications.info('Du wirst abgemeldet...');
+                    
+                    // Weiterleitung zur Login-Seite
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
+            });
+        });
+    </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
+</body>
+</html> 

@@ -1,0 +1,140 @@
+/**
+ * CultureStream Performance CSS
+ * Enthält Styles für Performance-Optimierungen wie Lazy-Loading
+ */
+
+/* Lazy-Loading Styles */
+.cs-lazy-placeholder {
+  background-color: #f0f0f0;
+  animation: cs-placeholder-pulse 1.5s infinite;
+  min-height: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes cs-placeholder-pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+/* Lazy-Loading Status für Bilder */
+img.cs-lazy-loading {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+img.cs-lazy-loaded {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+img.cs-lazy-error {
+  opacity: 0.5;
+  filter: grayscale(100%);
+}
+
+/* Lazy-Loading Platzhalter für Bilder */
+img[data-src]:not([src]) {
+  background-color: #f0f0f0;
+  position: relative;
+}
+
+img[data-src]:not([src])::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio als Standard */
+}
+
+/* Lazy-Loading Status für Container */
+[data-cs-lazy-html].cs-lazy-loading,
+[data-cs-lazy-component].cs-lazy-loading {
+  min-height: 100px;
+  position: relative;
+}
+
+[data-cs-lazy-html].cs-lazy-loading::after,
+[data-cs-lazy-component].cs-lazy-loading::after {
+  content: "";
+  position: absolute;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: cs-spinner 1s linear infinite;
+}
+
+@keyframes cs-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fehlerfall für Container */
+[data-cs-lazy-html].cs-lazy-error,
+[data-cs-lazy-component].cs-lazy-error {
+  background-color: rgba(255, 0, 0, 0.05);
+  border: 1px dashed rgba(255, 0, 0, 0.2);
+  padding: 1rem;
+  color: #721c24;
+  text-align: center;
+}
+
+[data-cs-lazy-html].cs-lazy-error::before,
+[data-cs-lazy-component].cs-lazy-error::before {
+  content: "⚠️ Fehler beim Laden";
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+/* Optimierungen für Core Web Vitals */
+/* Größenlimits für Bilder um Layout-Shifts zu vermeiden */
+img:not([width]):not([height]) {
+  aspect-ratio: 16/9;
+}
+
+/* Verhindert Layout-Shifts bei Web Fonts */
+html {
+  font-display: swap;
+}
+
+/* Reduziert Layout-Shifts bei Ladevorgang */
+.cs-content-placeholder {
+  display: grid;
+  grid-template-rows: repeat(3, minmax(1.5rem, auto));
+  gap: 0.5rem;
+}
+
+.cs-content-placeholder > * {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: cs-placeholder-pulse 1.5s infinite;
+  border-radius: 4px;
+  height: 1.5rem;
+}
+
+/* Reduziert Frequenz von DOM-Animationen */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .cs-lazy-placeholder,
+  .cs-content-placeholder > * {
+    animation: none !important;
+    background: #f0f0f0 !important;
+  }
+} 

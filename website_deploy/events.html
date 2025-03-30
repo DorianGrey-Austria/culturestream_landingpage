@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Entdecke spannende Kunstveranstaltungen bei CultureStream">
+    <meta name="csrf-token" content="{{csrfToken}}">
+    <title>CultureStream - Veranstaltungen</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        /* Spezifische Styles für die Events-Seite */
+        :root {
+            --color-event-featured: var(--color-primary-light);
+            --color-event-past: var(--color-gray-200);
+            --color-event-badge-upcoming: var(--color-accent-dark);
+            --color-event-badge-live: var(--color-success);
+            --color-event-badge-past: var(--color-gray-500);
+        }
+        
+        /* Calendar Styles */
+        .calendar-container {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--color-gray-200);
+            margin-bottom: 1rem;
+        }
+        
+        .calendar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+        
+        .calendar-nav {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .calendar-nav-btn {
+            background: transparent;
+            border: 1px solid var(--color-gray-300);
+            border-radius: var(--radius-sm);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .calendar-nav-btn:hover {
+            background: var(--color-gray-100);
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .calendar-cell {
+            aspect-ratio: 1/1;
+            padding: 0.5rem;
+            border: 1px solid var(--color-gray-200);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .calendar-cell:hover {
+            background-color: var(--color-gray-100);
+        }
+        
+        .calendar-cell.has-event {
+            background-color: var(--color-primary-lightest);
+            border-color: var(--color-primary-light);
+        }
+        
+        .calendar-cell.has-event:hover {
+            background-color: var(--color-primary-lighter);
+        }
+        
+        .calendar-cell.today {
+            border-color: var(--color-primary);
+            font-weight: bold;
+        }
+        
+        .calendar-day-number {
+            font-size: 0.9rem;
+            color: var(--color-text);
+        }
+        
+        .calendar-cell.inactive .calendar-day-number {
+            color: var(--color-gray-400);
+        }
+        
+        .calendar-event-indicator {
+            position: absolute;
+            bottom: 0.25rem;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 0.125rem;
+        }
+        
+        .calendar-event-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+        }
+        
+        /* Event Filtration */
+        .event-filter {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: var(--color-gray-50);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-gray-200);
+        }
+        
+        .event-filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            flex: 1 1 200px;
+        }
+        
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+        
+        /* Event List */
+        .event-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .event-card {
+            background: var(--color-white);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .event-card-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .event-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--color-white);
+        }
+        
+        .event-badge.upcoming {
+            background-color: var(--color-event-badge-upcoming);
+        }
+        
+        .event-badge.live {
+            background-color: var(--color-event-badge-live);
+        }
+        
+        .event-badge.past {
+            background-color: var(--color-event-badge-past);
+        }
+        
+        .event-card-content {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            flex: 1;
+        }
+        
+        .event-date {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--color-text-light);
+        }
+        
+        .event-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-dark);
+            line-height: 1.4;
+        }
+        
+        .event-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--color-text-light);
+        }
+        
+        .event-desc {
+            font-size: 0.875rem;
+            color: var(--color-text);
+            line-height: 1.5;
+            margin-top: 0.5rem;
+            flex: 1;
+        }
+        
+        .event-card-actions {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid var(--color-gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .event-price {
+            font-weight: 600;
+            color: var(--color-text-dark);
+        }
+        
+        .event-free {
+            color: var(--color-success-dark);
+        }
+        
+        /* Featured event */
+        .featured-event {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin-bottom: 2rem;
+            position: relative;
+            background-color: var(--color-primary-dark);
+            color: var(--color-white);
+        }
+        
+        .featured-event-content {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 2;
+            padding: 3rem 2rem;
+        }
+        
+        .featured-event-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        
+        .featured-event-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            max-width: 70%;
+        }
+        
+        .featured-event-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .featured-event-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .featured-event-desc {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            max-width: 70%;
+        }
+        
+        @media (max-width: 768px) {
+            .featured-event-title,
+            .featured-event-desc {
+                max-width: 100%;
+            }
+            
+            .featured-event-meta {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            .event-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+  <link rel="stylesheet" href="accessibility.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo-area">
+            <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
+            <div class="logo-text">CultureStream</div>
+            <div class="event-badge">
+                <i class="fa fa-calendar"></i> Veranstaltungen
+            </div>
+        </div>
+        <div class="user-area">
+            <div class="user-avatar">M</div>
+            <div class="user-name">Markus Becker</div>
+            <button class="btn logout-btn">Abmelden</button>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <nav>
+            <a href="#" class="nav-item">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-images"></i>
+                <span>Ausstellungen</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fa fa-calendar"></i>
+                <span>Veranstaltungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-users"></i>
+                <span>Community</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-paint-brush"></i>
+                <span>Künstler</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-video"></i>
+                <span>Mediathek</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-user"></i>
+                <span>Profil</span>
+            </a>
+        </nav>
+        
+        <main>
+            <div class="events-header">
+                <h1>Veranstaltungen & Kalender</h1>
+                <p>Entdecke kulturelle Veranstaltungen, Workshops und Events aus aller Welt. Plane dein persönliches Kulturprogramm und lass dich benachrichtigen, wenn neue Events zu deinen Interessen verfügbar sind.</p>
+            </div>
+            
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="calendar-title">Mai 2023</div>
+                    <div class="calendar-nav">
+                        <button class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="today-btn">Heute</button>
+                        <button class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="calendar-weekday">Mo</div>
+                    <div class="calendar-weekday">Di</div>
+                    <div class="calendar-weekday">Mi</div>
+                    <div class="calendar-weekday">Do</div>
+                    <div class="calendar-weekday">Fr</div>
+                    <div class="calendar-weekday">Sa</div>
+                    <div class="calendar-weekday">So</div>
+                    
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">24</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">25</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">26</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">27</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">28</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">29</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">30</div>
+                        <div class="day-events"></div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="day-number">1</div>
+                        <div class="day-events">
+                            <div class="event-dot cultural"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">2</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-event">
+                        <div class="day-number">3</div>
+                        <div class="day-events">
+                            <div class="event-dot workshop"></div>
+                            <div class="event-dot exhibition"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">4</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">5</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-event">
+                        <div class="day-number">6</div>
+                        <div class="day-events">
+                            <div class="event-dot"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">7</div>
+                        <div class="day-events"></div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="day-number">8</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">9</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-event">
+                        <div class="day-number">10</div>
+                        <div class="day-events">
+                            <div class="event-dot exhibition"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">11</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-current">
+                        <div class="day-number">12</div>
+                        <div class="day-events">
+                            <div class="event-dot workshop"></div>
+                            <div class="event-dot cultural"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">13</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">14</div>
+                        <div class="day-events"></div>
+                    </div>
+                    
+                    <div class="calendar-day day-event">
+                        <div class="day-number">15</div>
+                        <div class="day-events">
+                            <div class="event-dot exhibition"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">16</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">17</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">18</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-event">
+                        <div class="day-number">19</div>
+                        <div class="day-events">
+                            <div class="event-dot cultural"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">20</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">21</div>
+                        <div class="day-events"></div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="day-number">22</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">23</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">24</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-event">
+                        <div class="day-number">25</div>
+                        <div class="day-events">
+                            <div class="event-dot workshop"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">26</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">27</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">28</div>
+                        <div class="day-events"></div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="day-number">29</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day">
+                        <div class="day-number">30</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-event">
+                        <div class="day-number">31</div>
+                        <div class="day-events">
+                            <div class="event-dot exhibition"></div>
+                        </div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">1</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">2</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">3</div>
+                        <div class="day-events"></div>
+                    </div>
+                    <div class="calendar-day day-other-month">
+                        <div class="day-number">4</div>
+                        <div class="day-events"></div>
+                    </div>
+                </div>
+                
+                <div class="view-switcher">
+                    <button class="view-option active">Monat</button>
+                    <button class="view-option">Woche</button>
+                    <button class="view-option">Tag</button>
+                    <button class="view-option">Liste</button>
+                </div>
+            </div>
+            
+            <div class="action-bar">
+                <h2 class="section-title">Kommende Events</h2>
+                
+                <div class="search-filter">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Nach Events suchen...">
+                    </div>
+                    
+                    <button class="filter-btn">
+                        Kategorie <i class="fas fa-chevron-down"></i>
+                    </button>
+                    
+                    <button class="filter-btn">
+                        Zeitraum <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                
+                <a href="#" class="action-button">
+                    <i class="fas fa-plus"></i> Event vorschlagen
+                </a>
+            </div>
+            
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">12</div>
+                        <div class="event-month">Mai</div>
+                    </div>
+                    <div class="event-image">
+                        <div class="event-category cultural">Kulturführung</div>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">"Grenzenlos" Ausstellung - Exklusive Vorabbesichtigung</h3>
+                        <div class="event-info">
+                            <div class="event-time"><i class="fas fa-clock"></i> 18:00 - 20:00 Uhr</div>
+                            <div class="event-location"><i class="fas fa-map-marker-alt"></i> Virtueller Hauptraum</div>
+                        </div>
+                        <p class="event-description">Nimm an einer exklusiven Führung durch die neue "Grenzenlos" Ausstellung teil, einen Tag vor der offiziellen Eröffnung. Der Kurator wird persönlich durch die Werke führen und Einblicke in die Entstehungsgeschichte geben.</p>
+                        <div class="event-footer">
+                            <div class="event-attendance">
+                                <div class="attendance-avatars">
+                                    <div class="attendance-avatar">M</div>
+                                    <div class="attendance-avatar">L</div>
+                                    <div class="attendance-avatar">T</div>
+                                    <div class="attendance-avatar">+8</div>
+                                </div>
+                                <div class="attendance-count">11 Teilnehmer</div>
+                            </div>
+                            <a href="#" class="event-join-btn">Teilnehmen</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">15</div>
+                        <div class="event-month">Mai</div>
+                    </div>
+                    <div class="event-image">
+                        <div class="event-category exhibition">Ausstellung</div>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">"Grenzenlos: Begegnungen im virtuellen Raum" - Eröffnung</h3>
+                        <div class="event-info">
+                            <div class="event-time"><i class="fas fa-clock"></i> 19:30 - 22:00 Uhr</div>
+                            <div class="event-location"><i class="fas fa-map-marker-alt"></i> Virtueller Hauptraum</div>
+                        </div>
+                        <p class="event-description">Sei dabei bei der offiziellen Eröffnung unserer neuen Gruppenausstellung mit 28 Künstlern aus 14 Ländern. Mit virtuellem Sektempfang, Künstlergesprächen und Live-Musik.</p>
+                        <div class="event-footer">
+                            <div class="event-attendance">
+                                <div class="attendance-avatars">
+                                    <div class="attendance-avatar">S</div>
+                                    <div class="attendance-avatar">K</div>
+                                    <div class="attendance-avatar">A</div>
+                                    <div class="attendance-avatar">+24</div>
+                                </div>
+                                <div class="attendance-count">27 Teilnehmer</div>
+                            </div>
+                            <a href="#" class="event-join-btn">Teilnehmen</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">19</div>
+                        <div class="event-month">Mai</div>
+                    </div>
+                    <div class="event-image">
+                        <div class="event-category cultural">Künstlergespräch</div>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Künstlergespräch: Tatsuo Miyajima - "Time and Space"</h3>
+                        <div class="event-info">
+                            <div class="event-time"><i class="fas fa-clock"></i> 18:30 - 20:00 Uhr</div>
+                            <div class="event-location"><i class="fas fa-map-marker-alt"></i> Virtuelles Atelier</div>
+                        </div>
+                        <p class="event-description">Ein virtuelles Gespräch mit dem internationalen Lichtkünstler Tatsuo Miyajima über sein neuestes Projekt "Time and Space" und seine Philosophie zu Zeit, Leben und Tod in der digitalen Kunst.</p>
+                        <div class="event-footer">
+                            <div class="event-attendance">
+                                <div class="attendance-avatars">
+                                    <div class="attendance-avatar">V</div>
+                                    <div class="attendance-avatar">J</div>
+                                    <div class="attendance-avatar">R</div>
+                                    <div class="attendance-avatar">+15</div>
+                                </div>
+                                <div class="attendance-count">18 Teilnehmer</div>
+                            </div>
+                            <a href="#" class="event-join-btn">Teilnehmen</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">25</div>
+                        <div class="event-month">Mai</div>
+                    </div>
+                    <div class="event-image">
+                        <div class="event-category workshop">Workshop</div>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Workshop: Experimentelle Drucktechniken</h3>
+                        <div class="event-info">
+                            <div class="event-time"><i class="fas fa-clock"></i> 16:00 - 19:00 Uhr</div>
+                            <div class="event-location"><i class="fas fa-map-marker-alt"></i> Kreativwerkstatt</div>
+                        </div>
+                        <p class="event-description">Hands-on Workshop mit der Künstlerin Maria Neves zu innovativen Drucktechniken mit nachhaltigen Materialien. Grundkenntnisse im Drucken sind hilfreich, aber nicht notwendig. Materialien werden vorab zugeschickt.</p>
+                        <div class="event-footer">
+                            <div class="event-attendance">
+                                <div class="attendance-avatars">
+                                    <div class="attendance-avatar">L</div>
+                                    <div class="attendance-avatar">M</div>
+                                    <div class="attendance-avatar">P</div>
+                                    <div class="attendance-avatar">+4</div>
+                                </div>
+                                <div class="attendance-count">7 Teilnehmer</div>
+                            </div>
+                            <a href="#" class="event-join-btn">Teilnehmen</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">31</div>
+                        <div class="event-month">Mai</div>
+                    </div>
+                    <div class="event-image">
+                        <div class="event-category exhibition">Ausstellung</div>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">Digitale Materialien: Eröffnung der Sonja Wavell Ausstellung</h3>
+                        <div class="event-info">
+                            <div class="event-time"><i class="fas fa-clock"></i> 19:00 - 21:30 Uhr</div>
+                            <div class="event-location"><i class="fas fa-map-marker-alt"></i> Galerie 3</div>
+                        </div>
+                        <p class="event-description">Erlebe die Eröffnung der innovativen Ausstellung "Digitale Materialien" von Sonja Wavell, die die Grenzen zwischen digitalem Design und traditionellem Handwerk durch textile Arbeiten und interaktive Installationen erforscht.</p>
+                        <div class="event-footer">
+                            <div class="event-attendance">
+                                <div class="attendance-avatars">
+                                    <div class="attendance-avatar">S</div>
+                                    <div class="attendance-avatar">E</div>
+                                    <div class="attendance-avatar">T</div>
+                                    <div class="attendance-avatar">+9</div>
+                                </div>
+                                <div class="attendance-count">12 Teilnehmer</div>
+                            </div>
+                            <a href="#" class="event-join-btn">Teilnehmen</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-date">
+                        <div class="event-day">3</div>
+                        <div class="event-month">Jun</div>
+                    </div>
+                    <div class="event-image">
+                        <div class="event-category workshop">Workshop</div>
+                    </div>
+                    <div class="event-content">
+                        <h3 class="event-title">KollektivX: Partizipatives Storytelling Workshop</h3>
+                        <div class="event-info">
+                            <div class="event-time"><i class="fas fa-clock"></i> 17:00 - 19:30 Uhr</div>
+                            <div class="event-location"><i class="fas fa-map-marker-alt"></i> Digitaler Projektraum</div>
+                        </div>
+                        <p class="event-description">Ein interaktiver Workshop des KollektivX, in dem du lernst, wie du deine eigenen Geschichten in verschiedenen digitalen Medien erzählen kannst. Teil eines größeren partizipativen Projekts, das Bewohner aus fünf europäischen Städten vernetzt.</p>
+                        <div class="event-footer">
+                            <div class="event-attendance">
+                                <div class="attendance-avatars">
+                                    <div class="attendance-avatar">K</div>
+                                    <div class="attendance-avatar">J</div>
+                                    <div class="attendance-avatar">H</div>
+                                    <div class="attendance-avatar">+2</div>
+                                </div>
+                                <div class="attendance-count">5 Teilnehmer</div>
+                            </div>
+                            <a href="#" class="event-join-btn">Teilnehmen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pagination">
+                <button class="page-button active">1</button>
+                <button class="page-button">2</button>
+                <button class="page-button">3</button>
+                <button class="page-button">...</button>
+                <button class="page-button">8</button>
+                <button class="page-button"><i class="fas fa-angle-right"></i></button>
+            </div>
+        </main>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script src="form-validation.js"></script>
+    <script>
+        CultureStream.ready(function() {
+            // Navigation-Handling
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktive Klasse entfernen
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
+                    
+                    // Benachrichtigung anzeigen für Demo-Zwecke
+                    const section = this.querySelector('span').textContent;
+                    CultureStream.notifications.info(`Navigiere zu: ${section}`);
+                });
+            });
+            
+            // Kalender-Funktionalität
+            const calendarCells = document.querySelectorAll('.calendar-cell');
+            
+            calendarCells.forEach(cell => {
+                CultureStream.dom.on(cell, 'click', function() {
+                    const date = this.getAttribute('data-date');
+                    const hasEvent = this.classList.contains('has-event');
+                    
+                    if (hasEvent) {
+                        CultureStream.notifications.info(`Veranstaltungen am ${date} anzeigen`);
+                    } else {
+                        CultureStream.notifications.info(`Keine Veranstaltungen am ${date}`);
+                    }
+                });
+            });
+            
+            // Event-Filter-Funktionalität
+            const filterSelects = document.querySelectorAll('.event-filter select, .event-filter input');
+            
+            filterSelects.forEach(select => {
+                CultureStream.dom.on(select, 'change', function() {
+                    CultureStream.notifications.info('Filter angewendet: Ergebnisse werden aktualisiert');
+                    
+                    // Hier würde die tatsächliche Filterlogik implementiert werden
+                    // Demo-Zwecke: Wir simulieren eine Filterung
+                    setTimeout(() => {
+                        const eventCards = document.querySelectorAll('.event-card');
+                        const randomNumber = Math.floor(Math.random() * eventCards.length);
+                        
+                        eventCards.forEach((card, index) => {
+                            if (index % (randomNumber + 2) === 0) {
+                                card.style.display = 'none';
+                            } else {
+                                card.style.display = 'flex';
+                            }
+                        });
+                        
+                        CultureStream.notifications.success('Filterung abgeschlossen');
+                    }, 500);
+                });
+            });
+            
+            // Anmelde-Funktionalität
+            const registerButtons = document.querySelectorAll('.btn-register');
+            
+            registerButtons.forEach(button => {
+                CultureStream.dom.on(button, 'click', function(e) {
+                    e.preventDefault();
+                    
+                    const eventTitle = this.closest('.event-card').querySelector('.event-title').textContent;
+                    
+                    if (confirm(`Möchtest du dich für "${eventTitle}" anmelden?`)) {
+                        CultureStream.notifications.success(`Anmeldung für "${eventTitle}" erfolgreich`);
+                        this.textContent = 'Angemeldet';
+                        this.classList.add('btn-success');
+                        this.classList.remove('btn-primary');
+                        this.disabled = true;
+                    }
+                });
+            });
+            
+            // Logout-Button
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            if (logoutBtn) {
+                CultureStream.dom.on(logoutBtn, 'click', function() {
+                    if (confirm('Möchtest du dich wirklich abmelden?')) {
+                        CultureStream.notifications.info('Du wirst abgemeldet...');
+                        
+                        // Weiterleitung zur Login-Seite
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    }
+                });
+            }
+        });
+    </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
+</body>
+</html> 
