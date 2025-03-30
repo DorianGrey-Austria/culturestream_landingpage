@@ -10,7 +10,7 @@
 
 # next.js
 /.next/
-# /out/  # Wir wollen das out-Verzeichnis einschließen, um die statische Website zu hosten
+/out/
 
 # production
 /build
@@ -25,10 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env*.local
 
 # vercel
 .vercel
@@ -36,4 +33,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Große Dateien
 culturestream_landingpage.zip
+
+# DeepSeek LLM Modell (zu groß für GitHub)
+/DeepSeek-V3/
+DeepSeek-V3/
+DeepSeek-V3/**

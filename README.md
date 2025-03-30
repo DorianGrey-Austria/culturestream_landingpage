@@ -53,4 +53,48 @@ Diese Website wurde als statische Site exportiert und kann auf jedem statischen 
 
 Bei Fragen oder Problemen wenden Sie sich bitte an:
 - Website: [culturestream.at](https://culturestream.at)
-- E-Mail: info@culturestream.at 
+- E-Mail: info@culturestream.at
+
+# CultureStream Plattform
+
+Eine moderne Web-Plattform für kulturelle Veranstaltungen und Gemeinschaftsengagement.
+
+## Überblick
+
+Die CultureStream-Plattform bietet ein umfassendes Ökosystem für kulturelle Inhalte, Künstler und Kunstliebhaber. Die Plattform umfasst Funktionen wie Veranstaltungskalender, Ausstellungsübersichten, Mitgliederprofile und Community-Engagement-Tools.
+
+## Hauptfunktionen
+
+- Responsives Design für alle Geräte
+- Barrierefreiheit nach WCAG 2.1 AA-Standard
+- Supabase-Integration für Datenmanagement
+- Umfassende Performance-Optimierungen
+- Admin-Dashboard für Datenverwaltung
+- KI-Avatar-Integration
+
+## Technologie-Stack
+
+- HTML5, CSS3, JavaScript (ES6+)
+- TypeScript
+- Supabase
+- Jest für Unit-Tests
+- PWA-Features
+
+## Hinweise zur Repository
+
+**Wichtig:** Das DeepSeek LLM-Modell (im Verzeichnis `/DeepSeek-V3`) wird aufgrund seiner Größe (>300MB) nicht auf GitHub gepusht. Dieses Modell ist für die KI-Avatar-Funktionalität erforderlich und muss separat installiert werden.
+
+## Installation
+
+1. Repository klonen
+2. `npm install` ausführen
+3. DeepSeek LLM Modell separat herunterladen und im Ordner `/DeepSeek-V3` platzieren
+4. `npm run dev` für Entwicklungsumgebung starten
+
+## Roadmap
+
+Die vollständige Roadmap mit aktuellen Fortschritten ist in der Datei `roadmap.md` dokumentiert.
+
+## Lizenz
+
+Alle Rechte vorbehalten. 
