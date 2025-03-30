@@ -1,0 +1,12 @@
+# CultureStream Platzhalter-Bilder
+
+Dieser Ordner enthält Fallback-Bilder für die CultureStream-Website.
+
+## Benötigte Bilder:
+
+1. Logo.jpg - Das CultureStream-Logo als Fallback
+2. login-bg.jpg - Hintergrundbild für die Login-Seite
+3. ausstellung1.jpg bis ausstellung6.jpg - Bilder für die Ausstellungskarten
+
+Bitte platzieren Sie hier entsprechende Bilder, die als Fallbacks dienen können.
+Falls ein Bild nicht gefunden wird, verwendet die Website automatisch das CultureStream-Logo als Ersatz. 

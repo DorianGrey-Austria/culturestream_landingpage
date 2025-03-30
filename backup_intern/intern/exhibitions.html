@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CultureStream - Ausstellungen verwalten</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../forms.css">
+    <link rel="stylesheet" href="../accessibility.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <style>
+        /* Spezifische Stile für Ausstellungsverwaltung */
+        :root {
+            --primary-color: #3D7B80;
+            --secondary-color: #A4C2A5;
+            --accent-color: #D65108;
+            --light-accent: #F2A65A;
+            --dark-bg: #0F1A20;
+            --dark-panel: #1F2833;
+            --text-light: #F6F8FF;
+            --text-muted: #B3C0D1;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --success: #4ADE80;
+            --warning: #F2A65A;
+            --danger: #EF4444;
+            --info: #38BDF8;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+        
+        .dashboard-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Navigation - gleich wie dashboard */
+        .sidebar {
+            width: 250px;
+            background-color: var(--dark-panel);
+            padding: 0;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .sidebar-header {
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .sidebar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-item {
+            margin: 0;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            gap: 0.75rem;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-link i {
+            min-width: 1.25rem;
+            text-align: center;
+        }
+        
+        .nav-link.active {
+            background-color: rgba(61, 123, 128, 0.2);
+            color: var(--text-light);
+            border-left-color: var(--accent-color);
+        }
+        
+        .nav-link:hover:not(.active) {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+        }
+        
+        .nav-section {
+            padding: 0.75rem 1.5rem 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+        
+        /* Header */
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-light);
+            margin: 0;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .notifications-bell {
+            position: relative;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .notifications-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent-color);
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .user-profile:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--dark-bg);
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link für Barrierefreiheit -->
+    <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+    
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">CS</div>
+                <div class="sidebar-title">CultureStream</div>
+                <button class="mobile-menu-toggle" aria-label="Menü öffnen/schließen">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav aria-label="Hauptnavigation">
+                <ul class="nav-list" id="navList">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="exhibitions.html" class="nav-link active">
+                            <i class="fas fa-palette"></i>
+                            <span>Ausstellungen</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-user-friends"></i>
+                            <span>Künstler</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Veranstaltungen</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-section">Administration</li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Benutzer</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Einstellungen</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-section">Konto</li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Profil</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link" id="logoutLink">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Abmelden</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <h1 class="page-title">Ausstellungen verwalten</h1>
+                
+                <div class="user-actions">
+                    <div class="notifications-bell">
+                        <i class="far fa-bell"></i>
+                        <span class="notifications-badge">3</span>
+                    </div>
+                    
+                    <div class="user-profile" id="userProfileInfo">
+                        <div class="user-avatar">U</div>
+                        <div class="user-info">
+                            <div class="user-name">Benutzer</div>
+                            <div class="user-role">Rolle: <span id="userRoleDisplay">Lädt...</span></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Ausstellungsliste -->
+            <section class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Alle Ausstellungen</h2>
+                    <div class="section-actions">
+                        <button class="btn-sm">
+                            <i class="fas fa-filter"></i>
+                            <span>Filter</span>
+                        </button>
+                        <button class="btn-sm btn-accent">
+                            <i class="fas fa-plus"></i>
+                            <span>Neue Ausstellung</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Hier würde eine Tabelle oder Liste mit allen Ausstellungen kommen -->
+                <p>Diese Seite befindet sich im Aufbau. Hier werden alle verfügbaren Ausstellungen angezeigt und können verwaltet werden.</p>
+            </section>
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Überprüfen, ob der Benutzer angemeldet ist
+            const isLoggedIn = localStorage.getItem('csUserLoggedIn') === 'true';
+            
+            if (!isLoggedIn) {
+                // Wenn nicht angemeldet, zurück zur Login-Seite
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Benutzerdaten abrufen
+            const userRole = localStorage.getItem('csUserRole') || 'user';
+            const userEmail = localStorage.getItem('csUserEmail') || 'benutzer@example.com';
+            
+            // Benutzerprofil aktualisieren
+            const userRoleDisplay = document.getElementById('userRoleDisplay');
+            if (userRoleDisplay) {
+                userRoleDisplay.textContent = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+            }
+            
+            const userAvatar = document.querySelector('.user-avatar');
+            if (userAvatar && userEmail) {
+                userAvatar.textContent = userEmail.charAt(0).toUpperCase();
+            }
+            
+            const userName = document.querySelector('.user-name');
+            if (userName && userEmail) {
+                userName.textContent = userEmail.split('@')[0];
+            }
+            
+            // Abmelden-Funktion
+            const logoutLink = document.getElementById('logoutLink');
+            
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Benutzerdaten aus dem lokalen Speicher entfernen
+                    localStorage.removeItem('csUserLoggedIn');
+                    localStorage.removeItem('csUserRole');
+                    localStorage.removeItem('csUserEmail');
+                    
+                    // Zurück zur Login-Seite
+                    window.location.href = 'index.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
