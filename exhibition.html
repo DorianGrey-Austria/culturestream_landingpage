@@ -700,6 +700,264 @@
                 width: 100%;
             }
         }
+        
+        /* Ausklappbare Menüs Styling */
+        .accordion-menu {
+            margin-bottom: 20px;
+        }
+        
+        .accordion-item {
+            margin-bottom: 5px;
+            border-bottom: 1px solid rgba(61, 123, 128, 0.1);
+        }
+        
+        .accordion-header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s;
+        }
+        
+        .accordion-header:hover {
+            background-color: rgba(214, 81, 8, 0.05);
+            color: var(--text-light);
+        }
+        
+        .accordion-header.active {
+            background-color: rgba(214, 81, 8, 0.1);
+            color: var(--accent-color);
+            border-left: 3px solid var(--accent-color);
+        }
+        
+        .accordion-header i {
+            margin-right: 15px;
+        }
+        
+        .accordion-header .accordion-icon {
+            margin-left: auto;
+            margin-right: 0;
+            transition: transform 0.3s;
+        }
+        
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .accordion-item.active .accordion-content {
+            max-height: 500px;
+        }
+        
+        /* Städteliste Styling */
+        .city-list {
+            padding: 15px;
+        }
+        
+        .city-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+        }
+        
+        .city-info h4 {
+            margin: 0 0 5px 0;
+            color: var(--text-light);
+        }
+        
+        .status {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .status.available {
+            background-color: rgba(61, 193, 128, 0.2);
+            color: #4ADE80;
+        }
+        
+        .status.busy {
+            background-color: rgba(214, 81, 8, 0.2);
+            color: var(--accent-color);
+        }
+        
+        .status.maintenance {
+            background-color: rgba(100, 116, 139, 0.2);
+            color: #94A3B8;
+        }
+        
+        .connect-btn {
+            padding: 6px 12px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .connect-btn:hover:not([disabled]) {
+            background-color: #2A5D61;
+        }
+        
+        .connect-btn[disabled] {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Verbindungsstatus Styling */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+        }
+        
+        .status-indicator {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            position: relative;
+        }
+        
+        .status-indicator .pulse {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #4ADE80;
+            position: relative;
+        }
+        
+        .status-indicator .pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #4ADE80;
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.7;
+            }
+            70% {
+                transform: scale(2);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+        
+        .connection-details h3 {
+            margin: 0 0 8px 0;
+            color: var(--text-light);
+        }
+        
+        .connection-details p {
+            margin: 0 0 5px 0;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .connection-actions {
+            padding: 0 15px 15px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            padding: 8px 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+        
+        .action-btn i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+        }
+        
+        .action-btn:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .action-btn.danger {
+            color: #EF4444;
+        }
+        
+        .action-btn.danger:hover {
+            background-color: rgba(239, 68, 68, 0.15);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                width: 100%;
+                position: relative;
+                min-height: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(214, 81, 8, 0.1);
+            }
+            
+            .main-container {
+                flex-direction: column;
+            }
+            
+            main {
+                width: 100%;
+            }
+            
+            .connection-actions {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: space-between;
+            }
+            
+            .action-btn {
+                flex: 1 0 48%;
+                min-width: 120px;
+                text-align: center;
+            }
+            
+            .city-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .connect-btn {
+                margin-top: 10px;
+                width: 100%;
+            }
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
   <link rel="stylesheet" href="accessibility.css">
@@ -722,34 +980,104 @@
     
     <div class="main-container">
         <nav>
-            <a href="#" class="nav-item">
-                <i class="fa fa-home"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="#" class="nav-item active">
-                <i class="fa fa-images"></i>
-                <span>Ausstellungen</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fa fa-calendar"></i>
-                <span>Veranstaltungen</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fa fa-users"></i>
-                <span>Community</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fa fa-paint-brush"></i>
-                <span>Künstler</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fa fa-book"></i>
-                <span>Mediathek</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fa fa-user"></i>
-                <span>Profil</span>
-            </a>
+            <div class="accordion-menu">
+                <div class="accordion-item">
+                    <button class="accordion-header" id="current-connection-header">
+                        <i class="fas fa-broadcast-tower"></i>
+                        <span>Aktuelle Verbindung</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content" id="current-connection-content">
+                        <div class="connection-status">
+                            <div class="status-indicator connected">
+                                <span class="pulse"></span>
+                            </div>
+                            <div class="connection-details">
+                                <h3>Graz → Ljubljana</h3>
+                                <p>Verbunden seit: 3h 24min</p>
+                                <p>Stream-Qualität: Ausgezeichnet</p>
+                            </div>
+                        </div>
+                        <div class="connection-actions">
+                            <button class="action-btn"><i class="fas fa-video"></i> Video anpassen</button>
+                            <button class="action-btn"><i class="fas fa-volume-up"></i> Audio anpassen</button>
+                            <button class="action-btn danger"><i class="fas fa-times"></i> Verbindung trennen</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <button class="accordion-header" id="available-cities-header">
+                        <i class="fas fa-city"></i>
+                        <span>Verfügbare Städte</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </button>
+                    <div class="accordion-content" id="available-cities-content">
+                        <div class="city-list">
+                            <div class="city-item">
+                                <div class="city-info">
+                                    <h4>Wien</h4>
+                                    <span class="status available">Verfügbar</span>
+                                </div>
+                                <button class="connect-btn">Verbinden</button>
+                            </div>
+                            <div class="city-item">
+                                <div class="city-info">
+                                    <h4>Berlin</h4>
+                                    <span class="status available">Verfügbar</span>
+                                </div>
+                                <button class="connect-btn">Verbinden</button>
+                            </div>
+                            <div class="city-item">
+                                <div class="city-info">
+                                    <h4>Paris</h4>
+                                    <span class="status busy">Besetzt</span>
+                                </div>
+                                <button class="connect-btn" disabled>Verbinden</button>
+                            </div>
+                            <div class="city-item">
+                                <div class="city-info">
+                                    <h4>Barcelona</h4>
+                                    <span class="status maintenance">Wartung</span>
+                                </div>
+                                <button class="connect-btn" disabled>Verbinden</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-section">
+                <h3 class="nav-title">Ausstellung</h3>
+                <a href="#" class="nav-item active">
+                    <i class="fas fa-image"></i>
+                    <span>Galerie</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Events</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Künstler</span>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <h3 class="nav-title">Einstellungen</h3>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cog"></i>
+                    <span>Konto</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-bell"></i>
+                    <span>Benachrichtigungen</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Hilfe</span>
+                </a>
+            </div>
         </nav>
         
         <main>
@@ -1079,5 +1407,39 @@
   <script src="accessibility-test.js"></script>
   <script src="accessibility-report.js"></script>
   <script src="accessibility-test-integration.js"></script>
+  <script>
+    // JavaScript für ausklappbare Menüs
+    document.addEventListener('DOMContentLoaded', function() {
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        
+        // Öffne das erste Menü standardmäßig
+        const firstAccordionItem = document.querySelector('.accordion-item');
+        if (firstAccordionItem) {
+            firstAccordionItem.classList.add('active');
+            const header = firstAccordionItem.querySelector('.accordion-header');
+            if (header) header.classList.add('active');
+        }
+        
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', function() {
+                const currentItem = this.parentElement;
+                const isActive = currentItem.classList.contains('active');
+                
+                // Schließe alle Menüs
+                document.querySelectorAll('.accordion-item').forEach(item => {
+                    item.classList.remove('active');
+                    const itemHeader = item.querySelector('.accordion-header');
+                    if (itemHeader) itemHeader.classList.remove('active');
+                });
+                
+                // Öffne das angeklickte Menü, wenn es nicht bereits aktiv war
+                if (!isActive) {
+                    currentItem.classList.add('active');
+                    this.classList.add('active');
+                }
+            });
+        });
+    });
+  </script>
 </body>
 </html> 

@@ -6,12 +6,13 @@
     <meta name="description" content="CultureStream Ausstellungsraum - Entdecken Sie digitale Kunstausstellungen in unserem Kunstverein">
     <meta name="csrf-token" content="12345678">
     <title>CultureStream - Interne Ausstellungsübersicht</title>
+    <link rel="icon" href="../logo.png" type="image/png">
     
     <!-- Gemeinsame Stylesheets -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="forms.css">
-    <link rel="stylesheet" href="notifications.css">
-    <link rel="stylesheet" href="accessibility.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../forms.css">
+    <link rel="stylesheet" href="../notifications.css">
+    <link rel="stylesheet" href="../accessibility.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     
     <style>
@@ -94,6 +95,26 @@
         
         .home-button:hover {
             background-color: rgba(214, 81, 8, 0.1);
+        }
+
+        .login-button {
+            background-color: transparent;
+            color: #666;
+            border: 1px solid #666;
+        }
+        
+        .login-button:hover {
+            background-color: rgba(102, 102, 102, 0.1);
+        }
+
+        .world-button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+        }
+        
+        .world-button:hover {
+            background-color: var(--primary);
         }
         
         .logout-button {
@@ -213,307 +234,458 @@
         
         .exhibition-actions {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 0.5rem;
             margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
         }
         
-        .action-button {
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
+        .action-btn {
+            padding: 0.5rem 0.75rem;
             font-size: 0.875rem;
+            border-radius: var(--radius);
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
         }
         
-        .view-button {
+        .primary-btn {
             background-color: var(--primary);
             color: white;
             border: none;
         }
         
-        .view-button:hover {
+        .primary-btn:hover {
             background-color: var(--secondary);
         }
         
-        .edit-button {
+        .secondary-btn {
             background-color: transparent;
             color: var(--primary);
             border: 1px solid var(--primary);
         }
         
-        .edit-button:hover {
+        .secondary-btn:hover {
             background-color: rgba(214, 81, 8, 0.1);
         }
         
-        .tools-section {
-            margin-top: 3rem;
-            padding: 2rem;
-            background-color: var(--accent);
-            border-radius: var(--radius);
-        }
-        
-        .tools-section h2 {
-            font-size: 1.5rem;
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-        }
-        
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .tool-card {
+        .filter-form {
             background-color: white;
             padding: 1.5rem;
             border-radius: var(--radius);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
         }
         
-        .tool-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        .tool-title {
+        .form-title {
+            font-size: 1.25rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--foreground);
         }
         
-        .tool-description {
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .form-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-label {
             font-size: 0.875rem;
-            color: #666;
+            font-weight: 500;
+            color: var(--foreground);
         }
         
-        footer {
-            background-color: var(--accent);
-            padding: 2rem;
-            text-align: center;
-            margin-top: 4rem;
-        }
-        
-        .copyright {
-            margin-top: 1rem;
+        .form-input,
+        .form-select {
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             font-size: 0.875rem;
             color: var(--foreground);
-            opacity: 0.8;
+        }
+        
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--ring);
+            box-shadow: 0 0 0 2px rgba(214, 81, 8, 0.2);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--foreground);
+        }
+        
+        .page-link:hover {
+            background-color: var(--border);
+        }
+        
+        .page-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .page-link.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 1rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .exhibition-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <header class="header-container">
         <div class="logo-container">
-            <img src="../images/Logo.jpg" alt="CultureStream Logo" class="logo-image">
+            <img src="../logo.png" alt="CultureStream Logo" class="logo-image" onerror="this.src='../images/Logo.jpg'; this.onerror=null;">
             <div class="logo-text">CultureStream</div>
         </div>
         <div class="header-buttons">
-            <a href="index.html" class="header-button home-button">Dashboard</a>
-            <a href="../index.html" class="header-button logout-button">Abmelden</a>
+            <a href="../index.html" class="header-button home-button">Hauptseite</a>
+            <a href="index.html" class="header-button login-button">Login</a>
+            <a href="../out/index.html" class="header-button world-button">Weltkugel</a>
         </div>
     </header>
-
+    
     <main class="main-container">
-        <h1 class="page-title">Interne Ausstellungsübersicht</h1>
+        <h1 class="page-title">Unsere Ausstellungen</h1>
+        
+        <div class="filter-form">
+            <h2 class="form-title">Filter</h2>
+            <form>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label class="form-label" for="category">Kategorie</label>
+                        <select class="form-select" id="category" name="category">
+                            <option value="">Alle Kategorien</option>
+                            <option value="zeitgenössisch">Zeitgenössische Kunst</option>
+                            <option value="fotografie">Fotografie</option>
+                            <option value="digital">Digitale Kunst</option>
+                            <option value="malerei">Malerei</option>
+                            <option value="installation">Installation</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label" for="status">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="">Alle Status</option>
+                            <option value="active">Aktiv</option>
+                            <option value="upcoming">Kommend</option>
+                            <option value="ended">Beendet</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label" for="location">Standort</label>
+                        <select class="form-select" id="location" name="location">
+                            <option value="">Alle Standorte</option>
+                            <option value="berlin">Berlin</option>
+                            <option value="wien">Wien</option>
+                            <option value="zürich">Zürich</option>
+                            <option value="münchen">München</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label class="form-label" for="search">Suchbegriff</label>
+                        <input type="text" class="form-input" id="search" name="search" placeholder="Künstler, Titel, etc.">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="reset" class="action-btn secondary-btn">
+                        <i class="fas fa-redo-alt"></i> Zurücksetzen
+                    </button>
+                    <button type="submit" class="action-btn primary-btn">
+                        <i class="fas fa-filter"></i> Filtern
+                    </button>
+                </div>
+            </form>
+        </div>
         
         <div class="exhibition-grid">
             <!-- Ausstellung 1 -->
-            <div class="exhibition-card">
+            <article class="exhibition-card">
                 <div class="exhibition-image">
-                    <img src="../assets/exhibitions/exhibition1.jpg" alt="Zeitgenössische Kunst Ausstellung">
+                    <img src="../images/ausstellung1.jpg" alt="Farbe und Form Ausstellung" onerror="this.src='../logo.png'; this.onerror=null;">
                 </div>
                 <div class="exhibition-details">
                     <h3 class="exhibition-title">Farbe und Form</h3>
                     <div class="exhibition-meta">
-                        <div class="exhibition-location">Kunstmuseum Berlin</div>
-                        <div class="exhibition-date">12. Juni - 15. September 2023</div>
+                        <div class="exhibition-location">
+                            <i class="fas fa-map-marker-alt"></i> Kunstmuseum Berlin
+                        </div>
+                        <div class="exhibition-date">
+                            <i class="far fa-calendar-alt"></i> 12. Juni - 15. September 2023
+                        </div>
                     </div>
+                    <div class="exhibition-status status-active">Aktiv</div>
                     <p class="exhibition-description">
-                        Eine Ausstellung über die Beziehung zwischen Farbe und Form in der zeitgenössischen Kunst.
+                        Eine faszinierende Ausstellung, die die Beziehung zwischen Farbe und Form in der zeitgenössischen Kunst untersucht. Mit Werken internationaler Künstler.
                     </p>
-                    <span class="exhibition-status status-active">Aktiv</span>
                     <div class="exhibition-actions">
-                        <button class="action-button view-button">Anzeigen</button>
-                        <button class="action-button edit-button">Bearbeiten</button>
+                        <a href="#" class="action-btn primary-btn">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        <button class="action-btn secondary-btn">
+                            <i class="far fa-bookmark"></i> Merken
+                        </button>
                     </div>
                 </div>
-            </div>
-
+            </article>
+            
             <!-- Ausstellung 2 -->
-            <div class="exhibition-card">
+            <article class="exhibition-card">
                 <div class="exhibition-image">
-                    <img src="../assets/exhibitions/exhibition2.jpg" alt="Digitale Kunstausstellung">
+                    <img src="../images/ausstellung2.jpg" alt="Digital Dreamscapes Ausstellung" onerror="this.src='../logo.png'; this.onerror=null;">
                 </div>
                 <div class="exhibition-details">
-                    <h3 class="exhibition-title">Digitale Horizonte</h3>
+                    <h3 class="exhibition-title">Digital Dreamscapes</h3>
                     <div class="exhibition-meta">
-                        <div class="exhibition-location">Ars Electronica Center Linz</div>
-                        <div class="exhibition-date">3. August - 12. November 2023</div>
+                        <div class="exhibition-location">
+                            <i class="fas fa-map-marker-alt"></i> Media Lab Wien
+                        </div>
+                        <div class="exhibition-date">
+                            <i class="far fa-calendar-alt"></i> 3. August - 30. Oktober 2023
+                        </div>
                     </div>
+                    <div class="exhibition-status status-active">Aktiv</div>
                     <p class="exhibition-description">
-                        Erkundung der neuesten Entwicklungen in der digitalen Kunst und interaktiven Medien.
+                        Tauchen Sie ein in die Welt der digitalen Kunst mit dieser immersiven Ausstellung, die KI-generierte Kunstwerke und interaktive Installationen präsentiert.
                     </p>
-                    <span class="exhibition-status status-active">Aktiv</span>
                     <div class="exhibition-actions">
-                        <button class="action-button view-button">Anzeigen</button>
-                        <button class="action-button edit-button">Bearbeiten</button>
+                        <a href="#" class="action-btn primary-btn">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        <button class="action-btn secondary-btn">
+                            <i class="far fa-bookmark"></i> Merken
+                        </button>
                     </div>
                 </div>
-            </div>
-
+            </article>
+            
             <!-- Ausstellung 3 -->
-            <div class="exhibition-card">
+            <article class="exhibition-card">
                 <div class="exhibition-image">
-                    <img src="../assets/exhibitions/exhibition3.jpg" alt="Historische Kunstausstellung">
+                    <img src="../images/ausstellung3.jpg" alt="Perspektiven der Fotografie Ausstellung" onerror="this.src='../logo.png'; this.onerror=null;">
                 </div>
                 <div class="exhibition-details">
-                    <h3 class="exhibition-title">Klassische Meisterwerke</h3>
+                    <h3 class="exhibition-title">Perspektiven der Fotografie</h3>
                     <div class="exhibition-meta">
-                        <div class="exhibition-location">Kunsthalle Wien</div>
-                        <div class="exhibition-date">20. Mai - 30. Juli 2023</div>
+                        <div class="exhibition-location">
+                            <i class="fas fa-map-marker-alt"></i> Galerie am See, Zürich
+                        </div>
+                        <div class="exhibition-date">
+                            <i class="far fa-calendar-alt"></i> 5. September - 15. November 2023
+                        </div>
                     </div>
+                    <div class="exhibition-status status-upcoming">Kommend</div>
                     <p class="exhibition-description">
-                        Eine Sammlung klassischer Meisterwerke aus dem 17. bis 19. Jahrhundert.
+                        Eine kuratierte Sammlung zeitgenössischer Fotografie aus aller Welt, die verschiedene Perspektiven und Techniken erforscht.
                     </p>
-                    <span class="exhibition-status status-ended">Beendet</span>
                     <div class="exhibition-actions">
-                        <button class="action-button view-button">Anzeigen</button>
-                        <button class="action-button edit-button">Bearbeiten</button>
+                        <a href="#" class="action-btn primary-btn">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        <button class="action-btn secondary-btn">
+                            <i class="far fa-bookmark"></i> Merken
+                        </button>
                     </div>
                 </div>
-            </div>
-
+            </article>
+            
             <!-- Ausstellung 4 -->
-            <div class="exhibition-card">
+            <article class="exhibition-card">
                 <div class="exhibition-image">
-                    <img src="../assets/exhibitions/exhibition4.jpg" alt="Moderne Kunstausstellung">
+                    <img src="../images/ausstellung4.jpg" alt="Retroperspektiven Ausstellung" onerror="this.src='../logo.png'; this.onerror=null;">
                 </div>
                 <div class="exhibition-details">
-                    <h3 class="exhibition-title">Licht und Schatten</h3>
+                    <h3 class="exhibition-title">Retroperspektiven</h3>
                     <div class="exhibition-meta">
-                        <div class="exhibition-location">Museum für Moderne Kunst Frankfurt</div>
-                        <div class="exhibition-date">5. Oktober - 15. Dezember 2023</div>
+                        <div class="exhibition-location">
+                            <i class="fas fa-map-marker-alt"></i> Kunsthalle München
+                        </div>
+                        <div class="exhibition-date">
+                            <i class="far fa-calendar-alt"></i> 10. Juli - 20. August 2023
+                        </div>
                     </div>
+                    <div class="exhibition-status status-ended">Beendet</div>
                     <p class="exhibition-description">
-                        Eine kreative Auseinandersetzung mit Licht und Schatten in verschiedenen Kunstformen.
+                        Ein Rückblick auf die Kunstbewegungen des 20. Jahrhunderts und deren Einfluss auf die heutige Kunstlandschaft.
                     </p>
-                    <span class="exhibition-status status-upcoming">Bevorstehend</span>
                     <div class="exhibition-actions">
-                        <button class="action-button view-button">Anzeigen</button>
-                        <button class="action-button edit-button">Bearbeiten</button>
+                        <a href="#" class="action-btn primary-btn">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        <button class="action-btn secondary-btn">
+                            <i class="far fa-bookmark"></i> Merken
+                        </button>
                     </div>
                 </div>
-            </div>
-
+            </article>
+            
             <!-- Ausstellung 5 -->
-            <div class="exhibition-card">
+            <article class="exhibition-card">
                 <div class="exhibition-image">
-                    <img src="../assets/exhibitions/exhibition5.jpg" alt="Fotografieausstellung">
+                    <img src="../images/ausstellung5.jpg" alt="Urbane Interventionen Ausstellung" onerror="this.src='../logo.png'; this.onerror=null;">
                 </div>
                 <div class="exhibition-details">
-                    <h3 class="exhibition-title">Perspektiven</h3>
+                    <h3 class="exhibition-title">Urbane Interventionen</h3>
                     <div class="exhibition-meta">
-                        <div class="exhibition-location">Haus der Fotografie Hamburg</div>
-                        <div class="exhibition-date">15. Juli - 30. September 2023</div>
+                        <div class="exhibition-location">
+                            <i class="fas fa-map-marker-alt"></i> Urban Art Center Berlin
+                        </div>
+                        <div class="exhibition-date">
+                            <i class="far fa-calendar-alt"></i> 1. Oktober - 31. Dezember 2023
+                        </div>
                     </div>
+                    <div class="exhibition-status status-upcoming">Kommend</div>
                     <p class="exhibition-description">
-                        Eine Ausstellung zeitgenössischer Fotografie, die verschiedene Perspektiven auf globale Themen bietet.
+                        Eine Ausstellung über Street Art und urbane Kunstinterventionen, die den öffentlichen Raum neu definieren und beleben.
                     </p>
-                    <span class="exhibition-status status-active">Aktiv</span>
                     <div class="exhibition-actions">
-                        <button class="action-button view-button">Anzeigen</button>
-                        <button class="action-button edit-button">Bearbeiten</button>
+                        <a href="#" class="action-btn primary-btn">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        <button class="action-btn secondary-btn">
+                            <i class="far fa-bookmark"></i> Merken
+                        </button>
                     </div>
                 </div>
-            </div>
-
+            </article>
+            
             <!-- Ausstellung 6 -->
-            <div class="exhibition-card">
+            <article class="exhibition-card">
                 <div class="exhibition-image">
-                    <img src="../assets/exhibitions/exhibition6.jpg" alt="Skulpturenausstellung">
+                    <img src="../images/ausstellung6.jpg" alt="Natürliche Abstraktion Ausstellung" onerror="this.src='../logo.png'; this.onerror=null;">
                 </div>
                 <div class="exhibition-details">
-                    <h3 class="exhibition-title">Form und Raum</h3>
+                    <h3 class="exhibition-title">Natürliche Abstraktion</h3>
                     <div class="exhibition-meta">
-                        <div class="exhibition-location">Skulpturenpark Köln</div>
-                        <div class="exhibition-date">1. Juni - 31. August 2023</div>
+                        <div class="exhibition-location">
+                            <i class="fas fa-map-marker-alt"></i> Moderne Galerie Wien
+                        </div>
+                        <div class="exhibition-date">
+                            <i class="far fa-calendar-alt"></i> 15. Mai - 25. Juli 2023
+                        </div>
                     </div>
+                    <div class="exhibition-status status-ended">Beendet</div>
                     <p class="exhibition-description">
-                        Eine Ausstellung zeitgenössischer Skulpturen, die das Verhältnis von Form und Raum erforscht.
+                        Eine Sammlung abstrakter Kunstwerke, die von natürlichen Formen und Prozessen inspiriert sind. Mit Werken von aufstrebenden europäischen Künstlern.
                     </p>
-                    <span class="exhibition-status status-active">Aktiv</span>
                     <div class="exhibition-actions">
-                        <button class="action-button view-button">Anzeigen</button>
-                        <button class="action-button edit-button">Bearbeiten</button>
+                        <a href="#" class="action-btn primary-btn">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        <button class="action-btn secondary-btn">
+                            <i class="far fa-bookmark"></i> Merken
+                        </button>
                     </div>
                 </div>
-            </div>
+            </article>
         </div>
-
-        <div class="tools-section">
-            <h2>Verwaltungswerkzeuge</h2>
-            <div class="tools-grid">
-                <div class="tool-card">
-                    <div class="tool-icon">➕</div>
-                    <h3 class="tool-title">Neue Ausstellung erstellen</h3>
-                    <p class="tool-description">Erstellen Sie eine neue Ausstellung und fügen Sie sie zum Katalog hinzu.</p>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">📊</div>
-                    <h3 class="tool-title">Statistiken einsehen</h3>
-                    <p class="tool-description">Besucher, Verweildauer und andere Metriken für Ausstellungen.</p>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🔍</div>
-                    <h3 class="tool-title">Ausstellungsreviews</h3>
-                    <p class="tool-description">Feedback und Bewertungen von Besuchern einsehen und verwalten.</p>
-                </div>
-                <div class="tool-card">
-                    <div class="tool-icon">🔄</div>
-                    <h3 class="tool-title">Ausstellungsupdates</h3>
-                    <p class="tool-description">Aktualisieren Sie laufende Ausstellungen mit neuen Inhalten.</p>
-                </div>
-            </div>
+        
+        <div class="pagination">
+            <a href="#" class="page-link disabled">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            <a href="#" class="page-link active">1</a>
+            <a href="#" class="page-link">2</a>
+            <a href="#" class="page-link">
+                <i class="fas fa-chevron-right"></i>
+            </a>
         </div>
     </main>
-
-    <footer>
-        <div class="logo-container" style="justify-content: center;">
-            <img src="../images/Logo.jpg" alt="CultureStream Logo" class="logo-image" style="width: 40px; height: 40px;">
-            <div class="logo-text">CultureStream</div>
-        </div>
-        <div class="copyright">
-            © 2024 CultureStream. Alle Rechte vorbehalten.
-        </div>
-    </footer>
-
+    
     <script>
-        // Einfaches Script für die Demonstration der Funktionalität
-        document.querySelectorAll('.view-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const card = this.closest('.exhibition-card');
-                const title = card.querySelector('.exhibition-title').textContent;
-                alert(`Ausstellung "${title}" wird angezeigt.`);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filter-Funktionalität
+            const filterForm = document.querySelector('.filter-form form');
+            
+            filterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Hier würde normalerweise ein AJAX-Request stattfinden
+                // Für die Demo zeigen wir einfach eine Erfolgsmeldung
+                alert('Filter wurden angewendet!');
             });
-        });
-
-        document.querySelectorAll('.edit-button').forEach(button => {
-            button.addEventListener('click', function() {
-                const card = this.closest('.exhibition-card');
-                const title = card.querySelector('.exhibition-title').textContent;
-                alert(`Ausstellung "${title}" wird bearbeitet.`);
+            
+            // Bookmark-Funktionalität
+            const bookmarkButtons = document.querySelectorAll('.secondary-btn');
+            
+            bookmarkButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    const isBookmarked = icon.classList.contains('fas');
+                    
+                    if (isBookmarked) {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                    } else {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                    }
+                });
             });
-        });
-
-        document.querySelectorAll('.tool-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const title = this.querySelector('.tool-title').textContent;
-                alert(`Werkzeug "${title}" wird geöffnet.`);
+            
+            // Paginierung - Direkt von Seite 1 zu Seite 2 springen (statt zu Seite 3)
+            const paginationLinks = document.querySelectorAll('.pagination .page-link');
+            
+            paginationLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktive Klasse entfernen
+                    document.querySelector('.pagination .active').classList.remove('active');
+                    
+                    // Wenn der Pfeil nach rechts geklickt wird, zur Seite 2 navigieren
+                    if (this.innerHTML.includes('fa-chevron-right')) {
+                        document.querySelectorAll('.pagination .page-link')[2].classList.add('active');
+                    } else {
+                        // Ansonsten die angeklickte Seite aktivieren
+                        this.classList.add('active');
+                    }
+                });
             });
         });
     </script>
