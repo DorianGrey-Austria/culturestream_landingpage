@@ -15,304 +15,218 @@
     
     <style>
         :root {
-            --primary: #D65108;
-            --secondary: #e67e30;
-            --accent: #f8eee2;
-            --background: #ffffff;
-            --foreground: #333333;
-            --border: #e2e8f0;
-            --input: #e2e8f0;
-            --ring: #d65108;
-            --radius: 0.5rem;
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #e74c3c;
+            --text-color: #333;
+            --background-color: #f9f9f9;
+            --card-background: #fff;
+            --border-color: #ddd;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
         }
-        
-        * {
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        body {
-            background-color: var(--background);
-            color: var(--foreground);
+            color: var(--text-color);
             line-height: 1.6;
         }
-        
-        .login-container {
-            display: flex;
-            min-height: 100vh;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        
-        .login-image {
-            flex: 1;
-            background-image: url('../images/login-bg.jpg');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-        
-        .login-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-        
-        .login-form-container {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-        }
-        
-        .login-header {
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 20px 0;
             text-align: center;
-            margin-bottom: 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
-        .login-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-        
-        .logo-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 10px;
-            margin-right: 1rem;
-        }
-        
-        .logo-text {
+
+        .header h1 {
+            margin: 0;
             font-size: 2rem;
-            font-weight: bold;
-            color: var(--primary);
         }
-        
-        .login-title {
-            font-size: 1.75rem;
-            color: var(--foreground);
-            margin-bottom: 0.5rem;
+
+        .header p {
+            margin: 10px 0 0;
+            opacity: 0.9;
         }
-        
-        .login-description {
-            font-size: 1rem;
-            color: #666;
-            max-width: 400px;
+
+        .login-container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
         }
-        
-        .login-form {
-            width: 100%;
-            max-width: 400px;
-            background-color: white;
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
         }
-        
+
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 20px;
         }
-        
-        .form-label {
+
+        .form-group label {
             display: block;
-            font-size: 0.875rem;
+            margin-bottom: 8px;
             font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: var(--foreground);
         }
-        
-        .form-input {
+
+        .form-control {
             width: 100%;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border 0.3s;
         }
-        
-        .form-input:focus {
+
+        .form-control:focus {
+            border-color: var(--primary-color);
             outline: none;
-            border-color: var(--ring);
-            box-shadow: 0 0 0 2px rgba(214, 81, 8, 0.2);
         }
-        
-        .form-checkbox-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-checkbox {
-            margin-right: 0.5rem;
-        }
-        
-        .form-checkbox-label {
-            font-size: 0.875rem;
-            color: #666;
-        }
-        
-        .login-button {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: var(--primary);
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: var(--radius);
-            font-size: 1rem;
-            font-weight: 500;
+            padding: 12px 20px;
+            font-size: 16px;
+            border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
-        }
-        
-        .login-button:hover {
-            background-color: var(--secondary);
-        }
-        
-        .forgot-password {
-            display: block;
             text-align: center;
-            margin-top: 1rem;
-            font-size: 0.875rem;
-            color: var(--primary);
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: var(--primary-color);
             text-decoration: none;
         }
-        
-        .forgot-password:hover {
+
+        .back-link a:hover {
             text-decoration: underline;
         }
-        
-        .login-footer {
-            margin-top: 2rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .back-link {
-            display: flex;
-            align-items: center;
-            font-size: 0.875rem;
-            color: #666;
-            text-decoration: none;
-            margin-bottom: 1rem;
-        }
-        
-        .back-link i {
-            margin-right: 0.5rem;
-        }
-        
-        .back-link:hover {
-            color: var(--primary);
-        }
-        
-        .copyright {
-            font-size: 0.75rem;
-            color: #999;
-        }
-        
-        @media (max-width: 768px) {
-            .login-container {
-                flex-direction: column;
-            }
-            
-            .login-image {
-                height: 200px;
-            }
-            
-            .login-form-container {
-                padding: 1.5rem;
-            }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-image"></div>
-        <div class="login-form-container">
-            <div class="login-header">
-                <div class="login-logo">
-                    <img src="../logo.png" alt="CultureStream Logo" class="logo-image" onerror="this.src='../images/Logo.jpg'; this.onerror=null;">
-                    <div class="logo-text">CultureStream</div>
-                </div>
-                <h1 class="login-title">Interner Bereich</h1>
-                <p class="login-description">Melden Sie sich an, um auf den internen Bereich zuzugreifen und Ausstellungen zu verwalten.</p>
-            </div>
-            
-            <form class="login-form" id="loginForm">
-                <div class="form-group">
-                    <label for="email" class="form-label">E-Mail</label>
-                    <input type="email" id="email" name="email" class="form-input" placeholder="Ihre E-Mail-Adresse" required>
-                </div>
+    <header class="header">
+        <div class="container">
+            <h1>CultureStream</h1>
+            <p>Interner Bereich</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="login-container">
+            <form id="loginForm" class="login-form">
+                <h2>Anmeldung</h2>
+                <div id="errorMessage" class="alert alert-danger"></div>
                 
                 <div class="form-group">
-                    <label for="password" class="form-label">Passwort</label>
-                    <input type="password" id="password" name="password" class="form-input" placeholder="Ihr Passwort" required>
+                    <label for="email">E-Mail</label>
+                    <input type="email" id="email" class="form-control" placeholder="E-Mail-Adresse eingeben" required>
                 </div>
                 
-                <div class="form-checkbox-group">
-                    <input type="checkbox" id="remember" name="remember" class="form-checkbox">
-                    <label for="remember" class="form-checkbox-label">Angemeldet bleiben</label>
+                <div class="form-group">
+                    <label for="password">Passwort</label>
+                    <input type="password" id="password" class="form-control" placeholder="Passwort eingeben" required>
                 </div>
                 
-                <button type="submit" class="login-button">Anmelden</button>
-                
-                <a href="#" class="forgot-password">Passwort vergessen?</a>
+                <button type="submit" class="btn">Anmelden</button>
             </form>
             
-            <div class="login-footer">
-                <a href="../index.html" class="back-link">
-                    <i class="fas fa-arrow-left"></i> Zurück zur Hauptseite
-                </a>
-                <div class="copyright">© 2024 CultureStream. Alle Rechte vorbehalten.</div>
+            <div class="back-link">
+                <a href="../index.html">Zurück zur Startseite</a>
             </div>
         </div>
-    </div>
-    
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CultureStream. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            const errorMessage = document.getElementById('errorMessage');
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // Hier sind die Login-Daten für die verschiedenen Bereiche:
-            const credentials = {
-                admin: { email: 'admin@culturestream.de', password: 'admin123' },
-                member: { email: 'mitglied@culturestream.de', password: 'mitglied123' },
-                vip: { email: 'vip@culturestream.de', password: 'vip123' },
-                community: { email: 'community@culturestream.de', password: 'community123' },
-                artist: { email: 'kuenstler@culturestream.de', password: 'kuenstler123' }
-            };
-            
-            // Überprüfe die Anmeldedaten
-            let isValidLogin = false;
-            let userRole = '';
-            
-            for (const role in credentials) {
-                if (email === credentials[role].email && password === credentials[role].password) {
-                    isValidLogin = true;
-                    userRole = role;
-                    break;
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Demoanmeldedaten (in einer realen Anwendung würde dies serverseitig überprüft)
+                const users = {
+                    "admin@culturestream.de": { password: "admin123", role: "admin" },
+                    "member@culturestream.de": { password: "member123", role: "member" },
+                    "vip@culturestream.de": { password: "vip123", role: "vip" },
+                    "community@culturestream.de": { password: "community123", role: "community" },
+                    "artist@culturestream.de": { password: "artist123", role: "artist" }
+                };
+                
+                const user = users[email];
+                
+                if (user && user.password === password) {
+                    // Erfolgreiche Anmeldung
+                    localStorage.setItem('csUserRole', user.role);
+                    localStorage.setItem('csUserEmail', email);
+                    localStorage.setItem('csLoggedIn', 'true');
+                    
+                    // Weiterleitung zur internen Seite
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Fehlgeschlagene Anmeldung
+                    errorMessage.style.display = 'block';
+                    errorMessage.textContent = 'Ungültige E-Mail oder Passwort. Bitte versuchen Sie es erneut.';
                 }
-            }
-            
-            if (isValidLogin) {
-                // Erfolgreich angemeldet - weiterleiten zur Ausstellungsseite
-                sessionStorage.setItem('userRole', userRole);
-                sessionStorage.setItem('isLoggedIn', 'true');
-                window.location.href = 'exhibition.html';
-            } else {
-                // Fehlgeschlagene Anmeldung
-                alert('Ungültige Anmeldedaten. Bitte versuchen Sie es erneut.');
-            }
+            });
         });
     </script>
 </body>

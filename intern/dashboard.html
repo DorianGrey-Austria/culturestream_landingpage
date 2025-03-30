@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CultureStream - Dashboard</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --secondary-color: #e74c3c;
+            --accent-color: #f39c12;
+            --text-color: #333;
+            --background-color: #f9f9f9;
+            --card-background: #fff;
+            --border-color: #ddd;
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-role {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin-right: 15px;
+            font-size: 0.9rem;
+        }
+
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .sidebar {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .nav-item {
+            margin-bottom: 10px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 10px;
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .main-content {
+            background-color: var(--card-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+
+        .welcome-section h2 {
+            margin-top: 0;
+            color: var(--primary-dark);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h3 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .admin-card .stat-number {
+            color: var(--primary-color);
+        }
+
+        .member-card .stat-number {
+            color: var(--success-color);
+        }
+
+        .vip-card .stat-number {
+            color: var(--accent-color);
+        }
+
+        .community-card .stat-number {
+            color: var(--secondary-color);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .recent-activity {
+            margin-top: 30px;
+        }
+
+        .recent-activity h3 {
+            color: var(--primary-dark);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .activity-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            font-size: 0.8rem;
+            color: #777;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #777;
+            font-size: 0.9em;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1>CultureStream Dashboard</h1>
+                <div class="user-info">
+                    <div class="user-role" id="userRoleBadge">Rolle: Loading...</div>
+                    <button class="logout-btn" id="logoutBtn">Abmelden</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="dashboard">
+            <div class="sidebar">
+                <nav>
+                    <ul style="list-style-type: none; padding: 0;">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Ausstellungen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Künstler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Veranstaltungen</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Mitglieder</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">Einstellungen</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="main-content">
+                <div class="welcome-section">
+                    <h2>Willkommen im Internen Bereich</h2>
+                    <p>Sie sind erfolgreich angemeldet. Von hier aus können Sie alle internen Funktionen von CultureStream verwalten.</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card admin-card">
+                        <h3>Ausstellungen</h3>
+                        <div class="stat-number">42</div>
+                        <div class="stat-label">Aktive Ausstellungen</div>
+                    </div>
+                    <div class="stat-card member-card">
+                        <h3>Künstler</h3>
+                        <div class="stat-number">187</div>
+                        <div class="stat-label">Registrierte Künstler</div>
+                    </div>
+                    <div class="stat-card vip-card">
+                        <h3>Besucher</h3>
+                        <div class="stat-number">12.4K</div>
+                        <div class="stat-label">In diesem Monat</div>
+                    </div>
+                    <div class="stat-card community-card">
+                        <h3>Veranstaltungen</h3>
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Kommende Events</div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Neueste Aktivitäten</h3>
+                    <div class="activity-item">
+                        <p><strong>Neue Ausstellung hinzugefügt:</strong> "Digitale Transformation in der Kunst"</p>
+                        <span class="activity-time">Heute, 14:32 Uhr</span>
+                    </div>
+                    <div class="activity-item">
+                        <p><strong>Neuer Künstler registriert:</strong> Laura Martinez</p>
+                        <span class="activity-time">Gestern, 09:15 Uhr</span>
+                    </div>
+                    <div class="activity-item">
+                        <p><strong>Veranstaltung aktualisiert:</strong> "Kunst & Technologie" - Datum geändert</p>
+                        <span class="activity-time">Vor 2 Tagen, 16:45 Uhr</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CultureStream. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Überprüfen, ob der Benutzer angemeldet ist
+            const isLoggedIn = localStorage.getItem('csLoggedIn') === 'true';
+            const userRole = localStorage.getItem('csUserRole');
+            const userEmail = localStorage.getItem('csUserEmail');
+            
+            if (!isLoggedIn) {
+                // Wenn nicht angemeldet, zurück zur Login-Seite
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Benutzerrolle anzeigen
+            const userRoleBadge = document.getElementById('userRoleBadge');
+            if (userRoleBadge && userRole) {
+                let roleText = userRole.charAt(0).toUpperCase() + userRole.slice(1);
+                userRoleBadge.textContent = `Rolle: ${roleText}`;
+            }
+            
+            // Abmelden-Funktion
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function() {
+                    // Anmeldedaten aus dem lokalen Speicher entfernen
+                    localStorage.removeItem('csLoggedIn');
+                    localStorage.removeItem('csUserRole');
+                    localStorage.removeItem('csUserEmail');
+                    
+                    // Zurück zur Login-Seite
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Navigationslinks
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Wenn nicht die Dashboard-Seite, Klick verhindern
+                    if (!this.classList.contains('active')) {
+                        e.preventDefault();
+                        alert('Diese Funktionalität ist in der Demo-Version noch nicht verfügbar.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
