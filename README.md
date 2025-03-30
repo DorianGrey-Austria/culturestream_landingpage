@@ -1,59 +1,77 @@
 # CultureStream Landingpage
 
-Eine moderne, interaktive Landing Page für CultureStream mit 3D-Globus und responsivem Design.
+## Projektübersicht
 
-## Über das Projekt
+Das CultureStream-Projekt besteht aus drei Hauptbereichen:
 
-CultureStream ist ein Kulturverein, der sich auf die globale Vernetzung von Künstler:innen und Kulturschaffenden konzentriert. Diese Landing Page wurde entwickelt, um die Vision, Mission und Funktionen des Projekts zu präsentieren.
+1. **Hauptseite (index.html)**: Die Landing Page des Projekts mit Informationen über den Kulturverein
+2. **Weltkugel (out/index.html)**: Eine interaktive 3D-Weltkugel-Visualisierung
+3. **Interner Bereich (intern/index.html)**: Zugang zum internen Ausstellungsbereich
 
-## Features
+## Navigationsstruktur
 
-- **Responsives Design**: Optimiert für alle Geräte und Bildschirmgrößen
-- **3D-Globus Visualisierung**: Interaktive Darstellung der globalen Portale und Verbindungen
-- **Moderne UI**: Implementiert mit Next.js, Tailwind CSS und Three.js
-- **Barrierefreie Benutzeroberfläche**: Gestaltet für optimale Zugänglichkeit
-- **Mehrsprachige Unterstützung**: Vorbereitet für internationale Zielgruppen
+Die Bereiche sind wie folgt miteinander verbunden:
+
+```
+Hauptseite (index.html)
+  │
+  ├── Weltkugel-Button → out/index.html
+  │    
+  └── Intern-Button → intern/index.html
+                           │
+                           └── Auto-Weiterleitung → intern/exhibition.html
+```
+
+## Interne Login-Daten
+
+Für den Zugriff auf den internen Bereich können folgende Login-Daten verwendet werden:
+
+- **Admin**: admin@culturestream.de / admin123
+- **Member**: member@culturestream.de / member123
+- **VIP**: vip@culturestream.de / vip123
+- **Community**: community@culturestream.de / community123
+- **Künstler**: artist@culturestream.de / artist123
+
+## Entwicklung und Test
+
+### Lokalen Server starten
+
+Um die Website lokal zu testen, navigieren Sie zum Projektverzeichnis und starten Sie einen einfachen HTTP-Server. Beispiel mit Python:
+
+```bash
+# Wenn Python installiert ist
+python -m http.server 3000
+
+# Alternativ mit Node.js
+npx serve
+```
+
+### Wichtige Dateien
+
+- `index.html` - Hauptlandingpage
+- `out/index.html` - Weltkugel-Visualisierung
+- `intern/index.html` - Weiterleitung zum internen Bereich
+- `intern/exhibition.html` - Ausstellungsübersicht
 
 ## Technologien
 
-- [Next.js](https://nextjs.org/) - React Framework
-- [Three.js](https://threejs.org/) - 3D-Bibliothek
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS-Framework
-- [Framer Motion](https://www.framer.com/motion/) - Animationsbibliothek
-- [Supabase](https://supabase.io/) - Open Source Firebase Alternative
+- HTML5, CSS3, JavaScript
+- Next.js (für die Weltkugel-Komponente)
+- Responsive Design
+- Dark Mode Unterstützung
+- Barrierefreiheit nach WCAG 2.1
 
-## Hosting-Anleitung
+## Hinweise
 
-Diese Website wurde als statische Site exportiert und kann auf jedem statischen Hosting-Dienst bereitgestellt werden.
+- Die Next.js-Komponenten in der Weltkugel-Seite benötigen eine vollständige Next.js-Umgebung, wenn sie lokal entwickelt werden sollen.
+- Der interne Bereich verwendet einfache HTML/CSS/JS ohne Back-End-Funktionalität.
+- Die Login-Daten sind nur für Demonstrationszwecke und werden direkt im JavaScript überprüft.
 
-### Vorbereitung für das Hosting
+## Zukunftspläne
 
-1. Der gesamte Inhalt des `out`-Verzeichnisses muss auf den Server hochgeladen werden
-2. Wichtig: Die Verzeichnisstruktur muss beibehalten werden
-3. Der `_next`-Ordner muss sich im Stammverzeichnis der Website befinden
-
-### Hosting mit GitHub Pages, Netlify oder Vercel
-
-1. **GitHub Pages**:
-   - Aktivieren Sie GitHub Pages in den Repository-Einstellungen
-   - Wählen Sie den Branch und das Verzeichnis (normalerweise `main` und `/out`)
-
-2. **Netlify/Vercel**:
-   - Verknüpfen Sie das Repository mit Ihrem Netlify/Vercel-Konto
-   - Verwenden Sie den Befehl `next build && next export` als Build-Befehl
-   - Setzen Sie das Ausgabeverzeichnis auf `out`
-
-### Hosting auf traditionellen Webservern
-
-1. Laden Sie den gesamten Inhalt des `out`-Verzeichnisses auf Ihren Server hoch
-2. Stellen Sie sicher, dass die `.htaccess`-Datei im Root-Verzeichnis liegt
-3. Überprüfen Sie, ob alle Dateien lesbar und öffentlich zugänglich sind
-
-## Kontakt
-
-Bei Fragen oder Problemen wenden Sie sich bitte an:
-- Website: [culturestream.at](https://culturestream.at)
-- E-Mail: info@culturestream.at
+- Backend-Integration mit vollständiger Datenbank-Anbindung
+- Erweiterte Benutzerinteraktionen in der Weltkugel-Visualisierung
+- Vollständige Implementierung der Ausstellungsverwaltung im internen Bereich
 
 # CultureStream Plattform
 
