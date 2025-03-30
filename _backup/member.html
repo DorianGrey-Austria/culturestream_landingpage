@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CultureStream Mitgliederbereich - Entdecken Sie exklusive Inhalte und Funktionen">
+    <meta name="csrf-token" content="{{csrfToken}}">
+    <title>CultureStream - Mitgliederbereich</title>
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    <link rel="stylesheet" href="accessibility.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <style>
+        /* Seitenspezifische Stile */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+            color: var(--color-text-light);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-banner h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-banner p {
+            opacity: 0.9;
+        }
+        
+        .quick-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1rem;
+            border-radius: var(--border-radius);
+            flex: 1;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .dashboard-card {
+            background-color: var(--color-bg-alt);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-small);
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin: 0;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(var(--color-primary-rgb), 0.1);
+            color: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dashboard-highlights {
+            margin-top: 2rem;
+        }
+        
+        .highlight-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .highlight-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .highlight-card {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-small);
+        }
+        
+        .highlight-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .highlight-content {
+            padding: 1rem;
+            background-color: var(--color-bg-alt);
+        }
+        
+        .highlight-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+        }
+        
+        .highlight-info {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .highlight-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--color-primary);
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+        }
+        
+        .activity-list {
+            margin-top: 1rem;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.25rem;
+        }
+        
+        .activity-time {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .activity-action {
+            font-size: 0.9rem;
+            color: var(--color-primary);
+            cursor: pointer;
+        }
+        
+        .calendar {
+            margin-top: 1rem;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .calendar-title {
+            font-weight: 600;
+        }
+        
+        .calendar-navigation {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .calendar-navigation button {
+            background: none;
+            border: none;
+            color: var(--color-primary);
+            cursor: pointer;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
+        
+        .calendar-day-header {
+            font-weight: 600;
+            padding: 0.5rem 0;
+        }
+        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .calendar-day:hover {
+            background-color: var(--color-bg);
+        }
+        
+        .calendar-day.today {
+            background-color: var(--color-primary);
+            color: white;
+        }
+        
+        .calendar-day.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+        }
+        
+        .calendar-day.today.has-event::after {
+            background-color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid,
+            .highlights-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .quick-stats {
+                flex-direction: column;
+            }
+            
+            .welcome-banner {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link für Tastaturnavigation -->
+    <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+    
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
+                <h1 class="site-title">CultureStream</h1>
+            </div>
+            
+            <div class="user-area">
+                <div class="notifications" aria-label="Benachrichtigungen">
+                    <button class="icon-btn" aria-label="3 ungelesene Benachrichtigungen anzeigen" aria-haspopup="true">
+                        <i class="fas fa-bell" aria-hidden="true"></i>
+                        <span class="badge">3</span>
+                        <span class="sr-only">3 ungelesene Benachrichtigungen</span>
+                    </button>
+                </div>
+                
+                <div class="messages" aria-label="Nachrichten">
+                    <button class="icon-btn" aria-label="2 ungelesene Nachrichten anzeigen" aria-haspopup="true">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <span class="badge">2</span>
+                        <span class="sr-only">2 ungelesene Nachrichten</span>
+                    </button>
+                </div>
+                
+                <div class="user-menu" aria-label="Benutzermenü">
+                    <button class="user-menu-btn" aria-haspopup="true" aria-expanded="false">
+                        <img src="assets/img/profile.jpg" alt="Profilbild von Max Mustermann" class="user-avatar">
+                        <span class="user-name">Max Mustermann</span>
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                    
+                    <div class="dropdown-menu" role="menu">
+                        <a href="profile.html" class="dropdown-item" role="menuitem">
+                            <i class="fas fa-user" aria-hidden="true"></i> Profil
+                        </a>
+                        <a href="settings.html" class="dropdown-item" role="menuitem">
+                            <i class="fas fa-cog" aria-hidden="true"></i> Einstellungen
+                        </a>
+                        <a href="index.html" class="dropdown-item" role="menuitem">
+                            <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Abmelden
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <nav class="main-nav" aria-label="Hauptnavigation">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="member.html" class="nav-link active" aria-current="page">
+                        <i class="fas fa-home" aria-hidden="true"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="exhibition.html" class="nav-link">
+                        <i class="fas fa-image" aria-hidden="true"></i>
+                        <span>Ausstellungen</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="events.html" class="nav-link">
+                        <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                        <span>Veranstaltungen</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="community.html" class="nav-link">
+                        <i class="fas fa-users" aria-hidden="true"></i>
+                        <span>Community</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="messages.html" class="nav-link">
+                        <i class="fas fa-comment-alt" aria-hidden="true"></i>
+                        <span>Nachrichten</span>
+                        <span class="badge">2</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <main id="main-content" class="main-container">
+            <div class="welcome-banner">
+                <h1>Willkommen zurück, Max!</h1>
+                <p>Du hast 3 neue Benachrichtigungen und 2 ungelesene Nachrichten.</p>
+                
+                <div class="quick-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">Besuchte Ausstellungen</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">7</div>
+                        <div class="stat-label">Anmeldungen für Events</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">Community-Beiträge</div>
+                    </div>
+                </div>
+            </div>
+            
+            <section class="dashboard-grid" aria-labelledby="section-activities">
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 id="section-activities" class="card-title">Neueste Aktivitäten</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-stream" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="activity-list" role="list">
+                        <div class="activity-item" role="listitem">
+                            <img src="assets/img/user1.jpg" alt="Profilbild von Claudia Meier" class="activity-avatar">
+                            <div class="activity-content">
+                                <p><strong>Claudia Meier</strong> hat einen neuen Kommentar zu deinem Beitrag hinterlassen.</p>
+                                <div class="activity-meta">
+                                    <span class="activity-time">Vor 35 Minuten</span>
+                                    <a href="#" class="activity-action">Ansehen</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-item" role="listitem">
+                            <img src="assets/img/user2.jpg" alt="Profilbild von Thomas Schmidt" class="activity-avatar">
+                            <div class="activity-content">
+                                <p><strong>Thomas Schmidt</strong> hat dich zum Event "Moderne Kunst im Dialog" eingeladen.</p>
+                                <div class="activity-meta">
+                                    <span class="activity-time">Heute 10:23</span>
+                                    <a href="#" class="activity-action">Antworten</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activity-item" role="listitem">
+                            <img src="assets/img/user3.jpg" alt="Profilbild von Galerie Lichtblick" class="activity-avatar">
+                            <div class="activity-content">
+                                <p><strong>Galerie Lichtblick</strong> hat eine neue Ausstellung veröffentlicht.</p>
+                                <div class="activity-meta">
+                                    <span class="activity-time">Gestern 15:40</span>
+                                    <a href="#" class="activity-action">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 id="section-events" class="card-title">Kommende Events</h2>
+                        <div class="card-icon">
+                            <i class="fas fa-calendar" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="calendar" aria-labelledby="section-events">
+                        <div class="calendar-header">
+                            <div class="calendar-title">Juni 2023</div>
+                            <div class="calendar-navigation">
+                                <button aria-label="Vorheriger Monat"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                                <button aria-label="Nächster Monat"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-grid">
+                            <div class="calendar-day-header">Mo</div>
+                            <div class="calendar-day-header">Di</div>
+                            <div class="calendar-day-header">Mi</div>
+                            <div class="calendar-day-header">Do</div>
+                            <div class="calendar-day-header">Fr</div>
+                            <div class="calendar-day-header">Sa</div>
+                            <div class="calendar-day-header">So</div>
+                            
+                            <!-- Beispiel-Kalender für Juni -->
+                            <div class="calendar-day">29</div>
+                            <div class="calendar-day">30</div>
+                            <div class="calendar-day">31</div>
+                            <div class="calendar-day">1</div>
+                            <div class="calendar-day">2</div>
+                            <div class="calendar-day has-event">3</div>
+                            <div class="calendar-day">4</div>
+                            <div class="calendar-day">5</div>
+                            <div class="calendar-day has-event">6</div>
+                            <div class="calendar-day">7</div>
+                            <div class="calendar-day">8</div>
+                            <div class="calendar-day">9</div>
+                            <div class="calendar-day">10</div>
+                            <div class="calendar-day">11</div>
+                            <div class="calendar-day">12</div>
+                            <div class="calendar-day">13</div>
+                            <div class="calendar-day has-event">14</div>
+                            <div class="calendar-day today">15</div>
+                            <div class="calendar-day">16</div>
+                            <div class="calendar-day">17</div>
+                            <div class="calendar-day">18</div>
+                            <div class="calendar-day">19</div>
+                            <div class="calendar-day">20</div>
+                            <div class="calendar-day has-event">21</div>
+                            <div class="calendar-day">22</div>
+                            <div class="calendar-day">23</div>
+                            <div class="calendar-day">24</div>
+                            <div class="calendar-day">25</div>
+                            <div class="calendar-day">26</div>
+                            <div class="calendar-day">27</div>
+                            <div class="calendar-day">28</div>
+                            <div class="calendar-day">29</div>
+                            <div class="calendar-day">30</div>
+                            <div class="calendar-day">1</div>
+                            <div class="calendar-day">2</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="dashboard-highlights" aria-labelledby="section-highlights">
+                <div class="highlight-header">
+                    <h2 id="section-highlights" class="highlight-title">Aktuelle Highlights</h2>
+                    <a href="exhibition.html" class="btn btn-outline">Alle Ausstellungen</a>
+                </div>
+                
+                <div class="highlights-grid">
+                    <article class="highlight-card">
+                        <span class="highlight-badge">Neu</span>
+                        <img src="assets/img/exhibition1.jpg" alt="Urbane Perspektiven - Ein Blick auf moderne Stadtarchitektur" class="highlight-img">
+                        <div class="highlight-content">
+                            <h3 class="highlight-name">Urbane Perspektiven</h3>
+                            <div class="highlight-info">
+                                <span>Galerie Mondlicht</span>
+                                <span>Bis 30.06.2023</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="highlight-card">
+                        <img src="assets/img/exhibition2.jpg" alt="Natürliche Abstraktion - Kunstwerke inspiriert von organischen Formen" class="highlight-img">
+                        <div class="highlight-content">
+                            <h3 class="highlight-name">Natürliche Abstraktion</h3>
+                            <div class="highlight-info">
+                                <span>Kunsthaus Beta</span>
+                                <span>Bis 15.07.2023</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="highlight-card">
+                        <img src="assets/img/exhibition3.jpg" alt="Digitale Realitäten - Eine Ausstellung über digitale Kunst und virtuelle Welten" class="highlight-img">
+                        <div class="highlight-content">
+                            <h3 class="highlight-name">Digitale Realitäten</h3>
+                            <div class="highlight-info">
+                                <span>Tech Art Space</span>
+                                <span>Bis 22.06.2023</span>
+                            </div>
+                        </div>
+                    </article>
+                    
+                    <article class="highlight-card">
+                        <span class="highlight-badge">Beliebt</span>
+                        <img src="assets/img/exhibition4.jpg" alt="Farbenspiel - Eine Ausstellung über die Wirkung von Farben in der Kunst" class="highlight-img">
+                        <div class="highlight-content">
+                            <h3 class="highlight-name">Farbenspiel</h3>
+                            <div class="highlight-info">
+                                <span>Galerie Farbklang</span>
+                                <span>Bis 10.07.2023</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo-small.png" alt="CultureStream Logo" class="footer-logo-img">
+                    <span class="footer-logo-text">CultureStream</span>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Impressum</a>
+                    <a href="#" class="footer-link">Datenschutz</a>
+                    <a href="#" class="footer-link">AGB</a>
+                    <a href="#" class="footer-link">Kontakt</a>
+                </div>
+                
+                <div class="footer-social">
+                    <a href="#" class="social-link" aria-label="CultureStream auf Facebook">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="CultureStream auf Twitter">
+                        <i class="fab fa-twitter" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="social-link" aria-label="CultureStream auf Instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p class="copyright">© 2023 CultureStream. Alle Rechte vorbehalten.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Scripts einbinden -->
+    <script src="scripts.js"></script>
+    <script>
+        // Initialisierung des Mitgliederbereichs
+        document.addEventListener('DOMContentLoaded', function() {
+            // Benutzermenü-Dropdown
+            const userMenuBtn = document.querySelector('.user-menu-btn');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            
+            userMenuBtn.addEventListener('click', function() {
+                dropdownMenu.classList.toggle('active');
+                const expanded = dropdownMenu.classList.contains('active');
+                userMenuBtn.setAttribute('aria-expanded', expanded);
+            });
+            
+            // Klick außerhalb des Menüs schließt es
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.user-menu')) {
+                    dropdownMenu.classList.remove('active');
+                    userMenuBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+            
+            // Kalender-Interaktion
+            const calendarDays = document.querySelectorAll('.calendar-day');
+            
+            calendarDays.forEach(day => {
+                day.addEventListener('click', function() {
+                    if (this.classList.contains('has-event')) {
+                        CultureStream.notifications.info(`Event am ${this.textContent}. Juni 2023`);
+                    }
+                });
+                
+                // Für bessere Accessibility - Tastaturinteraktion
+                day.setAttribute('tabindex', '0');
+                day.setAttribute('role', 'button');
+                day.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // Highlight-Karten-Interaktion
+            const highlightCards = document.querySelectorAll('.highlight-card');
+            
+            highlightCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const exhibitionName = this.querySelector('.highlight-name').textContent;
+                    window.location.href = `exhibition.html?name=${encodeURIComponent(exhibitionName)}`;
+                });
+                
+                // Für bessere Accessibility - Tastaturinteraktion
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('role', 'button');
+                card.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+            
+            // Anfängliche Benachrichtigung
+            setTimeout(() => {
+                CultureStream.notifications.success('Willkommen im Mitgliederbereich!');
+            }, 1000);
+        });
+    </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
+</body>
+</html> 

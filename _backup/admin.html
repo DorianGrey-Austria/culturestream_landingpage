@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Administrative Funktionen und Datenvisualisierung für den CultureStream Kunstverein">
+    <meta name="csrf-token" content="{{csrfToken}}">
+    <title>CultureStream - Administration</title>
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Chart.js für Datenvisualisierung -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
+    
+    <style>
+        /* Seitenspezifische Stile */
+        :root {
+            --primary-color: #3D7B80; /* Tiefes Türkis */
+            --secondary-color: #A4C2A5; /* Moosgrün */
+            --accent-color: #D65108; /* Terrakotta */
+            --light-accent: #F2A65A; /* Sanftes Orange */
+            --dark-bg: #0F1A20; /* Fast-Schwarz mit Blauton */
+            --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
+            --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
+            --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
+            
+            /* Standardfarben für gemeinsame Komponenten */
+            --color-primary: #3D7B80;
+            --color-primary-rgb: 61, 123, 128;
+            --color-secondary: #A4C2A5;
+            --color-accent: #D65108;
+            --color-info: #38BDF8;
+            --color-success: #4ADE80;
+            --color-warning: #F2A65A;
+            --color-danger: #EF4444;
+        }
+        
+        /* Spezifische Stile für den Admin-Bereich */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--dark-panel), #131b23);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+            border-bottom: 1px solid var(--primary-color);
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 40px;
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, var(--text-light), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .admin-badge {
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 15px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-badge i {
+            margin-right: 5px;
+        }
+        
+        .user-area {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: 600;
+            color: var(--text-light);
+            border: 2px solid var(--secondary-color);
+        }
+        
+        .user-name {
+            margin-right: 20px;
+        }
+        
+        .logout-btn {
+            padding: 8px 15px;
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        nav {
+            width: 250px;
+            background: linear-gradient(180deg, #1a2530, #0f1a20);
+            padding: 20px 0;
+            border-right: 1px solid rgba(61, 123, 128, 0.1);
+        }
+        
+        .nav-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(61, 123, 128, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+        
+        .nav-item i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .nav-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 20px 20px 10px;
+            border-bottom: 1px solid rgba(61, 123, 128, 0.1);
+            margin-bottom: 10px;
+        }
+        
+        main {
+            flex: 1;
+            padding: 30px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(61, 123, 128, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(214, 81, 8, 0.03) 0%, transparent 20%);
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .admin-title {
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .admin-btn {
+            padding: 10px 15px;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-btn:hover {
+            background-color: #2a686d;
+        }
+        
+        .admin-btn.secondary {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .admin-btn.secondary:hover {
+            background-color: rgba(61, 123, 128, 0.1);
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(61, 123, 128, 0.3);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+        }
+        
+        .stat-card.users::before {
+            background: linear-gradient(to bottom, var(--primary-color), transparent);
+        }
+        
+        .stat-card.content::before {
+            background: linear-gradient(to bottom, var(--secondary-color), transparent);
+        }
+        
+        .stat-card.events::before {
+            background: linear-gradient(to bottom, var(--accent-color), transparent);
+        }
+        
+        .stat-card.activity::before {
+            background: linear-gradient(to bottom, var(--light-accent), transparent);
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card.users .stat-icon {
+            background: rgba(61, 123, 128, 0.2);
+            color: var(--primary-color);
+        }
+        
+        .stat-card.content .stat-icon {
+            background: rgba(164, 194, 165, 0.2);
+            color: var(--secondary-color);
+        }
+        
+        .stat-card.events .stat-icon {
+            background: rgba(214, 81, 8, 0.2);
+            color: var(--accent-color);
+        }
+        
+        .stat-card.activity .stat-icon {
+            background: rgba(242, 166, 90, 0.2);
+            color: var(--light-accent);
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        
+        .stat-trend {
+            font-size: 12px;
+            padding: 3px 6px;
+            border-radius: 4px;
+            background-color: rgba(76, 175, 80, 0.1);
+            color: #4CAF50;
+        }
+        
+        .stat-trend.down {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: #F44336;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+    </style>
+  <link rel="stylesheet" href="accessibility.css">
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
+            <div class="logo-text">CultureStream</div>
+            <div class="admin-badge">
+                <i class="fa fa-shield-alt"></i> Administration
+            </div>
+        </div>
+        <div class="user-area">
+            <div class="user-avatar">A</div>
+            <div class="user-name">Admin</div>
+            <button class="btn logout-btn">Abmelden</button>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <nav>
+            <div class="nav-title">Dashboard</div>
+            <a href="#" class="nav-item active">
+                <i class="fa fa-tachometer-alt"></i>
+                <span>Übersicht</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-chart-bar"></i>
+                <span>Statistiken</span>
+            </a>
+            
+            <div class="nav-title">Verwaltung</div>
+            <a href="#" class="nav-item">
+                <i class="fa fa-users"></i>
+                <span>Benutzer</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-images"></i>
+                <span>Ausstellungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-calendar"></i>
+                <span>Veranstaltungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-comment"></i>
+                <span>Nachrichten</span>
+            </a>
+            
+            <div class="nav-title">KI & Daten</div>
+            <a href="#" class="nav-item">
+                <i class="fa fa-robot"></i>
+                <span>KI-Avatar</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-database"></i>
+                <span>Datenbank</span>
+            </a>
+            
+            <div class="nav-title">System</div>
+            <a href="#" class="nav-item">
+                <i class="fa fa-cog"></i>
+                <span>Einstellungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-shield-alt"></i>
+                <span>Sicherheit</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-history"></i>
+                <span>Logs</span>
+            </a>
+        </nav>
+        
+        <main>
+            <div class="admin-header">
+                <h1 class="admin-title">Dashboard</h1>
+                <div class="admin-actions">
+                    <button class="btn btn-primary">
+                        <i class="fa fa-sync-alt"></i>
+                        <span>Aktualisieren</span>
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fa fa-download"></i>
+                        <span>Exportieren</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Benutzer</h3>
+                        <div class="dashboard-card-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="dashboard-card-value">247</div>
+                    <div class="dashboard-card-label">Registrierte Benutzer</div>
+                    <div class="dashboard-card-trend trend-up">
+                        <i class="fa fa-arrow-up"></i>
+                        <span>12% im letzten Monat</span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Nachrichten</h3>
+                        <div class="dashboard-card-icon">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                    </div>
+                    <div class="dashboard-card-value">53</div>
+                    <div class="dashboard-card-label">Neue Kontaktanfragen</div>
+                    <div class="dashboard-card-trend trend-up">
+                        <i class="fa fa-arrow-up"></i>
+                        <span>8% im letzten Monat</span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Ausstellungen</h3>
+                        <div class="dashboard-card-icon">
+                            <i class="fa fa-images"></i>
+                        </div>
+                    </div>
+                    <div class="dashboard-card-value">16</div>
+                    <div class="dashboard-card-label">Aktive Ausstellungen</div>
+                    <div class="dashboard-card-trend trend-up">
+                        <i class="fa fa-arrow-up"></i>
+                        <span>4% im letzten Monat</span>
+                    </div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">KI-Interaktionen</h3>
+                        <div class="dashboard-card-icon">
+                            <i class="fa fa-robot"></i>
+                        </div>
+                    </div>
+                    <div class="dashboard-card-value">1.328</div>
+                    <div class="dashboard-card-label">Gesamt-Interaktionen</div>
+                    <div class="dashboard-card-trend trend-up">
+                        <i class="fa fa-arrow-up"></i>
+                        <span>24% im letzten Monat</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2 class="chart-title">Besucher-Statistiken</h2>
+                    <div class="chart-controls">
+                        <button class="btn btn-sm btn-outline active">Tag</button>
+                        <button class="btn btn-sm btn-outline">Woche</button>
+                        <button class="btn btn-sm btn-outline">Monat</button>
+                        <button class="btn btn-sm btn-outline">Jahr</button>
+                    </div>
+                </div>
+                <canvas id="visitorsChart" class="chart-canvas"></canvas>
+            </div>
+            
+            <div class="data-table-container">
+                <div class="table-header">
+                    <h2 class="table-title">Neueste Kontaktanfragen</h2>
+                    <div class="table-actions">
+                        <select class="table-filter">
+                            <option value="all">Alle Nachrichten</option>
+                            <option value="unread">Ungelesen</option>
+                            <option value="read">Gelesen</option>
+                            <option value="responded">Beantwortet</option>
+                        </select>
+                        <input type="text" class="table-search" placeholder="Suche...">
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Betreff</th>
+                            <th>Datum</th>
+                            <th>Status</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactMessages">
+                        <tr>
+                            <td class="loading-placeholder" colspan="6">Daten werden geladen...</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-pagination">
+                    <button class="page-btn"><i class="fa fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn"><i class="fa fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2 class="chart-title">KI-Avatar Nutzungsstatistiken</h2>
+                    <div class="chart-controls">
+                        <button class="btn btn-sm btn-outline active">Interaktionen</button>
+                        <button class="btn btn-sm btn-outline">Anfragen</button>
+                        <button class="btn btn-sm btn-outline">Zufriedenheit</button>
+                    </div>
+                </div>
+                <canvas id="aiChart" class="chart-canvas"></canvas>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Scripts einbinden -->
+    <script src="scripts.js"></script>
+    <script src="form-validation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+        // Supabase-Verbindung konfigurieren
+        const SUPABASE_URL = 'https://ngysvmujskxunvioyegr.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5neXN2bXVqc2t4dW52aW95ZWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzMjMxNzEsImV4cCI6MjA1NTg5OTE3MX0.eqIuV9aoujlCXEi-6oTCZrby0RZ61a-j-BWhxA8s-9Q';
+        
+        // Hilfsfunktionen für Supabase-Integration
+        async function fetchContactMessages() {
+            try {
+                // In einer echten Implementierung würde hier die Supabase JavaScript Client Library verwendet werden
+                // Hier simulieren wir das Abrufen von Daten
+                const mockData = [
+                    { id: 1, name: 'Maria Schmidt', email: 'maria.schmidt@example.com', subject: 'Ausstellung anfragen', created_at: '2024-03-28T09:32:00', status: 'unread' },
+                    { id: 2, name: 'Thomas Wagner', email: 'thomas.w@example.com', subject: 'Künstlerbewerbung', created_at: '2024-03-27T16:45:00', status: 'read' },
+                    { id: 3, name: 'Laura Becker', email: 'l.becker@example.com', subject: 'Frage zu Tickets', created_at: '2024-03-26T11:20:00', status: 'responded' },
+                    { id: 4, name: 'Michael Keller', email: 'mkeller@example.com', subject: 'Kooperationsanfrage', created_at: '2024-03-25T14:05:00', status: 'read' },
+                    { id: 5, name: 'Julia Neumann', email: 'j.neumann@example.com', subject: 'Support benötigt', created_at: '2024-03-24T10:10:00', status: 'responded' }
+                ];
+                
+                renderContactMessages(mockData);
+                
+                // Kommentar: In der tatsächlichen Implementierung würde der folgende Code verwendet:
+                // 
+                // const { data, error } = await supabase
+                //   .from('contact_messages')
+                //   .select('*')
+                //   .order('created_at', { ascending: false })
+                //   .limit(10);
+                //
+                // if (error) throw error;
+                // renderContactMessages(data);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Kontaktanfragen:', error);
+                CultureStream.notifications.error('Fehler beim Laden der Daten');
+            }
+        }
+        
+        function renderContactMessages(messages) {
+            const tableBody = document.getElementById('contactMessages');
+            if (!messages || messages.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Keine Nachrichten vorhanden</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            messages.forEach(message => {
+                const date = new Date(message.created_at);
+                const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth()+1).toString().padStart(2, '0')}.${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                
+                let statusBadge = '';
+                if (message.status === 'unread') {
+                    statusBadge = '<span class="badge badge-danger">Ungelesen</span>';
+                } else if (message.status === 'read') {
+                    statusBadge = '<span class="badge badge-warning">Gelesen</span>';
+                } else if (message.status === 'responded') {
+                    statusBadge = '<span class="badge badge-success">Beantwortet</span>';
+                }
+                
+                html += `
+                <tr data-id="${message.id}">
+                    <td>${message.name}</td>
+                    <td>${message.email}</td>
+                    <td>${message.subject}</td>
+                    <td>${formattedDate}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-icon btn-sm" title="Nachricht anzeigen">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                        <button class="btn btn-icon btn-sm" title="Antworten">
+                            <i class="fa fa-reply"></i>
+                        </button>
+                        <button class="btn btn-icon btn-sm" title="Löschen">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            });
+            
+            tableBody.innerHTML = html;
+        }
+        
+        // Chart.js Konfiguration und Rendering
+        function initCharts() {
+            // Besucher-Chart
+            const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+            new Chart(visitorsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+                    datasets: [{
+                        label: 'Seitenaufrufe',
+                        data: [650, 590, 800, 810, 760, 850, 980],
+                        borderColor: '#3D7B80',
+                        backgroundColor: 'rgba(61, 123, 128, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Einzigartige Besucher',
+                        data: [320, 280, 380, 430, 390, 450, 520],
+                        borderColor: '#D65108',
+                        backgroundColor: 'rgba(214, 81, 8, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#B3C0D1'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(61, 123, 128, 0.1)'
+                            },
+                            ticks: {
+                                color: '#B3C0D1'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#B3C0D1'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // KI-Chart
+            const aiCtx = document.getElementById('aiChart').getContext('2d');
+            new Chart(aiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun'],
+                    datasets: [{
+                        label: 'Text-Interaktionen',
+                        data: [120, 190, 230, 280, 330, 400],
+                        backgroundColor: 'rgba(61, 123, 128, 0.7)'
+                    }, {
+                        label: 'Avatar-Interaktionen',
+                        data: [90, 130, 180, 240, 280, 350],
+                        backgroundColor: 'rgba(214, 81, 8, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#B3C0D1'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(61, 123, 128, 0.1)'
+                            },
+                            ticks: {
+                                color: '#B3C0D1'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#B3C0D1'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialisierung mit CultureStream-Framework
+        CultureStream.ready(function() {
+            // Navigation-Handling
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktive Klasse entfernen
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
+                    
+                    // Benachrichtigung anzeigen für Demo-Zwecke
+                    const section = this.querySelector('span').textContent;
+                    CultureStream.notifications.info(`Navigiere zu: ${section}`);
+                });
+            });
+            
+            // Charts initialisieren
+            initCharts();
+            
+            // Kontaktanfragen laden
+            fetchContactMessages();
+            
+            // Aktualisieren-Button
+            const refreshBtn = document.querySelector('.admin-actions .btn-primary');
+            CultureStream.dom.on(refreshBtn, 'click', function() {
+                CultureStream.notifications.info('Daten werden aktualisiert...');
+                fetchContactMessages();
+                
+                // Simuliere Aktualisierung der Charts mit neuen Daten
+                setTimeout(() => {
+                    CultureStream.notifications.success('Daten erfolgreich aktualisiert');
+                }, 1000);
+            });
+            
+            // Export-Button
+            const exportBtn = document.querySelector('.admin-actions .btn-outline');
+            CultureStream.dom.on(exportBtn, 'click', function() {
+                CultureStream.notifications.info('Export wird vorbereitet...');
+                
+                // Simuliere Export-Vorgang
+                setTimeout(() => {
+                    CultureStream.notifications.success('Daten wurden erfolgreich exportiert');
+                }, 1500);
+            });
+            
+            // Chart-Filter-Buttons
+            const chartBtns = document.querySelectorAll('.chart-controls .btn');
+            chartBtns.forEach(btn => {
+                CultureStream.dom.on(btn, 'click', function() {
+                    const parent = this.closest('.chart-controls');
+                    parent.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // In einer echten Implementierung würden hier die Chart-Daten aktualisiert
+                });
+            });
+            
+            // Logout-Button
+            const logoutBtn = document.querySelector('.logout-btn');
+            CultureStream.dom.on(logoutBtn, 'click', function() {
+                if (confirm('Möchtest du dich wirklich abmelden?')) {
+                    CultureStream.notifications.info('Du wirst abgemeldet...');
+                    
+                    // Weiterleitung zur Login-Seite
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
+            });
+        });
+    </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
+</body>
+</html> 

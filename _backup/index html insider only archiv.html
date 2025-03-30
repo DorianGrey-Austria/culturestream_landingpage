@@ -348,50 +348,6 @@
             width: 100%;
         }
         
-        /* Neue Klasse für den Login-Button in der Kopfzeile */
-        .header-login-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            font-size: 14px;
-            background-color: var(--accent-color);
-            color: white;
-            z-index: 100;
-        }
-        
-        .header-login-btn:hover {
-            background-color: var(--light-accent);
-        }
-        
-        /* Neue Klasse für den Intern-Button */
-        .header-intern-btn {
-            position: absolute;
-            top: 20px;
-            right: 120px;
-            padding: 10px 20px;
-            font-size: 14px;
-            background-color: var(--primary-color);
-            color: white;
-            z-index: 100;
-        }
-        
-        .header-intern-btn:hover {
-            background-color: var(--secondary-color);
-        }
-        
-        /* Footer-Bereich */
-        .copyright {
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 12px;
-            color: var(--text-muted);
-            padding: 10px;
-        }
-        
         /* Responsive Design */
         @media (max-width: 768px) {
             .container {
@@ -582,6 +538,38 @@
                 min-height: 300px;
             }
         }
+        
+        /* Neue Klasse für den Login-Button in der Kopfzeile */
+        .header-login-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: var(--accent-color);
+            color: white;
+            z-index: 100;
+        }
+        
+        .header-login-btn:hover {
+            background-color: var(--light-accent);
+        }
+        
+        /* Neue Klasse für den Intern-Button */
+        .header-intern-btn {
+            position: absolute;
+            top: 20px;
+            right: 120px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            z-index: 100;
+        }
+        
+        .header-intern-btn:hover {
+            background-color: var(--secondary-color);
+        }
     </style>
 </head>
 <body>
@@ -631,7 +619,7 @@
         <section class="login-form-container" aria-labelledby="login-heading">
             <div class="login-form">
                 <div class="login-header">
-                    <img src="logo.png" alt="CultureStream Logo" class="login-logo">
+                    <img src="assets/logo.png" alt="CultureStream Logo" class="login-logo">
                     <h2 id="login-heading" class="login-title">Anmelden</h2>
                     <p class="login-subtitle">Melde dich an, um alle Funktionen zu nutzen</p>
                 </div>
@@ -694,11 +682,6 @@
                 </div>
             </div>
         </section>
-    </div>
-    
-    <!-- Copyright Footer -->
-    <div class="copyright">
-        &copy; Verein CultureStream. Alle Rechte vorbehalten.
     </div>
     
     <!-- Scripts einbinden -->

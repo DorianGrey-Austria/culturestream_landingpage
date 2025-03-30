@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Erkunden Sie aktuelle Ausstellungen auf der CultureStream-Plattform">
+    <meta name="csrf-token" content="YOUR_CSRF_TOKEN">
+    <title>CultureStream - Ausstellungen</title>
+    
+    <!-- Performance optimierte CSS-Einbindung -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/forms.css">
+    <link rel="stylesheet" href="css/notifications.css">
+    <link rel="stylesheet" href="css/performance.css">
+    <link rel="stylesheet" href="accessibility.css">
+    
+    <!-- Preload für kritische Assets -->
+    <link rel="preload" href="assets/logo.png" as="image">
+    <link rel="preload" href="fonts/main-font.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Critical CSS Inline für schnellere Rendering-Performance -->
+    <style>
+        /* Critical CSS für den ersten Viewport */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--primary-bg);
+        }
+        
+        .logo-area img {
+            height: 40px;
+            width: auto;
+        }
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        /* Platzhalter für Lazy-Loading-Inhalte */
+        .exhibition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .exhibition-placeholder {
+            height: 300px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip-Link für Tastaturnavigation -->
+    <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+
+    <header class="header" role="banner">
+        <div class="logo-area">
+            <a href="index.html">
+                <img src="assets/logo.png" alt="CultureStream Logo" width="180" height="40">
+            </a>
+        </div>
+        
+        <div class="user-area">
+            <a href="login.html" class="btn btn-outline">Anmelden</a>
+            <a href="register.html" class="btn btn-primary">Registrieren</a>
+        </div>
+    </header>
+    
+    <nav class="main-nav" role="navigation" aria-label="Hauptnavigation">
+        <ul>
+            <li><a href="index.html">Startseite</a></li>
+            <li><a href="exhibition.html" aria-current="page">Ausstellungen</a></li>
+            <li><a href="events.html">Veranstaltungen</a></li>
+            <li><a href="community.html">Community</a></li>
+            <li><a href="about.html">Über uns</a></li>
+        </ul>
+    </nav>
+    
+    <main id="main-content" class="main-container" role="main">
+        <h1>Aktuelle Ausstellungen</h1>
+        
+        <section class="featured-exhibition">
+            <h2>Highlight-Ausstellung</h2>
+            
+            <!-- Lazy-Loading für featured Image -->
+            <div class="featured-image">
+                <img data-src="assets/exhibitions/featured.jpg" 
+                     data-srcset="assets/exhibitions/featured-small.jpg 480w, assets/exhibitions/featured.jpg 800w" 
+                     data-sizes="(max-width: 600px) 480px, 800px" 
+                     alt="Moderne Kunst Ausstellung" 
+                     width="800" 
+                     height="450" 
+                     class="cs-lazy-placeholder">
+            </div>
+            
+            <div class="featured-info">
+                <h3>Moderne Perspektiven</h3>
+                <p>Eine Reise durch die zeitgenössische Kunst des 21. Jahrhunderts mit Werken international anerkannter Künstler.</p>
+                <p><strong>Ort:</strong> Kunstmuseum Berlin</p>
+                <p><strong>Datum:</strong> 15. Mai - 30. September 2023</p>
+                <a href="exhibition-detail.html?id=featured" class="btn btn-primary">Mehr erfahren</a>
+            </div>
+        </section>
+        
+        <section class="exhibition-filter">
+            <h2>Ausstellungen filtern</h2>
+            <form id="filter-form" class="filter-form">
+                <div class="form-group">
+                    <label for="category">Kategorie</label>
+                    <select id="category" name="category">
+                        <option value="">Alle Kategorien</option>
+                        <option value="contemporary">Zeitgenössische Kunst</option>
+                        <option value="classical">Klassische Kunst</option>
+                        <option value="photography">Fotografie</option>
+                        <option value="digital">Digitale Kunst</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Standort</label>
+                    <select id="location" name="location">
+                        <option value="">Alle Standorte</option>
+                        <option value="berlin">Berlin</option>
+                        <option value="munich">München</option>
+                        <option value="hamburg">Hamburg</option>
+                        <option value="cologne">Köln</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="date-range">Zeitraum</label>
+                    <select id="date-range" name="date-range">
+                        <option value="">Alle Zeiträume</option>
+                        <option value="current">Aktuell</option>
+                        <option value="upcoming">Demnächst</option>
+                        <option value="past">Vergangen</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-secondary">Filtern</button>
+            </form>
+        </section>
+        
+        <section class="all-exhibitions">
+            <h2>Alle Ausstellungen</h2>
+            
+            <!-- Dynamisch geladener Inhalt mit Code-Splitting -->
+            <div id="exhibitions-grid" class="exhibition-grid" data-cs-lazy-component="slider">
+                <!-- Der Slider wird dynamisch geladen, sobald dieser Bereich sichtbar wird -->
+                <div class="cs-slide">
+                    <img data-src="assets/exhibitions/exhibition1.jpg" alt="Ausstellung 1" width="400" height="300">
+                    <div class="slide-caption">
+                        <h3>Farben der Moderne</h3>
+                        <p>Kunstmuseum Berlin</p>
+                    </div>
+                </div>
+                <div class="cs-slide">
+                    <img data-src="assets/exhibitions/exhibition2.jpg" alt="Ausstellung 2" width="400" height="300">
+                    <div class="slide-caption">
+                        <h3>Digitale Revolution</h3>
+                        <p>Medienmuseum Hamburg</p>
+                    </div>
+                </div>
+                <div class="cs-slide">
+                    <img data-src="assets/exhibitions/exhibition3.jpg" alt="Ausstellung 3" width="400" height="300">
+                    <div class="slide-caption">
+                        <h3>Klassische Meisterwerke</h3>
+                        <p>Staatsgalerie München</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ausstellungskarten mit Lazy-Loading -->
+            <div class="exhibition-list">
+                <!-- Platzhalter werden durch tatsächliche Inhalte ersetzt, sobald diese in den Viewport scrollen -->
+                <article class="exhibition-card cs-lazy-placeholder" data-cs-lazy-html="components/exhibition-card-1.html">
+                    <!-- Inhalt wird dynamisch geladen -->
+                </article>
+                
+                <article class="exhibition-card cs-lazy-placeholder" data-cs-lazy-html="components/exhibition-card-2.html">
+                    <!-- Inhalt wird dynamisch geladen -->
+                </article>
+                
+                <article class="exhibition-card cs-lazy-placeholder" data-cs-lazy-html="components/exhibition-card-3.html">
+                    <!-- Inhalt wird dynamisch geladen -->
+                </article>
+                
+                <article class="exhibition-card cs-lazy-placeholder" data-cs-lazy-html="components/exhibition-card-4.html">
+                    <!-- Inhalt wird dynamisch geladen -->
+                </article>
+                
+                <article class="exhibition-card cs-lazy-placeholder" data-cs-lazy-html="components/exhibition-card-5.html">
+                    <!-- Inhalt wird dynamisch geladen -->
+                </article>
+                
+                <article class="exhibition-card cs-lazy-placeholder" data-cs-lazy-html="components/exhibition-card-6.html">
+                    <!-- Inhalt wird dynamisch geladen -->
+                </article>
+            </div>
+            
+            <div class="load-more">
+                <button id="load-more-btn" class="btn btn-secondary">Mehr anzeigen</button>
+            </div>
+        </section>
+    </main>
+    
+    <aside class="newsletter-signup">
+        <div class="container">
+            <h2>Newsletter abonnieren</h2>
+            <p>Bleiben Sie über neue Ausstellungen und Events informiert</p>
+            <form id="newsletter-form" data-validate>
+                <div class="form-group">
+                    <label for="newsletter-email" class="sr-only">E-Mail-Adresse</label>
+                    <input type="email" id="newsletter-email" name="email" placeholder="Ihre E-Mail-Adresse" required>
+                    <button type="submit" class="btn btn-primary">Abonnieren</button>
+                </div>
+            </form>
+        </div>
+    </aside>
+    
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>CultureStream</h3>
+                    <p>Ihre Plattform für Kunst und Kultur.</p>
+                    <p>&copy; 2023 CultureStream. Alle Rechte vorbehalten.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Links</h3>
+                    <ul>
+                        <li><a href="about.html">Über uns</a></li>
+                        <li><a href="team.html">Team</a></li>
+                        <li><a href="career.html">Karriere</a></li>
+                        <li><a href="contact.html">Kontakt</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Rechtliches</h3>
+                    <ul>
+                        <li><a href="terms.html">AGB</a></li>
+                        <li><a href="privacy.html">Datenschutz</a></li>
+                        <li><a href="imprint.html">Impressum</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Folge uns</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fa fa-youtube" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Cookie-Banner -->
+    <div id="cookie-banner" class="cookie-banner" role="alert" aria-live="polite">
+        <div class="cookie-content">
+            <p>Wir verwenden Cookies, um Ihnen die bestmögliche Erfahrung zu bieten. Weitere Informationen finden Sie in unserer <a href="privacy.html">Datenschutzerklärung</a>.</p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies" class="btn btn-primary">Akzeptieren</button>
+                <button id="reject-cookies" class="btn btn-outline">Ablehnen</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification Area -->
+    <div id="notification-area" class="notification-area" aria-live="polite"></div>
+    
+    <!-- Performance optimierte Script-Einbindung -->
+    <script src="scripts.js" defer></script>
+    <script src="form-validation.js" defer></script>
+    <script src="scripts/performance.js" defer></script>
+    
+    <!-- Font Awesome nur wenn nötig (für Icons) -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous" defer></script>
+    
+    <script>
+        // Sofort ausgeführter Code für kritische Funktionalität
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cookie-Banner-Funktionalität
+            const cookieBanner = document.getElementById('cookie-banner');
+            if (cookieBanner && !localStorage.getItem('cookiesAccepted')) {
+                cookieBanner.style.display = 'block';
+                
+                document.getElementById('accept-cookies').addEventListener('click', function() {
+                    localStorage.setItem('cookiesAccepted', 'true');
+                    cookieBanner.style.display = 'none';
+                });
+                
+                document.getElementById('reject-cookies').addEventListener('click', function() {
+                    localStorage.setItem('cookiesAccepted', 'false');
+                    cookieBanner.style.display = 'none';
+                });
+            }
+            
+            // "Mehr anzeigen"-Button
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', function() {
+                    // Dynamisch weitere Ausstellungskarten laden
+                    const exhibitionList = document.querySelector('.exhibition-list');
+                    
+                    // Statt direkt zu laden: Code-Splitting nutzen
+                    if (window.CultureStream && window.CultureStream.performance) {
+                        // Neue Karten hinzufügen (simuliert)
+                        for (let i = 7; i <= 9; i++) {
+                            const card = document.createElement('article');
+                            card.className = 'exhibition-card cs-lazy-placeholder';
+                            card.setAttribute('data-cs-lazy-html', `components/exhibition-card-${i}.html`);
+                            exhibitionList.appendChild(card);
+                        }
+                        
+                        // Lazy-Loading für neue Elemente initialisieren
+                        window.CultureStream.performance.init();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CultureStream Ausstellungsraum - Entdecken Sie digitale Kunstausstellungen in unserem Kunstverein">
+    <meta name="csrf-token" content="12345678">
+    <title>CultureStream - Ausstellungsraum</title>
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    
+    <style>
+        /* Seitenspezifische Stile */
+        :root {
+            --primary-color: #3D7B80; /* Tiefes Türkis */
+            --secondary-color: #A4C2A5; /* Moosgrün */
+            --accent-color: #D65108; /* Terrakotta */
+            --light-accent: #F2A65A; /* Sanftes Orange */
+            --dark-bg: #0F1A20; /* Fast-Schwarz mit Blauton */
+            --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
+            --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
+            --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
+            
+            /* Standardfarben für gemeinsame Komponenten */
+            --color-primary: #3D7B80;
+            --color-primary-rgb: 61, 123, 128;
+            --color-secondary: #A4C2A5;
+            --color-accent: #D65108;
+            --color-info: #38BDF8;
+            --color-success: #4ADE80;
+            --color-warning: #F2A65A;
+            --color-danger: #EF4444;
+        }
+        
+        /* Spezifische Stile für den Ausstellungsbereich */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--dark-panel), #131b23);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+            border-bottom: 1px solid var(--primary-color);
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 40px;
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, var(--text-light), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .exhibition-badge {
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 15px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+        }
+        
+        .exhibition-badge i {
+            margin-right: 5px;
+        }
+        
+        .user-area {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: 600;
+            color: var(--text-light);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .user-name {
+            margin-right: 20px;
+        }
+        
+        .logout-btn {
+            padding: 8px 15px;
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--text-light);
+        }
+        
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        nav {
+            width: 250px;
+            background: linear-gradient(180deg, #1a2530, #0f1a20);
+            padding: 20px 0;
+            border-right: 1px solid rgba(214, 81, 8, 0.1);
+        }
+        
+        .nav-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(214, 81, 8, 0.1);
+            color: var(--accent-color);
+            border-left-color: var(--accent-color);
+        }
+        
+        .nav-item i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        main {
+            flex: 1;
+            padding: 30px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(214, 81, 8, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(61, 123, 128, 0.03) 0%, transparent 20%);
+        }
+        
+        .exhibition-header {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .exhibition-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            color: var(--text-light);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .exhibition-header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+        }
+        
+        .exhibition-header p {
+            max-width: 700px;
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .exhibition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .exhibition-card {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border: 1px solid rgba(214, 81, 8, 0.1);
+        }
+        
+        .exhibition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-color);
+        }
+        
+        .exhibition-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .exhibition-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .exhibition-card:hover .exhibition-image img {
+            transform: scale(1.05);
+        }
+        
+        .exhibition-category {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(15, 26, 32, 0.8);
+            color: var(--text-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            z-index: 1;
+        }
+        
+        .exhibition-type {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+            color: var(--text-light);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            z-index: 1;
+        }
+        
+        .exhibition-details {
+            padding: 20px;
+        }
+        
+        .exhibition-details h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: var(--text-light);
+        }
+        
+        .exhibition-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+        
+        .exhibition-meta div {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        
+        .exhibition-meta i {
+            margin-right: 5px;
+            font-size: 14px;
+        }
+        
+        .exhibition-description {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .exhibition-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .exhibition-count {
+            color: var(--accent-color);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .exhibition-count i {
+            margin-right: 5px;
+        }
+        
+        .current-exhibition {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(214, 81, 8, 0.2);
+        }
+        
+        .current-exhibition::before {
+            content: '';
+            position: absolute;
+            right: -50px;
+            top: -50px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(214, 81, 8, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+        }
+        
+        .current-exhibition h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--text-light);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .current-exhibition h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+        }
+        
+        .current-exhibition-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .current-exhibition-images {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .featured-image {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 8px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .image-gallery {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .gallery-thumbnail {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .gallery-thumbnail:hover, .gallery-thumbnail.active {
+            opacity: 1;
+        }
+        
+        .current-exhibition-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .exhibition-info-heading {
+            font-size: 28px;
+            margin-bottom: 5px;
+            color: var(--text-light);
+        }
+        
+        .exhibition-info-artist {
+            font-size: 18px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+        
+        .exhibition-info-desc {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .exhibition-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.8), rgba(15, 26, 32, 0.8));
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(214, 81, 8, 0.1);
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-label {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .filter-options {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .filter-option {
+            padding: 5px 12px;
+            background-color: rgba(15, 26, 32, 0.6);
+            border: 1px solid rgba(214, 81, 8, 0.2);
+            border-radius: 20px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+        
+        .filter-option:hover, .filter-option.active {
+            background-color: rgba(214, 81, 8, 0.1);
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .featured-exhibition {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .featured-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .featured-title {
+            font-size: 24px;
+            color: var(--text-light);
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .featured-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            bottom: 5px;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent-color), var(--light-accent));
+            border-radius: 3px;
+        }
+        
+        .carousel-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .carousel-control {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(15, 26, 32, 0.6);
+            border: 1px solid rgba(214, 81, 8, 0.2);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .carousel-control:hover {
+            background-color: rgba(214, 81, 8, 0.1);
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+        
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 20px;
+        }
+        
+        .carousel-slide {
+            flex: 0 0 calc(33.333% - 20px);
+            min-width: 300px;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box input {
+            padding: 10px 15px 10px 40px;
+            background-color: rgba(31, 40, 51, 0.6);
+            border: 1px solid rgba(214, 81, 8, 0.2);
+            border-radius: 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            width: 250px;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            width: 300px;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+            gap: 5px;
+        }
+        
+        .page-button {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(31, 40, 51, 0.6);
+            border: 1px solid rgba(214, 81, 8, 0.2);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .page-button:hover, .page-button.active {
+            background-color: var(--accent-color);
+            color: var(--text-light);
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--text-light);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color), transparent);
+        }
+        
+        .immersive-view {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 0 0 rgba(214, 81, 8, 0.4);
+            animation: pulse 2s infinite;
+            z-index: 100;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(214, 81, 8, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(214, 81, 8, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(214, 81, 8, 0);
+            }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            nav {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid rgba(214, 81, 8, 0.1);
+            }
+            
+            .current-exhibition-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .exhibition-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box input, .search-box input:focus {
+                width: 100%;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="accessibility.css">
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
+            <div class="logo-text">CultureStream</div>
+            <div class="exhibition-badge">
+                <i class="fa fa-images"></i> Ausstellungen
+            </div>
+        </div>
+        <div class="user-area">
+            <div class="user-avatar">K</div>
+            <div class="user-name">Katharina Schmidt</div>
+            <button class="btn logout-btn">Abmelden</button>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <nav>
+            <a href="#" class="nav-item">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fa fa-images"></i>
+                <span>Ausstellungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-calendar"></i>
+                <span>Veranstaltungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-users"></i>
+                <span>Community</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-paint-brush"></i>
+                <span>Künstler</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-book"></i>
+                <span>Mediathek</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-user"></i>
+                <span>Profil</span>
+            </a>
+        </nav>
+        
+        <main>
+            <div class="exhibition-header">
+                <h1>Virtueller Ausstellungsraum</h1>
+                <p>Entdecke kuratierte Ausstellungen, Kunstwerke und multimediale Installationen. Unser digitaler Raum bietet dir einen tiefen Einblick in die Werke unserer Künstler und ermöglicht einen grenzenlosen Zugang zu Kunst und Kultur.</p>
+            </div>
+            
+            <div class="current-exhibition">
+                <h2>Aktuelle Hauptausstellung</h2>
+                
+                <div class="current-exhibition-content">
+                    <div class="current-exhibition-images">
+                        <div class="featured-image">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <div class="image-gallery">
+                            <div class="gallery-thumbnail active">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="gallery-thumbnail">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="gallery-thumbnail">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <div class="gallery-thumbnail">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="current-exhibition-info">
+                        <h3 class="exhibition-info-heading">"Grenzenlos: Begegnungen im virtuellen Raum"</h3>
+                        <p class="exhibition-info-artist">Gruppenausstellung mit 28 Künstlern aus 14 Ländern</p>
+                        
+                        <div class="exhibition-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span class="meta-label">15. Mai - 30. Juli 2023</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span class="meta-label">Virtueller Hauptraum</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-eye"></i>
+                                <span class="meta-label">1.247 Besucher</span>
+                            </div>
+                        </div>
+                        
+                        <p class="exhibition-info-desc">Diese interdisziplinäre Ausstellung erforscht die Idee von Grenzen – physischen, kulturellen und konzeptuellen – in einer digitalen Welt. Die teilnehmenden Künstler verwenden unterschiedliche Medien, von digitaler Malerei und Fotografie bis hin zu interaktiven Installationen und Virtual Reality, um zu untersuchen, wie Technologie Barrieren überwinden und neue Formen des Ausdrucks ermöglichen kann.</p>
+                        
+                        <div class="action-buttons">
+                            <a href="#" class="art-btn">Virtuelle Tour starten</a>
+                            <a href="#" class="art-btn art-btn-outline">Katalog herunterladen</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-bar">
+                <div class="filter-group">
+                    <span class="filter-label">Filtern nach:</span>
+                    <button class="filter-button active">Alle</button>
+                    <button class="filter-button">Malerei</button>
+                    <button class="filter-button">Fotografie</button>
+                    <button class="filter-button">Skulptur</button>
+                    <button class="filter-button">Digital</button>
+                    <button class="filter-button">Installation</button>
+                </div>
+                
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Nach Künstler oder Werk suchen...">
+                </div>
+            </div>
+            
+            <h2 class="section-title">Weitere Ausstellungen</h2>
+            
+            <div class="exhibition-grid">
+                <div class="exhibition-card">
+                    <div class="exhibition-tag">Neu</div>
+                    <div class="exhibition-card-image">
+                        <div class="exhibition-card-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="exhibition-card-content">
+                        <h3 class="exhibition-title">Licht & Raum: Neue Perspektiven</h3>
+                        <p class="exhibition-artist">Clara Mondlicht</p>
+                        <div class="exhibition-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>10. Mai - 15. Juli 2023</span>
+                        </div>
+                        <p class="exhibition-description">Eine tiefgehende Erkundung des Zusammenspiels von natürlichem und künstlichem Licht in verschiedenen urbanen Umgebungen, präsentiert durch innovative Lichtskulpturen.</p>
+                        <a href="#" class="art-btn">Zur Ausstellung</a>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <div class="exhibition-card-image">
+                        <div class="exhibition-card-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="exhibition-card-content">
+                        <h3 class="exhibition-title">Urbane Metamorphosen</h3>
+                        <p class="exhibition-artist">KollektivX</p>
+                        <div class="exhibition-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>3. Mai - 20. Juni 2023</span>
+                        </div>
+                        <p class="exhibition-description">Ein partizipatives Projekt, das die Alltagsgeschichten von Bewohnern aus fünf europäischen Städten dokumentiert und durch verschiedene Medien interpretiert.</p>
+                        <a href="#" class="art-btn">Zur Ausstellung</a>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <div class="exhibition-card-image">
+                        <div class="exhibition-card-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="exhibition-card-content">
+                        <h3 class="exhibition-title">Zeit im Holz: Traditionelle Techniken neu interpretiert</h3>
+                        <p class="exhibition-artist">Takumi Ito</p>
+                        <div class="exhibition-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>12. April - 8. Juni 2023</span>
+                        </div>
+                        <p class="exhibition-description">Eine Serie von Holzschnitten, die traditionelle japanische Techniken mit zeitgenössischen Themen verbindet und dadurch einen Dialog zwischen Vergangenheit und Gegenwart schafft.</p>
+                        <a href="#" class="art-btn">Zur Ausstellung</a>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <div class="exhibition-card-image">
+                        <div class="exhibition-card-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="exhibition-card-content">
+                        <h3 class="exhibition-title">Digitale Materialien</h3>
+                        <p class="exhibition-artist">Sonja Wavell</p>
+                        <div class="exhibition-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>20. März - 30. Mai 2023</span>
+                        </div>
+                        <p class="exhibition-description">Eine innovative Ausstellung, die die Grenzen zwischen digitalem Design und traditionellem Handwerk durch textile Arbeiten und interaktive Installationen erforscht.</p>
+                        <a href="#" class="art-btn">Zur Ausstellung</a>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <div class="exhibition-tag">Archiv</div>
+                    <div class="exhibition-card-image">
+                        <div class="exhibition-card-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="exhibition-card-content">
+                        <h3 class="exhibition-title">Landschaften des Unsichtbaren</h3>
+                        <p class="exhibition-artist">Maria Eichhorn</p>
+                        <div class="exhibition-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>5. Januar - 28. Februar 2023</span>
+                        </div>
+                        <p class="exhibition-description">Eine audiovisuelle Installation, die die unsichtbaren Grenzen unserer Gesellschaft durch eine Kombination aus Fotografie, Klang und interaktiven Elementen erforscht.</p>
+                        <a href="#" class="art-btn">Zur Ausstellung</a>
+                    </div>
+                </div>
+                
+                <div class="exhibition-card">
+                    <div class="exhibition-tag">Archiv</div>
+                    <div class="exhibition-card-image">
+                        <div class="exhibition-card-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="exhibition-card-content">
+                        <h3 class="exhibition-title">Fragmente der Erinnerung</h3>
+                        <p class="exhibition-artist">Jan Svensson</p>
+                        <div class="exhibition-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>10. November - 22. Dezember 2022</span>
+                        </div>
+                        <p class="exhibition-description">Eine introspektive Fotografie-Ausstellung, die persönliche und kollektive Erinnerungen durch manipulierte Archivbilder und multisensorische Erfahrungen erkundet.</p>
+                        <a href="#" class="art-btn">Zur Ausstellung</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="pagination">
+                <button class="page-button active">1</button>
+                <button class="page-button">2</button>
+                <button class="page-button">3</button>
+                <button class="page-button">4</button>
+                <button class="page-button"><i class="fas fa-ellipsis-h"></i></button>
+                <button class="page-button">8</button>
+                <button class="page-button"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </main>
+    </div>
+    
+    <div class="immersive-view" title="Immersive Ansicht starten">
+        <i class="fas fa-vr-cardboard"></i>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script src="form-validation.js"></script>
+    <script>
+        CultureStream.ready(function() {
+            // Navigation-Handling
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktive Klasse entfernen
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
+                    
+                    // Benachrichtigung anzeigen für Demo-Zwecke
+                    const section = this.querySelector('span').textContent;
+                    CultureStream.notifications.info(`Navigiere zu: ${section}`);
+                });
+            });
+            
+            // Filter-Optionen
+            const filterOptions = document.querySelectorAll('.filter-option');
+            
+            filterOptions.forEach(option => {
+                CultureStream.dom.on(option, 'click', function() {
+                    const group = this.closest('.filter-group');
+                    const groupOptions = group.querySelectorAll('.filter-option');
+                    
+                    // Wenn Multi-Select erlaubt ist (data-multi="true")
+                    if (group.dataset.multi === 'true') {
+                        this.classList.toggle('active');
+                    } else {
+                        // Single-Select: Nur eine Option aktiv
+                        groupOptions.forEach(opt => opt.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                    
+                    // Filter-Logik hier (für Demo-Zwecke nur Benachrichtigung)
+                    const filterType = group.querySelector('.filter-label').textContent.trim();
+                    const filterValue = this.textContent.trim();
+                    
+                    CultureStream.notifications.info(`Filter: ${filterType} = ${filterValue}`);
+                });
+            });
+            
+            // Carousel-Funktionalität
+            const track = document.querySelector('.carousel-track');
+            const slides = document.querySelectorAll('.carousel-slide');
+            const nextButton = document.querySelector('.carousel-next');
+            const prevButton = document.querySelector('.carousel-prev');
+            
+            if (track && slides.length > 0) {
+                let currentIndex = 0;
+                const slideWidth = slides[0].getBoundingClientRect().width + 20; // +20 für den gap
+                const maxIndex = slides.length - 1;
+                
+                function updateCarousel() {
+                    track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+                }
+                
+                if (nextButton) {
+                    CultureStream.dom.on(nextButton, 'click', function() {
+                        if (currentIndex < maxIndex) {
+                            currentIndex++;
+                            updateCarousel();
+                        }
+                    });
+                }
+                
+                if (prevButton) {
+                    CultureStream.dom.on(prevButton, 'click', function() {
+                        if (currentIndex > 0) {
+                            currentIndex--;
+                            updateCarousel();
+                        }
+                    });
+                }
+            }
+            
+            // Ausstellungsinteraktionen
+            const exhibitionButtons = document.querySelectorAll('.exhibition-actions .btn');
+            
+            exhibitionButtons.forEach(button => {
+                CultureStream.dom.on(button, 'click', function() {
+                    const exhibitionTitle = this.closest('.exhibition-details').querySelector('h3').textContent;
+                    const buttonText = this.textContent.trim();
+                    
+                    if (buttonText === 'Besuchen') {
+                        CultureStream.notifications.success(`Du besuchst jetzt "${exhibitionTitle}". Viel Freude beim Erkunden!`);
+                    } else if (buttonText === 'Speichern') {
+                        this.textContent = 'Gespeichert';
+                        this.classList.add('btn-secondary');
+                        CultureStream.notifications.success(`"${exhibitionTitle}" wurde zu deinen gespeicherten Ausstellungen hinzugefügt.`);
+                    } else if (buttonText === 'Teilnehmen') {
+                        CultureStream.notifications.success(`Deine Teilnahme an der Tour "${exhibitionTitle}" wurde bestätigt!`);
+                    }
+                });
+            });
+            
+            // Logout-Button
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            CultureStream.dom.on(logoutBtn, 'click', function() {
+                if (confirm('Möchtest du dich wirklich abmelden?')) {
+                    CultureStream.notifications.info('Du wirst abgemeldet...');
+                    
+                    // Weiterleitung zur Login-Seite
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
+            });
+        });
+    </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
+</body>
+</html> 

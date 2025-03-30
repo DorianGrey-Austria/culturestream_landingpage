@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  
+  # Wenn die Anfrage keine Datei ist
+  RewriteCond %{REQUEST_FILENAME} !-f
+  # Und keine Verzeichnis ist
+  RewriteCond %{REQUEST_FILENAME} !-d
+  # Dann zur index.html weiterleiten
+  RewriteRule ^(.*)$ index.html [L]
+</IfModule>
