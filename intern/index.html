@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CultureStream - Interner Bereich</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../accessibility.css">
+    <link rel="icon" href="../logo.png" type="image/png">
+    <style>
+        :root {
+            --primary: #D65108;
+            --primary-dark: #b54400;
+            --secondary: #e67e30;
+            --accent: #f8eee2;
+            --background: #ffffff;
+            --foreground: #333333;
+            --border: #e2e8f0;
+            --input: #e2e8f0;
+            --ring: #d65108;
+            --radius: 0.5rem;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--accent), var(--background));
+            min-height: 100vh;
+            color: var(--foreground);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .welcome-card {
+            max-width: 800px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-title {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: var(--radius);
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(214, 81, 8, 0.3);
+        }
+
+        .back-link {
+            margin-top: 2rem;
+            display: inline-block;
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--primary);
+        }
+
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .welcome-card {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+            .welcome-title {
+                font-size: 2rem;
+            }
+
+            .welcome-text {
+                font-size: 1rem;
+            }
+
+            .header-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="../index.html" class="logo">
+                <img src="../logo.png" alt="CultureStream Logo">
+                <span class="logo-text">CultureStream</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="welcome-card">
+            <h1 class="welcome-title">Willkommen im internen Bereich</h1>
+            <p class="welcome-text">
+                Hier haben Sie Zugang zu exklusiven Inhalten und Funktionen von CultureStream. 
+                Sie können auf Ihre persönlichen Einstellungen zugreifen, Nachrichten verwalten, 
+                Live-Events planen und vieles mehr. Bitte melden Sie sich an, um fortzufahren.
+            </p>
+            <a href="login/index.html" class="cta-button">Zum Login</a>
+            <br>
+            <a href="../index.html" class="back-link">← Zurück zur Startseite</a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 CultureStream. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+</body>
+</html> 

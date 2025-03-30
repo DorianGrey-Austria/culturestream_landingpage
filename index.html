@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CultureStream - Das Fenster zur Welt</title>
+    <meta name="description" content="Verbinden Sie sich mit Menschen weltweit durch innovative Live-Stream-Portale.">
+    
+    <!-- Lokale CSS-Dateien statt Next.js-Pfade -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="accessibility.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="logo.png" type="image/png">
+    
+    <style>
+        /* Stil für die Header-Buttons */
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            position: fixed;
+            top: 20px;
+            right: 100px;
+            z-index: 100;
+        }
+        
+        .header-button {
+            padding: 10px 20px;
+            background-color: var(--primary, #D65108);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .header-button:hover {
+            background-color: var(--primary-dark, #b54400);
+            transform: translateY(-2px);
+        }
+
+        .header-button.secondary {
+            background-color: var(--secondary, #e67e30);
+        }
+        
+        .header-button.secondary:hover {
+            background-color: #d16c25;
+        }
+        
+        /* Responsive Design für die Buttons */
+        @media (max-width: 768px) {
+            .header-buttons {
+                top: 10px;
+                right: 60px;
+            }
+            
+            .header-button {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+        }
+
+        /* Grundlegende Stilvariablen */
+        :root {
+            --primary: #D65108;
+            --primary-dark: #b54400;
+            --secondary: #e67e30;
+            --accent: #f8eee2;
+            --background: #ffffff;
+            --foreground: #333333;
+            --border: #e2e8f0;
+            --input: #e2e8f0;
+            --ring: #d65108;
+            --radius: 0.5rem;
+        }
+
+        /* Allgemeine Stile */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background);
+            color: var(--foreground);
+        }
+
+        .min-h-screen {
+            min-height: 100vh;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .fixed {
+            position: fixed;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .rounded-full {
+            border-radius: 9999px;
+        }
+
+        /* Stilisierter Gradient-Text */
+        .text-transparent {
+            color: transparent;
+        }
+
+        .bg-clip-text {
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .bg-gradient-to-r {
+            background-image: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        /* Hero-Sektion */
+        #hero {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(to bottom, var(--background), var(--accent));
+        }
+
+        .text-5xl {
+            font-size: 3rem;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .mb-8 {
+            margin-bottom: 2rem;
+        }
+
+        .gap-8 {
+            gap: 2rem;
+        }
+
+        .w-16 {
+            width: 4rem;
+        }
+
+        .h-16 {
+            height: 4rem;
+        }
+
+        .rounded-xl {
+            border-radius: 0.75rem;
+        }
+
+        /* Button-Stil */
+        .bg-primary {
+            background-color: var(--primary);
+        }
+
+        .text-white {
+            color: white;
+        }
+
+        .px-8 {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .py-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .transition-all {
+            transition-property: all;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        .hover\:scale-105:hover {
+            transform: scale(1.05);
+        }
+
+        /* Navigation */
+        .fixed.right-8 {
+            right: 2rem;
+        }
+
+        .top-1\/2 {
+            top: 50%;
+        }
+
+        .-translate-y-1\/2 {
+            transform: translateY(-50%);
+        }
+
+        .z-50 {
+            z-index: 50;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .w-3 {
+            width: 0.75rem;
+        }
+
+        .h-3 {
+            height: 0.75rem;
+        }
+
+        .transition-all {
+            transition-property: all;
+        }
+
+        .duration-300 {
+            transition-duration: 300ms;
+        }
+        
+        /* Hero-Video */
+        .video-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        
+        .hero-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.2;
+        }
+        
+        .logo-animation {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        .logo-animation video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 2rem;
+        }
+        
+        .logo-animation.show {
+            opacity: 0.1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header-Buttons für Login und Intern -->
+    <div class="header-buttons">
+        <a href="intern/index.html" class="header-button secondary">Intern</a>
+        <a href="intern/login/index.html" class="header-button">Login</a>
+    </div>
+
+    <!-- Hauptinhalt -->
+    <main class="relative min-h-screen">
+        <section id="hero" class="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-background to-accent">
+            <div class="video-container">
+                <video autoPlay muted loop playsInline class="hero-video" preload="auto" poster="images/hero-poster.jpg">
+                    <source src="videos/hero.mp4" type="video/mp4">
+                </video>
+            </div>
+            
+            <div class="logo-animation" id="logoAnimation">
+                <video autoPlay muted loop playsInline>
+                    <source src="videos/Logo Animation.mp4" type="video/mp4">
+                </video>
+            </div>
+            
+            <div class="container mx-auto px-4 text-center relative z-10">
+                <div class="flex justify-center items-center gap-8 mb-8">
+                    <div class="relative w-16 h-16" id="logoTrigger">
+                        <img src="logo.png" alt="CultureStream Logo" class="relative w-full h-full object-contain drop-shadow-xl rounded-xl"/>
+                    </div>
+                    <h1 class="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">CultureStream</h1>
+                </div>
+                <p class="text-2xl mb-8">Das Fenster zur Welt!</p>
+                <button class="bg-primary text-white px-8 py-4 rounded-full text-lg font-semibold hover:scale-105 transition-all duration-300">Entdecken Sie mehr</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-10 bg-gray-900 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 CultureStream. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hover-Effekt für Logo-Animation
+            const logoTrigger = document.getElementById('logoTrigger');
+            const logoAnimation = document.getElementById('logoAnimation');
+            
+            if (logoTrigger && logoAnimation) {
+                logoTrigger.addEventListener('mouseenter', function() {
+                    logoAnimation.classList.add('show');
+                });
+                
+                logoTrigger.addEventListener('mouseleave', function() {
+                    logoAnimation.classList.remove('show');
+                });
+            }
+            
+            console.log('CultureStream Website geladen');
+        });
+    </script>
+</body>
+</html> 
