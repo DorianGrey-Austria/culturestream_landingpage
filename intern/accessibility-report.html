@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CultureStream Accessibility Test Dashboard - WCAG 2.1 AA Konformitätsberichte">
+    <title>CultureStream - Accessibility Test Dashboard</title>
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="accessibility.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <style>
+        :root {
+            --success-color: #4ADE80;
+            --warning-color: #F2A65A;
+            --error-color: #EF4444;
+            --gray-color: #6B7280;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .dashboard-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+        }
+        
+        .dashboard-subtitle {
+            font-size: 1.2rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1.5rem;
+        }
+        
+        .dashboard-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .summary-card {
+            background-color: var(--color-bg-alt);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-small);
+            text-align: center;
+        }
+        
+        .summary-card-title {
+            font-size: 1.2rem;
+            color: var(--color-text-muted);
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-card-value {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-card-percentage {
+            font-size: 1.2rem;
+        }
+        
+        .summary-card.passed .summary-card-value {
+            color: var(--success-color);
+        }
+        
+        .summary-card.warnings .summary-card-value {
+            color: var(--warning-color);
+        }
+        
+        .summary-card.errors .summary-card-value {
+            color: var(--error-color);
+        }
+        
+        .summary-card.wcag .summary-card-value {
+            font-size: 2.5rem;
+        }
+        
+        .wcag-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-left: 0.5rem;
+            color: white;
+        }
+        
+        .wcag-badge.a {
+            background-color: #F2A65A;
+        }
+        
+        .wcag-badge.aa {
+            background-color: #4ADE80;
+        }
+        
+        .wcag-badge.aaa {
+            background-color: #38BDF8;
+        }
+        
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .progress-wrapper {
+            background-color: var(--color-bg-alt);
+            border-radius: var(--border-radius);
+            height: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            display: flex;
+        }
+        
+        .progress-segment {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-segment.passed {
+            background-color: var(--success-color);
+        }
+        
+        .progress-segment.warnings {
+            background-color: var(--warning-color);
+        }
+        
+        .progress-segment.errors {
+            background-color: var(--error-color);
+        }
+        
+        .test-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .category-card {
+            background-color: var(--color-bg-alt);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-small);
+        }
+        
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .category-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .category-stats {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .category-stat {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .category-stat.passed {
+            background-color: rgba(74, 222, 128, 0.2);
+            color: var(--success-color);
+        }
+        
+        .category-stat.warnings {
+            background-color: rgba(242, 166, 90, 0.2);
+            color: var(--warning-color);
+        }
+        
+        .category-stat.errors {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--error-color);
+        }
+        
+        .category-progress {
+            background-color: var(--color-bg);
+            border-radius: var(--border-radius-sm);
+            height: 0.5rem;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .issue-list {
+            margin-top: 1rem;
+        }
+        
+        .issue-item {
+            padding: 0.75rem;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .issue-item.error {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid var(--error-color);
+        }
+        
+        .issue-item.warning {
+            background-color: rgba(242, 166, 90, 0.1);
+            border-left: 3px solid var(--warning-color);
+        }
+        
+        .issue-message {
+            margin-bottom: 0.25rem;
+        }
+        
+        .issue-rule {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .recommendations {
+            background-color: var(--color-bg-alt);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .recommendations-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+        
+        .recommendation-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .recommendation-item {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .recommendation-item:before {
+            content: "\f00c";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            color: var(--color-primary);
+        }
+        
+        .scan-form {
+            background-color: var(--color-bg-alt);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .scan-form-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .scan-form-field {
+            margin-bottom: 1rem;
+        }
+        
+        .page-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .page-item {
+            background-color: var(--color-bg-alt);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: var(--shadow-small);
+            transition: transform 0.2s;
+        }
+        
+        .page-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .page-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+        }
+        
+        .page-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-status {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-dot.passed {
+            background-color: var(--success-color);
+        }
+        
+        .status-dot.warnings {
+            background-color: var(--warning-color);
+        }
+        
+        .status-dot.errors {
+            background-color: var(--error-color);
+        }
+        
+        @media (max-width: 768px) {
+            .summary-cards,
+            .test-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Skip Link für Tastaturnavigation -->
+    <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+    
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
+                <h1 class="site-title">CultureStream</h1>
+            </div>
+            
+            <div class="user-area">
+                <div class="user-menu">
+                    <button class="user-menu-btn" aria-haspopup="true" aria-expanded="false">
+                        <span class="user-role">Administrator</span>
+                        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <nav class="main-nav" aria-label="Hauptnavigation">
+            <ul class="nav-list">
+                <li class="nav-item">
+                    <a href="admin.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt" aria-hidden="true"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" aria-current="page">
+                        <i class="fas fa-universal-access" aria-hidden="true"></i>
+                        <span>Accessibility</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chart-line" aria-hidden="true"></i>
+                        <span>Statistiken</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog" aria-hidden="true"></i>
+                        <span>Einstellungen</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <main id="main-content" class="main-container">
+            <div class="dashboard-container">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Accessibility Test Dashboard</h1>
+                    <p class="dashboard-subtitle">WCAG 2.1 Konformitätsberichte für die CultureStream Plattform</p>
+                    
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" id="run-tests-btn">
+                            <i class="fas fa-sync-alt" aria-hidden="true"></i> Tests jetzt ausführen
+                        </button>
+                        <button class="btn btn-outline" id="export-report-btn">
+                            <i class="fas fa-download" aria-hidden="true"></i> Bericht exportieren
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="summary-cards">
+                    <div class="summary-card passed">
+                        <div class="summary-card-title">Bestanden</div>
+                        <div class="summary-card-value">85</div>
+                        <div class="summary-card-percentage">72.6%</div>
+                    </div>
+                    
+                    <div class="summary-card warnings">
+                        <div class="summary-card-title">Warnungen</div>
+                        <div class="summary-card-value">23</div>
+                        <div class="summary-card-percentage">19.7%</div>
+                    </div>
+                    
+                    <div class="summary-card errors">
+                        <div class="summary-card-title">Fehler</div>
+                        <div class="summary-card-value">9</div>
+                        <div class="summary-card-percentage">7.7%</div>
+                    </div>
+                    
+                    <div class="summary-card wcag">
+                        <div class="summary-card-title">WCAG Konformität</div>
+                        <div class="summary-card-value">AA <span class="wcag-badge aa">AA</span></div>
+                        <div class="summary-card-percentage">Alle kritischen Tests bestanden</div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-header">
+                        <h2 class="progress-title">Gesamtfortschritt</h2>
+                        <span>Letzter Scan: 15.06.2023 14:32</span>
+                    </div>
+                    
+                    <div class="progress-wrapper">
+                        <div class="progress-bar">
+                            <div class="progress-segment passed" style="width: 72.6%;">72.6%</div>
+                            <div class="progress-segment warnings" style="width: 19.7%;">19.7%</div>
+                            <div class="progress-segment errors" style="width: 7.7%;">7.7%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="test-categories">
+                    <div class="category-card">
+                        <div class="category-header">
+                            <h3 class="category-title">
+                                <i class="fas fa-image" aria-hidden="true"></i> Bilder
+                            </h3>
+                            <div class="category-stats">
+                                <span class="category-stat passed">18 <i class="fas fa-check" aria-hidden="true"></i></span>
+                                <span class="category-stat warnings">3 <i class="fas fa-exclamation" aria-hidden="true"></i></span>
+                                <span class="category-stat errors">1 <i class="fas fa-times" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        
+                        <div class="category-progress">
+                            <div class="progress-bar">
+                                <div class="progress-segment passed" style="width: 82%;"></div>
+                                <div class="progress-segment warnings" style="width: 14%;"></div>
+                                <div class="progress-segment errors" style="width: 4%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-list">
+                            <div class="issue-item error">
+                                <div class="issue-message">Bild ohne alt-Attribut gefunden</div>
+                                <div class="issue-rule">WCAG 1.1.1 (A)</div>
+                            </div>
+                            <div class="issue-item warning">
+                                <div class="issue-message">Alt-Text enthält möglicherweise überflüssige Wörter wie "Bild" oder "Image"</div>
+                                <div class="issue-rule">WCAG 1.1.1 (A)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-header">
+                            <h3 class="category-title">
+                                <i class="fas fa-heading" aria-hidden="true"></i> Überschriften
+                            </h3>
+                            <div class="category-stats">
+                                <span class="category-stat passed">12 <i class="fas fa-check" aria-hidden="true"></i></span>
+                                <span class="category-stat warnings">4 <i class="fas fa-exclamation" aria-hidden="true"></i></span>
+                                <span class="category-stat errors">0 <i class="fas fa-times" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        
+                        <div class="category-progress">
+                            <div class="progress-bar">
+                                <div class="progress-segment passed" style="width: 75%;"></div>
+                                <div class="progress-segment warnings" style="width: 25%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-list">
+                            <div class="issue-item warning">
+                                <div class="issue-message">Überschriftenlevel werden übersprungen: von H1 zu H3</div>
+                                <div class="issue-rule">WCAG 1.3.1 (A)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-header">
+                            <h3 class="category-title">
+                                <i class="fas fa-link" aria-hidden="true"></i> Links
+                            </h3>
+                            <div class="category-stats">
+                                <span class="category-stat passed">24 <i class="fas fa-check" aria-hidden="true"></i></span>
+                                <span class="category-stat warnings">6 <i class="fas fa-exclamation" aria-hidden="true"></i></span>
+                                <span class="category-stat errors">2 <i class="fas fa-times" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        
+                        <div class="category-progress">
+                            <div class="progress-bar">
+                                <div class="progress-segment passed" style="width: 75%;"></div>
+                                <div class="progress-segment warnings" style="width: 18.75%;"></div>
+                                <div class="progress-segment errors" style="width: 6.25%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-list">
+                            <div class="issue-item error">
+                                <div class="issue-message">Link ohne Text oder zugänglichen Namen gefunden</div>
+                                <div class="issue-rule">WCAG 2.4.4 (A)</div>
+                            </div>
+                            <div class="issue-item warning">
+                                <div class="issue-message">Link mit unspezifischem Text gefunden: "hier"</div>
+                                <div class="issue-rule">WCAG 2.4.4 (A)</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-header">
+                            <h3 class="category-title">
+                                <i class="fas fa-keyboard" aria-hidden="true"></i> Tastaturzugänglichkeit
+                            </h3>
+                            <div class="category-stats">
+                                <span class="category-stat passed">15 <i class="fas fa-check" aria-hidden="true"></i></span>
+                                <span class="category-stat warnings">2 <i class="fas fa-exclamation" aria-hidden="true"></i></span>
+                                <span class="category-stat errors">1 <i class="fas fa-times" aria-hidden="true"></i></span>
+                            </div>
+                        </div>
+                        
+                        <div class="category-progress">
+                            <div class="progress-bar">
+                                <div class="progress-segment passed" style="width: 83.3%;"></div>
+                                <div class="progress-segment warnings" style="width: 11.1%;"></div>
+                                <div class="progress-segment errors" style="width: 5.6%;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="issue-list">
+                            <div class="issue-item error">
+                                <div class="issue-message">Element mit Maus-Event, aber ohne entsprechende Rolle oder tastaturzugänglichen Ereignishandler</div>
+                                <div class="issue-rule">WCAG 2.1.1 (A)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recommendations">
+                    <h2 class="recommendations-title">Empfehlungen zur Verbesserung</h2>
+                    <ul class="recommendation-list">
+                        <li class="recommendation-item">Stellen Sie sicher, dass alle Bilder ein alt-Attribut haben - dekorative Bilder sollten ein leeres alt-Attribut und role="presentation" haben.</li>
+                        <li class="recommendation-item">Verbessern Sie die Überschriftenhierarchie, indem Sie sicherstellen, dass keine Ebenen übersprungen werden (z.B. von H1 direkt zu H3).</li>
+                        <li class="recommendation-item">Vermeiden Sie unspezifische Linktexte wie "hier", "klicken Sie hier" - der Linktext sollte das Ziel beschreiben.</li>
+                        <li class="recommendation-item">Stellen Sie sicher, dass alle interaktiven Elemente mit der Tastatur zugänglich sind, besonders wenn sie onclick-Handler verwenden.</li>
+                        <li class="recommendation-item">Verbessern Sie den Farbkontrast zwischen Text und Hintergrund, besonders bei kleineren Texten.</li>
+                        <li class="recommendation-item">Stellen Sie sicher, dass alle Formularelemente korrekt mit Labels verknüpft sind.</li>
+                    </ul>
+                </div>
+                
+                <div class="scan-form">
+                    <h2 class="scan-form-title">Seiten-Scan-Konfiguration</h2>
+                    <div class="scan-form-field">
+                        <label for="page-url" class="form-label">URL oder Seitenpfad</label>
+                        <div class="input-group">
+                            <input type="text" id="page-url" class="form-control" placeholder="z.B. /member.html oder https://culturestream.de/events">
+                            <button class="btn btn-primary">Scannen</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2>Getestete Seiten</h2>
+                <div class="page-list">
+                    <a href="#" class="page-item">
+                        <div class="page-icon"><i class="fas fa-home" aria-hidden="true"></i></div>
+                        <div class="page-title">Startseite</div>
+                        <div class="page-date">15.06.2023</div>
+                        <div class="page-status">
+                            <span class="status-dot passed" title="25 Tests bestanden"></span>
+                            <span class="status-dot warnings" title="5 Warnungen"></span>
+                            <span class="status-dot errors" title="1 Fehler"></span>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="page-item">
+                        <div class="page-icon"><i class="fas fa-user" aria-hidden="true"></i></div>
+                        <div class="page-title">Mitgliederbereich</div>
+                        <div class="page-date">15.06.2023</div>
+                        <div class="page-status">
+                            <span class="status-dot passed" title="22 Tests bestanden"></span>
+                            <span class="status-dot warnings" title="7 Warnungen"></span>
+                            <span class="status-dot errors" title="0 Fehler"></span>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="page-item">
+                        <div class="page-icon"><i class="fas fa-image" aria-hidden="true"></i></div>
+                        <div class="page-title">Ausstellungen</div>
+                        <div class="page-date">15.06.2023</div>
+                        <div class="page-status">
+                            <span class="status-dot passed" title="18 Tests bestanden"></span>
+                            <span class="status-dot warnings" title="4 Warnungen"></span>
+                            <span class="status-dot errors" title="3 Fehler"></span>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="page-item">
+                        <div class="page-icon"><i class="fas fa-calendar" aria-hidden="true"></i></div>
+                        <div class="page-title">Veranstaltungen</div>
+                        <div class="page-date">15.06.2023</div>
+                        <div class="page-status">
+                            <span class="status-dot passed" title="20 Tests bestanden"></span>
+                            <span class="status-dot warnings" title="5 Warnungen"></span>
+                            <span class="status-dot errors" title="2 Fehler"></span>
+                        </div>
+                    </a>
+                    
+                    <a href="#" class="page-item">
+                        <div class="page-icon"><i class="fas fa-users" aria-hidden="true"></i></div>
+                        <div class="page-title">Community</div>
+                        <div class="page-date">15.06.2023</div>
+                        <div class="page-status">
+                            <span class="status-dot passed" title="15 Tests bestanden"></span>
+                            <span class="status-dot warnings" title="3 Warnungen"></span>
+                            <span class="status-dot errors" title="4 Fehler"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/logo-small.png" alt="CultureStream Logo" class="footer-logo-img">
+                    <span class="footer-logo-text">CultureStream</span>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p class="copyright">© Verein CultureStream. Alle Rechte vorbehalten.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Scripts einbinden -->
+    <script src="scripts.js"></script>
+    <script src="accessibility-test.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const runTestsBtn = document.getElementById('run-tests-btn');
+            const exportReportBtn = document.getElementById('export-report-btn');
+            
+            // Test-Button-Klick-Handler
+            runTestsBtn.addEventListener('click', function() {
+                // Test-UI-Feedback
+                this.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Tests werden ausgeführt...';
+                this.disabled = true;
+                
+                // Tests mit kurzer Verzögerung ausführen
+                setTimeout(() => {
+                    // AccessibilityTester konfigurieren und ausführen
+                    const results = AccessibilityTester
+                        .configure({
+                            logResults: true,
+                            showVisualFeedback: true
+                        })
+                        .runAllTests();
+                    
+                    // UI nach Abschluss aktualisieren
+                    updateDashboardUI(results);
+                    
+                    // Button zurücksetzen
+                    this.innerHTML = '<i class="fas fa-sync-alt" aria-hidden="true"></i> Tests jetzt ausführen';
+                    this.disabled = false;
+                    
+                    // Erfolgsbenachrichtigung
+                    CultureStream.notifications.success('Accessibility Tests erfolgreich abgeschlossen!');
+                }, 1000);
+            });
+            
+            // Export-Button-Klick-Handler
+            exportReportBtn.addEventListener('click', function() {
+                // Report in Zwischenablage kopieren oder als Datei speichern
+                const jsonReport = AccessibilityTester.exportResults('json');
+                
+                // Datei zum Download anbieten
+                const blob = new Blob([jsonReport], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `accessibility-report-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                // Erfolgsbenachrichtigung
+                CultureStream.notifications.success('Bericht erfolgreich exportiert!');
+            });
+            
+            // Dashboard-UI mit Testergebnissen aktualisieren
+            function updateDashboardUI(results) {
+                // Hier würde die Logik zum Aktualisieren des UIs basierend auf Testergebnissen stehen
+                console.log('Dashboard würde mit diesen Ergebnissen aktualisiert:', results);
+                
+                // Nach dem Update zum Anfang der Fehler scrollen
+                if (results.failed.length > 0) {
+                    const firstErrorElement = document.querySelector('.issue-item.error');
+                    if (firstErrorElement) {
+                        firstErrorElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            }
+        });
+    </script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
+</body>
+</html> 

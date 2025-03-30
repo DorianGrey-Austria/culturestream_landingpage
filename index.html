@@ -381,6 +381,20 @@
             .art-window {
                 display: none;
             }
+            
+            .header-login-btn {
+                top: 10px;
+                right: 10px;
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+            
+            .header-intern-btn {
+                top: 10px;
+                right: 100px;
+                padding: 8px 16px;
+                font-size: 12px;
+            }
         }
         
         /* Loginbereich */
@@ -524,11 +538,53 @@
                 min-height: 300px;
             }
         }
+        
+        /* Neue Klasse für den Login-Button in der Kopfzeile */
+        .header-login-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: var(--accent-color);
+            color: white;
+            z-index: 100;
+        }
+        
+        .header-login-btn:hover {
+            background-color: var(--light-accent);
+        }
+        
+        /* Neue Klasse für den Intern-Button */
+        .header-intern-btn {
+            position: absolute;
+            top: 20px;
+            right: 120px;
+            padding: 10px 20px;
+            font-size: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            z-index: 100;
+        }
+        
+        .header-intern-btn:hover {
+            background-color: var(--secondary-color);
+        }
     </style>
 </head>
 <body>
     <!-- Skip Link für Tastaturnavigation -->
     <a href="#login-form" class="skip-link">Zum Login-Formular springen</a>
+    
+    <!-- Header Login Button -->
+    <a href="member.html" class="btn header-login-btn" aria-label="Zum Login">
+        <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Login
+    </a>
+    
+    <!-- Intern Button - Führt zur internen Version -->
+    <a href="intern/index.html" class="btn header-intern-btn" aria-label="Zum internen Bereich">
+        <i class="fas fa-lock" aria-hidden="true"></i> Intern
+    </a>
     
     <!-- Künstlerische Hintergrundeffekte -->
     <div class="bg-canvas">
