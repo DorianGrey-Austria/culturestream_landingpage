@@ -12,9 +12,17 @@
     <link rel="stylesheet" href="../forms.css">
     <link rel="stylesheet" href="../notifications.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
     
     <style>
         :root {
+            --primary: #3B82F6;
+            --primary-dark: #2563EB;
+            --secondary: #10B981;
+            --background-light: #F9FAFB;
+            --background-dark: #1F2937;
+            --text-light: #374151;
+            --text-dark: #F9FAFB;
             --primary-color: #3498db;
             --primary-dark: #2980b9;
             --secondary-color: #e74c3c;
@@ -27,12 +35,22 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            transition: background-color 0.3s, color 0.3s;
             margin: 0;
             padding: 0;
             color: var(--text-color);
             line-height: 1.6;
+        }
+        
+        body.dark {
+            background-color: var(--background-dark);
+            color: var(--text-dark);
+        }
+        
+        body.light {
+            background-color: var(--background-light);
+            color: var(--text-light);
         }
 
         .container {
@@ -60,86 +78,89 @@
         }
 
         .login-container {
-            max-width: 500px;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: var(--card-background);
-            border-radius: 8px;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .login-form h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .form-control {
+        .login-card {
             width: 100%;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-size: 16px;
-            transition: border 0.3s;
+            max-width: 400px;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .form-control:focus {
-            border-color: var(--primary-color);
-            outline: none;
+        .login-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
-        .btn {
-            display: inline-block;
-            background-color: var(--primary-color);
-            color: white;
+        .btn-primary {
+            background-color: var(--primary);
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            border-radius: 0.5rem;
+            font-weight: 600;
             transition: background-color 0.3s;
-            text-align: center;
-            width: 100%;
         }
 
-        .btn:hover {
+        .btn-primary:hover {
             background-color: var(--primary-dark);
         }
 
-        .alert {
-            padding: 12px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-            display: none;
+        .logo-animation {
+            transition: transform 0.5s ease;
         }
 
-        .alert-danger {
-            background-color: rgba(231, 76, 60, 0.1);
-            color: var(--error-color);
-            border: 1px solid rgba(231, 76, 60, 0.3);
+        .logo-animation:hover {
+            transform: rotate(10deg) scale(1.05);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        .dark .form-input {
+            background-color: #374151;
+            border-color: #4B5563;
+            color: white;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
         }
 
         .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .back-link a {
-            color: var(--primary-color);
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            display: flex;
+            align-items: center;
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 500;
         }
 
-        .back-link a:hover {
+        .back-link:hover {
             text-decoration: underline;
         }
 
@@ -152,81 +173,165 @@
         }
     </style>
 </head>
-<body>
-    <header class="header">
-        <div class="container">
-            <h1>CultureStream</h1>
-            <p>Interner Bereich</p>
-        </div>
-    </header>
+<body class="light">
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle color mode">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="sun-icon">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="moon-icon hidden">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg>
+    </button>
 
-    <main class="container">
-        <div class="login-container">
-            <form id="loginForm" class="login-form">
-                <h2>Anmeldung</h2>
-                <div id="errorMessage" class="alert alert-danger"></div>
-                
-                <div class="form-group">
-                    <label for="email">E-Mail</label>
-                    <input type="email" id="email" class="form-control" placeholder="E-Mail-Adresse eingeben" required>
+    <!-- Back to Home Link -->
+    <a href="../index.html" class="back-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="mr-1">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+        </svg>
+        Zurück zur Startseite
+    </a>
+
+    <div class="login-container">
+        <div class="login-card bg-white dark:bg-gray-800 p-8">
+            <div class="text-center mb-8">
+                <div class="flex justify-center">
+                    <div class="logo-animation w-24 h-24 mb-4 rounded-full overflow-hidden">
+                        <img src="../images/Logo.jpg" alt="CultureStream Logo" class="w-full h-full object-cover">
+                    </div>
                 </div>
-                
-                <div class="form-group">
-                    <label for="password">Passwort</label>
-                    <input type="password" id="password" class="form-control" placeholder="Passwort eingeben" required>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">CultureStream Intern</h1>
+                <p class="text-gray-600 dark:text-gray-300 mt-2">Bitte melden Sie sich an, um fortzufahren</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Email</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="ihre@email.com" required>
                 </div>
-                
-                <button type="submit" class="btn">Anmelden</button>
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">Passwort</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required>
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <input id="remember" name="remember" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="remember" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                            Angemeldet bleiben
+                        </label>
+                    </div>
+                    <a href="#" class="text-sm text-blue-600 hover:underline dark:text-blue-400">Passwort vergessen?</a>
+                </div>
+                <button type="submit" class="btn-primary w-full">Anmelden</button>
             </form>
-            
-            <div class="back-link">
-                <a href="../index.html">Zurück zur Startseite</a>
+
+            <div class="mt-8 text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Haben Sie Fragen? Kontaktieren Sie uns unter 
+                    <a href="mailto:info@culturestream.at" class="text-blue-600 hover:underline dark:text-blue-400">info@culturestream.at</a>
+                </p>
             </div>
         </div>
-    </main>
+    </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>&copy; 2024 CultureStream. Alle Rechte vorbehalten.</p>
-        </div>
-    </footer>
+    <div id="loginCredentials" class="fixed bottom-4 left-4 p-4 bg-white dark:bg-gray-800 shadow-lg rounded-lg text-sm hidden">
+        <h3 class="font-bold mb-2">Test-Zugangsdaten:</h3>
+        <ul class="space-y-1">
+            <li><strong>Admin:</strong> admin@culturestream.at / admin123</li>
+            <li><strong>Mitglied:</strong> member@culturestream.at / member123</li>
+            <li><strong>VIP:</strong> vip@culturestream.at / vip123</li>
+            <li><strong>Community:</strong> community@culturestream.at / community123</li>
+            <li><strong>Künstler:</strong> artist@culturestream.at / artist123</li>
+        </ul>
+        <button id="closeCredentials" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+    </div>
+
+    <button id="showCredentials" class="fixed bottom-4 right-4 bg-blue-600 text-white p-2 rounded-full shadow-lg hover:bg-blue-700 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+    </button>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const loginForm = document.getElementById('loginForm');
-            const errorMessage = document.getElementById('errorMessage');
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.querySelector('.sun-icon');
+        const moonIcon = document.querySelector('.moon-icon');
+        
+        // Check for saved theme preference or use device preference
+        const userPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+        
+        if (savedTheme === 'dark' || (!savedTheme && userPrefersDark)) {
+            document.body.classList.replace('light', 'dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('light')) {
+                document.body.classList.replace('light', 'dark');
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.body.classList.replace('dark', 'light');
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Test credentials toggle
+        const showCredentialsBtn = document.getElementById('showCredentials');
+        const loginCredentials = document.getElementById('loginCredentials');
+        const closeCredentialsBtn = document.getElementById('closeCredentials');
+        
+        showCredentialsBtn.addEventListener('click', () => {
+            loginCredentials.classList.toggle('hidden');
+        });
+        
+        closeCredentialsBtn.addEventListener('click', () => {
+            loginCredentials.classList.add('hidden');
+        });
+        
+        // Login form submission
+        const loginForm = document.getElementById('loginForm');
+        
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
             
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Dummy login logic - in a real app, this would validate with a server
+            const validUsers = [
+                { email: 'admin@culturestream.at', password: 'admin123', role: 'admin' },
+                { email: 'member@culturestream.at', password: 'member123', role: 'member' },
+                { email: 'vip@culturestream.at', password: 'vip123', role: 'vip' },
+                { email: 'community@culturestream.at', password: 'community123', role: 'community' },
+                { email: 'artist@culturestream.at', password: 'artist123', role: 'artist' }
+            ];
+            
+            const user = validUsers.find(user => user.email === email && user.password === password);
+            
+            if (user) {
+                // Store user info in session storage (would use JWT tokens in a real app)
+                sessionStorage.setItem('user', JSON.stringify({
+                    email: user.email,
+                    role: user.role,
+                    isLoggedIn: true
+                }));
                 
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                // Demoanmeldedaten (in einer realen Anwendung würde dies serverseitig überprüft)
-                const users = {
-                    "admin@culturestream.de": { password: "admin123", role: "admin" },
-                    "member@culturestream.de": { password: "member123", role: "member" },
-                    "vip@culturestream.de": { password: "vip123", role: "vip" },
-                    "community@culturestream.de": { password: "community123", role: "community" },
-                    "artist@culturestream.de": { password: "artist123", role: "artist" }
-                };
-                
-                const user = users[email];
-                
-                if (user && user.password === password) {
-                    // Erfolgreiche Anmeldung
-                    localStorage.setItem('csUserRole', user.role);
-                    localStorage.setItem('csUserEmail', email);
-                    localStorage.setItem('csLoggedIn', 'true');
-                    
-                    // Weiterleitung zur internen Seite
-                    window.location.href = 'dashboard.html';
-                } else {
-                    // Fehlgeschlagene Anmeldung
-                    errorMessage.style.display = 'block';
-                    errorMessage.textContent = 'Ungültige E-Mail oder Passwort. Bitte versuchen Sie es erneut.';
-                }
-            });
+                // Redirect to dashboard based on role
+                window.location.href = `dashboard-${user.role}.html`;
+            } else {
+                alert('Ungültige Anmeldedaten. Bitte versuchen Sie es erneut.');
+            }
         });
     </script>
 </body>
