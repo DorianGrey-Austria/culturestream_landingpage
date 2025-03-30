@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Administrative Funktionen und Datenvisualisierung für den CultureStream Kunstverein">
+    <meta name="csrf-token" content="{{csrfToken}}">
     <title>CultureStream - Administration</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <!-- Chart.js für Datenvisualisierung -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
+    
     <style>
+        /* Seitenspezifische Stile */
         :root {
             --primary-color: #3D7B80; /* Tiefes Türkis */
             --secondary-color: #A4C2A5; /* Moosgrün */
@@ -15,8 +26,19 @@
             --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
             --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
             --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
+            
+            /* Standardfarben für gemeinsame Komponenten */
+            --color-primary: #3D7B80;
+            --color-primary-rgb: 61, 123, 128;
+            --color-secondary: #A4C2A5;
+            --color-accent: #D65108;
+            --color-info: #38BDF8;
+            --color-success: #4ADE80;
+            --color-warning: #F2A65A;
+            --color-danger: #EF4444;
         }
         
+        /* Spezifische Stile für den Admin-Bereich */
         * {
             margin: 0;
             padding: 0;
@@ -70,7 +92,7 @@
             padding: 4px 10px;
             border-radius: 20px;
             margin-left: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
         }
@@ -322,154 +344,493 @@
             color: var(--text-muted);
         }
     </style>
+  <link rel="stylesheet" href="accessibility.css">
 </head>
 <body>
     <header>
         <div class="logo-area">
-            <img src="logo.png" alt="CultureStream Logo" class="logo">
+            <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
             <div class="logo-text">CultureStream</div>
-            <div class="admin-badge"><i class="fas fa-shield-alt"></i> Administration</div>
+            <div class="admin-badge">
+                <i class="fa fa-shield-alt"></i> Administration
+            </div>
         </div>
-        
         <div class="user-area">
             <div class="user-avatar">A</div>
             <div class="user-name">Admin</div>
-            <button class="logout-btn">Abmelden</button>
+            <button class="btn logout-btn">Abmelden</button>
         </div>
     </header>
     
     <div class="main-container">
         <nav>
-            <div class="nav-title">Administration</div>
+            <div class="nav-title">Dashboard</div>
             <a href="#" class="nav-item active">
-                <i class="fas fa-tachometer-alt"></i>
-                Dashboard
+                <i class="fa fa-tachometer-alt"></i>
+                <span>Übersicht</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-users"></i>
-                Benutzerverwaltung
+                <i class="fa fa-chart-bar"></i>
+                <span>Statistiken</span>
+            </a>
+            
+            <div class="nav-title">Verwaltung</div>
+            <a href="#" class="nav-item">
+                <i class="fa fa-users"></i>
+                <span>Benutzer</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-cubes"></i>
-                Ausstellungen
+                <i class="fa fa-images"></i>
+                <span>Ausstellungen</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-calendar-alt"></i>
-                Events
+                <i class="fa fa-calendar"></i>
+                <span>Veranstaltungen</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-file-alt"></i>
-                Inhalte
+                <i class="fa fa-comment"></i>
+                <span>Nachrichten</span>
+            </a>
+            
+            <div class="nav-title">KI & Daten</div>
+            <a href="#" class="nav-item">
+                <i class="fa fa-robot"></i>
+                <span>KI-Avatar</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-chart-line"></i>
-                Statistiken
+                <i class="fa fa-database"></i>
+                <span>Datenbank</span>
             </a>
             
             <div class="nav-title">System</div>
             <a href="#" class="nav-item">
-                <i class="fas fa-cog"></i>
-                Einstellungen
+                <i class="fa fa-cog"></i>
+                <span>Einstellungen</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-plug"></i>
-                Erweiterungen
+                <i class="fa fa-shield-alt"></i>
+                <span>Sicherheit</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-sliders-h"></i>
-                Konfiguration
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-history"></i>
-                Protokoll
-            </a>
-            
-            <div class="nav-title">Plattform</div>
-            <a href="member.html" class="nav-item">
-                <i class="fas fa-external-link-alt"></i>
-                Zur Website
+                <i class="fa fa-history"></i>
+                <span>Logs</span>
             </a>
         </nav>
         
         <main>
             <div class="admin-header">
-                <h1 class="admin-title">Admin Dashboard</h1>
-                
+                <h1 class="admin-title">Dashboard</h1>
                 <div class="admin-actions">
-                    <button class="admin-btn secondary">
-                        <i class="fas fa-download"></i> Bericht exportieren
+                    <button class="btn btn-primary">
+                        <i class="fa fa-sync-alt"></i>
+                        <span>Aktualisieren</span>
                     </button>
-                    <button class="admin-btn">
-                        <i class="fas fa-cog"></i> Einstellungen
+                    <button class="btn btn-outline">
+                        <i class="fa fa-download"></i>
+                        <span>Exportieren</span>
                     </button>
                 </div>
             </div>
             
-            <div class="dashboard-stats">
-                <div class="stat-card users">
-                    <div class="stat-icon">
-                        <i class="fas fa-users"></i>
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Benutzer</h3>
+                        <div class="dashboard-card-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
                     </div>
-                    <div class="stat-value">
-                        2,847
-                        <span class="stat-trend">
-                            <i class="fas fa-arrow-up"></i> 12%
-                        </span>
+                    <div class="dashboard-card-value">247</div>
+                    <div class="dashboard-card-label">Registrierte Benutzer</div>
+                    <div class="dashboard-card-trend trend-up">
+                        <i class="fa fa-arrow-up"></i>
+                        <span>12% im letzten Monat</span>
                     </div>
-                    <div class="stat-label">Registrierte Mitglieder</div>
                 </div>
                 
-                <div class="stat-card content">
-                    <div class="stat-icon">
-                        <i class="fas fa-cube"></i>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Nachrichten</h3>
+                        <div class="dashboard-card-icon">
+                            <i class="fa fa-envelope"></i>
+                        </div>
                     </div>
-                    <div class="stat-value">
-                        128
-                        <span class="stat-trend">
-                            <i class="fas fa-arrow-up"></i> 5%
-                        </span>
+                    <div class="dashboard-card-value">53</div>
+                    <div class="dashboard-card-label">Neue Kontaktanfragen</div>
+                    <div class="dashboard-card-trend trend-up">
+                        <i class="fa fa-arrow-up"></i>
+                        <span>8% im letzten Monat</span>
                     </div>
-                    <div class="stat-label">Aktive Ausstellungen</div>
                 </div>
                 
-                <div class="stat-card events">
-                    <div class="stat-icon">
-                        <i class="fas fa-calendar-check"></i>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">Ausstellungen</h3>
+                        <div class="dashboard-card-icon">
+                            <i class="fa fa-images"></i>
+                        </div>
                     </div>
-                    <div class="stat-value">
-                        47
-                        <span class="stat-trend">
-                            <i class="fas fa-arrow-up"></i> 8%
-                        </span>
+                    <div class="dashboard-card-value">16</div>
+                    <div class="dashboard-card-label">Aktive Ausstellungen</div>
+                    <div class="dashboard-card-trend trend-up">
+                        <i class="fa fa-arrow-up"></i>
+                        <span>4% im letzten Monat</span>
                     </div>
-                    <div class="stat-label">Kommende Events</div>
                 </div>
                 
-                <div class="stat-card activity">
-                    <div class="stat-icon">
-                        <i class="fas fa-chart-bar"></i>
+                <div class="dashboard-card">
+                    <div class="dashboard-card-header">
+                        <h3 class="dashboard-card-title">KI-Interaktionen</h3>
+                        <div class="dashboard-card-icon">
+                            <i class="fa fa-robot"></i>
+                        </div>
                     </div>
-                    <div class="stat-value">
-                        14.2k
-                        <span class="stat-trend down">
-                            <i class="fas fa-arrow-down"></i> 3%
-                        </span>
+                    <div class="dashboard-card-value">1.328</div>
+                    <div class="dashboard-card-label">Gesamt-Interaktionen</div>
+                    <div class="dashboard-card-trend trend-up">
+                        <i class="fa fa-arrow-up"></i>
+                        <span>24% im letzten Monat</span>
                     </div>
-                    <div class="stat-label">Wöchentliche Besuche</div>
                 </div>
             </div>
             
-            <!-- Weitere Inhalte werden in folgenden Schritten hinzugefügt -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2 class="chart-title">Besucher-Statistiken</h2>
+                    <div class="chart-controls">
+                        <button class="btn btn-sm btn-outline active">Tag</button>
+                        <button class="btn btn-sm btn-outline">Woche</button>
+                        <button class="btn btn-sm btn-outline">Monat</button>
+                        <button class="btn btn-sm btn-outline">Jahr</button>
+                    </div>
+                </div>
+                <canvas id="visitorsChart" class="chart-canvas"></canvas>
+            </div>
+            
+            <div class="data-table-container">
+                <div class="table-header">
+                    <h2 class="table-title">Neueste Kontaktanfragen</h2>
+                    <div class="table-actions">
+                        <select class="table-filter">
+                            <option value="all">Alle Nachrichten</option>
+                            <option value="unread">Ungelesen</option>
+                            <option value="read">Gelesen</option>
+                            <option value="responded">Beantwortet</option>
+                        </select>
+                        <input type="text" class="table-search" placeholder="Suche...">
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>E-Mail</th>
+                            <th>Betreff</th>
+                            <th>Datum</th>
+                            <th>Status</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="contactMessages">
+                        <tr>
+                            <td class="loading-placeholder" colspan="6">Daten werden geladen...</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-pagination">
+                    <button class="page-btn"><i class="fa fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn"><i class="fa fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <div class="chart-header">
+                    <h2 class="chart-title">KI-Avatar Nutzungsstatistiken</h2>
+                    <div class="chart-controls">
+                        <button class="btn btn-sm btn-outline active">Interaktionen</button>
+                        <button class="btn btn-sm btn-outline">Anfragen</button>
+                        <button class="btn btn-sm btn-outline">Zufriedenheit</button>
+                    </div>
+                </div>
+                <canvas id="aiChart" class="chart-canvas"></canvas>
+            </div>
         </main>
     </div>
     
+    <!-- Scripts einbinden -->
+    <script src="scripts.js"></script>
+    <script src="form-validation.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script>
-        // Logout-Button-Funktion
-        document.querySelector('.logout-btn').addEventListener('click', function() {
-            if (confirm('Möchtest du dich wirklich abmelden?')) {
-                window.location.href = 'index.html';
+        // Supabase-Verbindung konfigurieren
+        const SUPABASE_URL = 'https://ngysvmujskxunvioyegr.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5neXN2bXVqc2t4dW52aW95ZWdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDAzMjMxNzEsImV4cCI6MjA1NTg5OTE3MX0.eqIuV9aoujlCXEi-6oTCZrby0RZ61a-j-BWhxA8s-9Q';
+        
+        // Hilfsfunktionen für Supabase-Integration
+        async function fetchContactMessages() {
+            try {
+                // In einer echten Implementierung würde hier die Supabase JavaScript Client Library verwendet werden
+                // Hier simulieren wir das Abrufen von Daten
+                const mockData = [
+                    { id: 1, name: 'Maria Schmidt', email: 'maria.schmidt@example.com', subject: 'Ausstellung anfragen', created_at: '2024-03-28T09:32:00', status: 'unread' },
+                    { id: 2, name: 'Thomas Wagner', email: 'thomas.w@example.com', subject: 'Künstlerbewerbung', created_at: '2024-03-27T16:45:00', status: 'read' },
+                    { id: 3, name: 'Laura Becker', email: 'l.becker@example.com', subject: 'Frage zu Tickets', created_at: '2024-03-26T11:20:00', status: 'responded' },
+                    { id: 4, name: 'Michael Keller', email: 'mkeller@example.com', subject: 'Kooperationsanfrage', created_at: '2024-03-25T14:05:00', status: 'read' },
+                    { id: 5, name: 'Julia Neumann', email: 'j.neumann@example.com', subject: 'Support benötigt', created_at: '2024-03-24T10:10:00', status: 'responded' }
+                ];
+                
+                renderContactMessages(mockData);
+                
+                // Kommentar: In der tatsächlichen Implementierung würde der folgende Code verwendet:
+                // 
+                // const { data, error } = await supabase
+                //   .from('contact_messages')
+                //   .select('*')
+                //   .order('created_at', { ascending: false })
+                //   .limit(10);
+                //
+                // if (error) throw error;
+                // renderContactMessages(data);
+                
+            } catch (error) {
+                console.error('Fehler beim Laden der Kontaktanfragen:', error);
+                CultureStream.notifications.error('Fehler beim Laden der Daten');
             }
+        }
+        
+        function renderContactMessages(messages) {
+            const tableBody = document.getElementById('contactMessages');
+            if (!messages || messages.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Keine Nachrichten vorhanden</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            messages.forEach(message => {
+                const date = new Date(message.created_at);
+                const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth()+1).toString().padStart(2, '0')}.${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                
+                let statusBadge = '';
+                if (message.status === 'unread') {
+                    statusBadge = '<span class="badge badge-danger">Ungelesen</span>';
+                } else if (message.status === 'read') {
+                    statusBadge = '<span class="badge badge-warning">Gelesen</span>';
+                } else if (message.status === 'responded') {
+                    statusBadge = '<span class="badge badge-success">Beantwortet</span>';
+                }
+                
+                html += `
+                <tr data-id="${message.id}">
+                    <td>${message.name}</td>
+                    <td>${message.email}</td>
+                    <td>${message.subject}</td>
+                    <td>${formattedDate}</td>
+                    <td>${statusBadge}</td>
+                    <td>
+                        <button class="btn btn-icon btn-sm" title="Nachricht anzeigen">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                        <button class="btn btn-icon btn-sm" title="Antworten">
+                            <i class="fa fa-reply"></i>
+                        </button>
+                        <button class="btn btn-icon btn-sm" title="Löschen">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            });
+            
+            tableBody.innerHTML = html;
+        }
+        
+        // Chart.js Konfiguration und Rendering
+        function initCharts() {
+            // Besucher-Chart
+            const visitorsCtx = document.getElementById('visitorsChart').getContext('2d');
+            new Chart(visitorsCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'],
+                    datasets: [{
+                        label: 'Seitenaufrufe',
+                        data: [650, 590, 800, 810, 760, 850, 980],
+                        borderColor: '#3D7B80',
+                        backgroundColor: 'rgba(61, 123, 128, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'Einzigartige Besucher',
+                        data: [320, 280, 380, 430, 390, 450, 520],
+                        borderColor: '#D65108',
+                        backgroundColor: 'rgba(214, 81, 8, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#B3C0D1'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(61, 123, 128, 0.1)'
+                            },
+                            ticks: {
+                                color: '#B3C0D1'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#B3C0D1'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // KI-Chart
+            const aiCtx = document.getElementById('aiChart').getContext('2d');
+            new Chart(aiCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun'],
+                    datasets: [{
+                        label: 'Text-Interaktionen',
+                        data: [120, 190, 230, 280, 330, 400],
+                        backgroundColor: 'rgba(61, 123, 128, 0.7)'
+                    }, {
+                        label: 'Avatar-Interaktionen',
+                        data: [90, 130, 180, 240, 280, 350],
+                        backgroundColor: 'rgba(214, 81, 8, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#B3C0D1'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(61, 123, 128, 0.1)'
+                            },
+                            ticks: {
+                                color: '#B3C0D1'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#B3C0D1'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialisierung mit CultureStream-Framework
+        CultureStream.ready(function() {
+            // Navigation-Handling
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktive Klasse entfernen
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
+                    
+                    // Benachrichtigung anzeigen für Demo-Zwecke
+                    const section = this.querySelector('span').textContent;
+                    CultureStream.notifications.info(`Navigiere zu: ${section}`);
+                });
+            });
+            
+            // Charts initialisieren
+            initCharts();
+            
+            // Kontaktanfragen laden
+            fetchContactMessages();
+            
+            // Aktualisieren-Button
+            const refreshBtn = document.querySelector('.admin-actions .btn-primary');
+            CultureStream.dom.on(refreshBtn, 'click', function() {
+                CultureStream.notifications.info('Daten werden aktualisiert...');
+                fetchContactMessages();
+                
+                // Simuliere Aktualisierung der Charts mit neuen Daten
+                setTimeout(() => {
+                    CultureStream.notifications.success('Daten erfolgreich aktualisiert');
+                }, 1000);
+            });
+            
+            // Export-Button
+            const exportBtn = document.querySelector('.admin-actions .btn-outline');
+            CultureStream.dom.on(exportBtn, 'click', function() {
+                CultureStream.notifications.info('Export wird vorbereitet...');
+                
+                // Simuliere Export-Vorgang
+                setTimeout(() => {
+                    CultureStream.notifications.success('Daten wurden erfolgreich exportiert');
+                }, 1500);
+            });
+            
+            // Chart-Filter-Buttons
+            const chartBtns = document.querySelectorAll('.chart-controls .btn');
+            chartBtns.forEach(btn => {
+                CultureStream.dom.on(btn, 'click', function() {
+                    const parent = this.closest('.chart-controls');
+                    parent.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // In einer echten Implementierung würden hier die Chart-Daten aktualisiert
+                });
+            });
+            
+            // Logout-Button
+            const logoutBtn = document.querySelector('.logout-btn');
+            CultureStream.dom.on(logoutBtn, 'click', function() {
+                if (confirm('Möchtest du dich wirklich abmelden?')) {
+                    CultureStream.notifications.info('Du wirst abgemeldet...');
+                    
+                    // Weiterleitung zur Login-Seite
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
+            });
         });
     </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
 </body>
 </html> 

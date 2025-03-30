@@ -3,73 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dein persönliches Profil im CultureStream Kunstverein">
+    <meta name="csrf-token" content="{{csrfToken}}">
     <title>CultureStream - Mein Profil</title>
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
     <style>
-        :root {
-            --primary-color: #3D7B80; /* Tiefes Türkis */
-            --secondary-color: #A4C2A5; /* Moosgrün */
-            --accent-color: #D65108; /* Terrakotta */
-            --light-accent: #F2A65A; /* Sanftes Orange */
-            --dark-bg: #0F1A20; /* Fast-Schwarz mit Blauton */
-            --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
-            --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
-            --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--dark-panel), #131b23);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-            position: relative;
-            z-index: 10;
-            border-bottom: 1px solid var(--primary-color);
-        }
-        
-        .logo-area {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo {
-            width: 40px;
-            margin-right: 15px;
-        }
-        
-        .logo-text {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            background: linear-gradient(90deg, var(--text-light), var(--primary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
+        /* Spezifische Stile für den Profilbereich */
         .profile-badge {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
             color: var(--text-light);
             font-size: 12px;
             font-weight: bold;
             padding: 4px 10px;
             border-radius: 20px;
             margin-left: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
         }
@@ -78,93 +32,12 @@
             margin-right: 5px;
         }
         
-        .user-area {
-            display: flex;
-            align-items: center;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            font-weight: 600;
-            color: var(--text-light);
-            border: 2px solid var(--accent-color);
-        }
-        
-        .user-name {
-            margin-right: 20px;
-        }
-        
-        .logout-btn {
-            padding: 8px 15px;
-            background-color: transparent;
-            border: 1px solid var(--primary-color);
-            border-radius: 4px;
-            color: var(--primary-color);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .logout-btn:hover {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-        }
-        
-        .main-container {
-            display: flex;
-            min-height: calc(100vh - 80px);
-        }
-        
-        nav {
-            width: 250px;
-            background: linear-gradient(180deg, #1a2530, #0f1a20);
-            padding: 20px 0;
-            border-right: 1px solid rgba(61, 123, 128, 0.1);
-        }
-        
-        .nav-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-        
-        .nav-item:hover, .nav-item.active {
-            background-color: rgba(61, 123, 128, 0.1);
-            color: var(--primary-color);
-            border-left-color: var(--primary-color);
-        }
-        
-        .nav-item i {
-            margin-right: 15px;
-            font-size: 18px;
-            width: 20px;
-            text-align: center;
-        }
-        
-        main {
-            flex: 1;
-            padding: 30px;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(61, 123, 128, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(214, 81, 8, 0.03) 0%, transparent 20%);
-        }
-        
         .profile-header {
             background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-md);
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(61, 123, 128, 0.1);
@@ -201,11 +74,12 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-sm);
             transition: all 0.3s;
         }
         
         .edit-avatar:hover {
+            background: var(--light-accent);
             transform: scale(1.1);
         }
         
@@ -215,167 +89,152 @@
         
         .profile-name {
             font-size: 28px;
-            font-weight: 600;
             margin-bottom: 5px;
             color: var(--text-light);
         }
         
-        .profile-title {
-            font-size: 16px;
+        .profile-role {
             color: var(--primary-color);
+            font-size: 16px;
             margin-bottom: 15px;
-        }
-        
-        .profile-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .meta-item {
             display: flex;
             align-items: center;
-            font-size: 14px;
+        }
+        
+        .profile-role i {
+            margin-right: 8px;
+        }
+        
+        .profile-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px 15px;
+            background: rgba(15, 26, 32, 0.5);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(61, 123, 128, 0.1);
+        }
+        
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 12px;
             color: var(--text-muted);
         }
         
-        .meta-item i {
-            margin-right: 8px;
-            color: var(--accent-color);
-        }
-        
-        .profile-badges {
+        .action-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .profile-badge-item {
-            padding: 5px 10px;
-            background-color: rgba(61, 123, 128, 0.1);
-            border: 1px solid rgba(61, 123, 128, 0.2);
-            border-radius: 20px;
-            font-size: 12px;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-        }
-        
-        .profile-badge-item i {
-            margin-right: 5px;
-        }
-        
-        .profile-actions {
-            display: flex;
             gap: 15px;
-        }
-        
-        .edit-profile-btn {
-            padding: 8px 16px;
-            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-            color: var(--text-light);
-            border: none;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-        
-        .edit-profile-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-        }
-        
-        .section-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            color: var(--text-light);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary-color), transparent);
-        }
-        
-        .card {
-            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(61, 123, 128, 0.1);
             margin-bottom: 30px;
         }
         
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            border-color: rgba(61, 123, 128, 0.3);
-        }
-        
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .card-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-        }
-        
-        .card-title i {
-            margin-right: 10px;
-        }
-        
-        .card-actions {
+        .tab-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
         
-        .card-btn {
-            padding: 5px 10px;
+        .tab-btn {
+            padding: 10px 20px;
+            background: rgba(15, 26, 32, 0.5);
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .tab-btn.active, .tab-btn:hover {
+            background: rgba(61, 123, 128, 0.1);
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .tab-container {
+            margin-bottom: 30px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .biography-section {
+            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
+            border-radius: var(--radius-md);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(61, 123, 128, 0.1);
+        }
+        
+        .biography-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .edit-btn {
             background: transparent;
             border: 1px solid var(--primary-color);
-            border-radius: 4px;
             color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
             font-size: 12px;
             cursor: pointer;
             transition: all 0.3s;
         }
         
-        .card-btn:hover {
-            background-color: var(--primary-color);
+        .edit-btn:hover {
+            background: var(--primary-color);
             color: var(--text-light);
         }
         
-        .two-column {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
+        .biography-content {
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h3 {
+            margin-bottom: 20px;
+            color: var(--text-light);
+            font-size: 18px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            flex: 1;
+            min-width: 250px;
         }
         
         .form-label {
@@ -385,288 +244,190 @@
             font-size: 14px;
         }
         
-        .form-input {
+        .form-control {
             width: 100%;
             padding: 10px 15px;
-            background-color: rgba(15, 26, 32, 0.5);
-            border: 1px solid rgba(61, 123, 128, 0.2);
-            border-radius: 6px;
+            background: rgba(15, 26, 32, 0.5);
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            border-radius: var(--radius-sm);
             color: var(--text-light);
             font-size: 14px;
             transition: all 0.3s;
         }
         
-        .form-input:focus {
+        .form-control:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(61, 123, 128, 0.1);
         }
         
         .form-textarea {
-            height: 120px;
+            min-height: 100px;
             resize: vertical;
         }
         
-        .form-hint {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 5px;
+        /* Gallery Section */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
         
-        .interests-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .interest-tag {
-            padding: 8px 12px;
-            background-color: rgba(61, 123, 128, 0.1);
-            border: 1px solid rgba(61, 123, 128, 0.2);
-            border-radius: 20px;
-            font-size: 14px;
-            color: var(--text-muted);
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .gallery-item {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 1 / 1;
             cursor: pointer;
-            transition: all 0.3s;
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .interest-tag:hover, .interest-tag.active {
-            background-color: var(--primary-color);
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
+            background: linear-gradient(to top, rgba(15, 26, 32, 0.9), transparent);
             color: var(--text-light);
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
-        .privacy-settings {
-            margin-top: 20px;
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
         }
         
-        .setting-item {
+        /* Footer */
+        .settings-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .profile-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(61, 123, 128, 0.1);
+            margin-bottom: 20px;
         }
         
-        .setting-item:last-child {
-            border-bottom: none;
-        }
-        
-        .setting-label {
-            font-size: 14px;
+        .section-title {
+            font-size: 20px;
             color: var(--text-light);
         }
         
-        .setting-desc {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 5px;
-        }
-        
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 48px;
-            height: 24px;
-        }
-        
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(15, 26, 32, 0.5);
-            border: 1px solid rgba(61, 123, 128, 0.2);
-            transition: .4s;
-            border-radius: 24px;
-        }
-        
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 2px;
-            background-color: var(--text-light);
-            transition: .4s;
-            border-radius: 50%;
-        }
-        
-        input:checked + .toggle-slider {
-            background-color: var(--primary-color);
-        }
-        
-        input:checked + .toggle-slider:before {
-            transform: translateX(23px);
-        }
-        
-        .activity-list {
-            list-style: none;
-        }
-        
-        .activity-item {
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(61, 123, 128, 0.1);
-            display: flex;
-            gap: 15px;
-        }
-        
-        .activity-item:last-child {
-            border-bottom: none;
-        }
-        
-        .activity-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 8px;
-            color: var(--text-light);
-            font-size: 16px;
-        }
-        
-        .activity-icon.exhibition {
-            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
-        }
-        
-        .activity-icon.comment {
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-        }
-        
-        .activity-content {
-            flex: 1;
-        }
-        
-        .activity-text {
-            font-size: 14px;
-            color: var(--text-light);
-            line-height: 1.5;
-            margin-bottom: 5px;
-        }
-        
-        .activity-time {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-        
-        .activity-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .activity-link:hover {
-            text-decoration: underline;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 992px) {
-            .main-container {
-                flex-direction: column;
-            }
-            
-            nav {
-                width: 100%;
-                border-right: none;
-                border-bottom: 1px solid rgba(61, 123, 128, 0.1);
-            }
-            
+        @media (max-width: 768px) {
             .profile-header {
                 flex-direction: column;
+                align-items: center;
                 text-align: center;
+                gap: 20px;
             }
             
-            .profile-meta {
+            .profile-info {
+                width: 100%;
+            }
+            
+            .profile-stats {
                 justify-content: center;
             }
             
-            .profile-badges {
+            .tab-buttons {
                 justify-content: center;
             }
             
-            .profile-actions {
-                justify-content: center;
-            }
-            
-            .two-column {
-                grid-template-columns: 1fr;
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="accessibility.css">
 </head>
 <body>
     <header>
         <div class="logo-area">
-            <img src="logo.png" alt="CultureStream Logo" class="logo">
+            <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
             <div class="logo-text">CultureStream</div>
-            <div class="profile-badge"><i class="fas fa-user"></i> Profil</div>
+            <div class="profile-badge">
+                <i class="fa fa-user"></i> Profil
+            </div>
         </div>
-        
         <div class="user-area">
-            <div class="user-avatar">S</div>
-            <div class="user-name">Sarah Müller</div>
-            <button class="logout-btn">Abmelden</button>
+            <div class="user-avatar">A</div>
+            <div class="user-name">Alex Müller</div>
+            <button class="btn logout-btn">Abmelden</button>
         </div>
     </header>
     
     <div class="main-container">
         <nav>
-            <a href="member.html" class="nav-item">
-                <i class="fas fa-home"></i>
-                Dashboard
-            </a>
-            <a href="exhibition.html" class="nav-item">
-                <i class="fas fa-cube"></i>
-                Ausstellungen
-            </a>
-            <a href="events.html" class="nav-item">
-                <i class="fas fa-calendar-alt"></i>
-                Events
-            </a>
-            <a href="community.html" class="nav-item">
-                <i class="fas fa-users"></i>
-                Community
+            <a href="#" class="nav-item">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-comments"></i>
-                Nachrichten
+                <i class="fa fa-images"></i>
+                <span>Ausstellungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-calendar"></i>
+                <span>Veranstaltungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-users"></i>
+                <span>Community</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-comment"></i>
+                <span>Nachrichten</span>
             </a>
             <a href="#" class="nav-item active">
-                <i class="fas fa-user"></i>
-                Mein Profil
+                <i class="fa fa-user"></i>
+                <span>Profil</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-cog"></i>
-                Einstellungen
+                <i class="fa fa-cog"></i>
+                <span>Einstellungen</span>
             </a>
         </nav>
         
         <main>
             <div class="profile-header">
                 <div class="profile-avatar">
-                    S
+                    A
                     <div class="edit-avatar">
                         <i class="fas fa-camera"></i>
                     </div>
                 </div>
                 
                 <div class="profile-info">
-                    <h1 class="profile-name">Sarah Müller</h1>
+                    <h1 class="profile-name">Alex Müller</h1>
                     <div class="profile-title">Fotografie-Enthusiastin & Kulturliebhaberin</div>
                     
                     <div class="profile-meta">
@@ -884,31 +645,146 @@
         </main>
     </div>
     
+    <script src="scripts.js"></script>
+    <script src="form-validation.js"></script>
     <script>
-        // Logout-Button-Funktion
-        document.querySelector('.logout-btn').addEventListener('click', function() {
-            if (confirm('Möchtest du dich wirklich abmelden?')) {
-                window.location.href = 'index.html';
+        CultureStream.ready(function() {
+            // Navigation-Handling
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktive Klasse entfernen
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
+                    
+                    // Benachrichtigung anzeigen für Demo-Zwecke
+                    const section = this.querySelector('span').textContent;
+                    CultureStream.notifications.info(`Navigiere zu: ${section}`);
+                });
+            });
+            
+            // Profilbearbeitung
+            const editBtns = document.querySelectorAll('.edit-btn');
+            
+            editBtns.forEach(btn => {
+                CultureStream.dom.on(btn, 'click', function() {
+                    const section = this.closest('section').getAttribute('data-section');
+                    
+                    CultureStream.notifications.info(`Bearbeitungsmodus für ${section} aktiviert`);
+                    
+                    // Demo: Toggle zwischen Anzeige- und Bearbeitungsmodus
+                    const viewMode = this.closest('section').querySelector('.view-mode');
+                    const editMode = this.closest('section').querySelector('.edit-mode');
+                    
+                    if (viewMode && editMode) {
+                        viewMode.style.display = 'none';
+                        editMode.style.display = 'block';
+                        this.textContent = 'Speichern';
+                    } else {
+                        // Falls Bearbeitung in einem Modal erfolgen soll
+                        alert(`Bearbeitungsformular für "${section}" würde hier geöffnet werden`);
+                    }
+                });
+            });
+            
+            // Tabs für Profilsektionen
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            tabBtns.forEach(btn => {
+                CultureStream.dom.on(btn, 'click', function() {
+                    const target = this.getAttribute('data-target');
+                    
+                    // Aktive Klasse von allen Tab-Buttons entfernen
+                    tabBtns.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Aktive Klasse dem geklickten Button hinzufügen
+                    this.classList.add('active');
+                    
+                    // Alle Tab-Inhalte ausblenden
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Ziel-Tab anzeigen
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+            
+            // Avatar-Bearbeitung
+            const editAvatarBtn = document.querySelector('.edit-avatar');
+            
+            if (editAvatarBtn) {
+                CultureStream.dom.on(editAvatarBtn, 'click', function() {
+                    CultureStream.notifications.info('Avatar-Upload-Funktion geöffnet');
+                    
+                    // Hier würde der tatsächliche Upload-Dialog geöffnet werden
+                    const newAvatar = prompt('Bitte gib einen Buchstaben für deinen Avatar ein:', 'A');
+                    
+                    if (newAvatar) {
+                        document.querySelectorAll('.user-avatar, .profile-avatar').forEach(avatar => {
+                            avatar.textContent = newAvatar.charAt(0).toUpperCase();
+                        });
+                        
+                        CultureStream.notifications.success('Avatar erfolgreich aktualisiert');
+                    }
+                });
             }
-        });
-        
-        // Interessen-Tags Interaktion
-        const interestTags = document.querySelectorAll('.interest-tag');
-        interestTags.forEach(tag => {
-            tag.addEventListener('click', function() {
-                this.classList.toggle('active');
+            
+            // Formular-Handling für Profiländerungen
+            const profileForms = document.querySelectorAll('.profile-form');
+            
+            profileForms.forEach(form => {
+                CultureStream.dom.on(form, 'submit', function(e) {
+                    e.preventDefault();
+                    
+                    const formSection = this.getAttribute('data-section');
+                    
+                    CultureStream.notifications.info('Daten werden gespeichert...');
+                    
+                    // Simuliere Speicherverzögerung
+                    setTimeout(() => {
+                        CultureStream.notifications.success(`${formSection} erfolgreich aktualisiert`);
+                        
+                        // Zurück zur Ansicht wechseln
+                        const viewMode = this.closest('section').querySelector('.view-mode');
+                        const editMode = this.closest('section').querySelector('.edit-mode');
+                        
+                        if (viewMode && editMode) {
+                            viewMode.style.display = 'block';
+                            editMode.style.display = 'none';
+                            
+                            // Button-Text zurücksetzen
+                            const editBtn = this.closest('section').querySelector('.edit-btn');
+                            if (editBtn) {
+                                editBtn.textContent = 'Bearbeiten';
+                            }
+                        }
+                    }, 1000);
+                });
+            });
+            
+            // Logout-Button
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            CultureStream.dom.on(logoutBtn, 'click', function() {
+                if (confirm('Möchtest du dich wirklich abmelden?')) {
+                    CultureStream.notifications.info('Du wirst abgemeldet...');
+                    
+                    // Weiterleitung zur Login-Seite
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
             });
         });
-        
-        // Modal-Dialog für Profilbearbeitung (vereinfacht)
-        document.querySelector('.edit-profile-btn').addEventListener('click', function() {
-            alert('Profilbearbeitung wird geöffnet...');
-        });
-        
-        // Avatar-Bearbeitung
-        document.querySelector('.edit-avatar').addEventListener('click', function() {
-            alert('Avatar-Upload wird geöffnet...');
-        });
     </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
 </body>
 </html> 

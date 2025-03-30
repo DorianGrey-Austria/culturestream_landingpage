@@ -3,153 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dein Nachrichtenzentrum im CultureStream Kunstverein">
+    <meta name="csrf-token" content="{{csrfToken}}">
     <title>CultureStream - Nachrichten</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
     <style>
-        :root {
-            --primary-color: #3D7B80; /* Tiefes Türkis */
-            --secondary-color: #A4C2A5; /* Moosgrün */
-            --accent-color: #D65108; /* Terrakotta */
-            --light-accent: #F2A65A; /* Sanftes Orange */
-            --dark-bg: #0F1A20; /* Fast-Schwarz mit Blauton */
-            --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
-            --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
-            --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--dark-panel), #131b23);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-            position: relative;
-            z-index: 10;
-            border-bottom: 1px solid var(--primary-color);
-        }
-        
-        .logo-area {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo {
-            width: 40px;
-            margin-right: 15px;
-        }
-        
-        .logo-text {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            background: linear-gradient(90deg, var(--text-light), var(--primary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .profile-badge {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        /* Spezifische Stile für den Nachrichtenbereich */
+        .messages-badge {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
             color: var(--text-light);
             font-size: 12px;
             font-weight: bold;
             padding: 4px 10px;
             border-radius: 20px;
             margin-left: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
         }
         
-        .profile-badge i {
+        .messages-badge i {
             margin-right: 5px;
-        }
-        
-        .user-area {
-            display: flex;
-            align-items: center;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            font-weight: 600;
-            color: var(--text-light);
-            border: 2px solid var(--accent-color);
-        }
-        
-        .user-name {
-            margin-right: 20px;
-        }
-        
-        .logout-btn {
-            padding: 8px 15px;
-            background-color: transparent;
-            border: 1px solid var(--primary-color);
-            border-radius: 4px;
-            color: var(--primary-color);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .logout-btn:hover {
-            background-color: var(--primary-color);
-            color: var(--text-light);
-        }
-        
-        .main-container {
-            display: flex;
-            min-height: calc(100vh - 80px);
-        }
-        
-        nav {
-            width: 250px;
-            background: linear-gradient(180deg, #1a2530, #0f1a20);
-            padding: 20px 0;
-            border-right: 1px solid rgba(61, 123, 128, 0.1);
-        }
-        
-        .nav-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-        
-        .nav-item:hover, .nav-item.active {
-            background-color: rgba(61, 123, 128, 0.1);
-            color: var(--primary-color);
-            border-left-color: var(--primary-color);
-        }
-        
-        .nav-item i {
-            margin-right: 15px;
-            font-size: 18px;
-            width: 20px;
-            text-align: center;
         }
         
         .message-container {
@@ -200,39 +80,38 @@
             transform: scale(1.05);
         }
         
-        .search-container {
+        .search-contacts {
             padding: 15px;
             border-bottom: 1px solid rgba(61, 123, 128, 0.1);
         }
         
-        .search-input {
+        .search-contacts input {
             width: 100%;
-            padding: 10px 15px 10px 38px;
-            background-color: rgba(31, 40, 51, 0.5);
-            border: 1px solid rgba(61, 123, 128, 0.2);
-            border-radius: 20px;
+            padding: 10px 15px;
+            background-color: rgba(15, 26, 32, 0.5);
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            border-radius: var(--radius-md);
             color: var(--text-light);
             font-size: 14px;
-            transition: all 0.3s;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%23B3C0D1'%3E%3Cpath d='M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: 12px center;
-            background-size: 16px;
         }
         
-        .search-input:focus {
+        .search-contacts input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(61, 123, 128, 0.1);
+        }
+        
+        .search-contacts input::placeholder {
+            color: var(--text-muted);
         }
         
         .contacts-list {
-            overflow-y: auto;
             flex: 1;
+            overflow-y: auto;
+            padding: 0;
         }
         
         .contact-item {
-            padding: 15px;
+            padding: 15px 20px;
             display: flex;
             align-items: center;
             border-bottom: 1px solid rgba(61, 123, 128, 0.05);
@@ -245,51 +124,63 @@
             background-color: rgba(61, 123, 128, 0.1);
         }
         
-        .contact-item.active {
-            background-color: rgba(61, 123, 128, 0.2);
-            border-left: 3px solid var(--primary-color);
-        }
-        
         .contact-avatar {
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             margin-right: 15px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--text-light);
             font-weight: 600;
             font-size: 18px;
+            color: var(--text-light);
             flex-shrink: 0;
+            position: relative;
         }
         
-        .contact-avatar.online::after {
-            content: '';
-            position: absolute;
+        .contact-avatar.artist {
+            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+        }
+        
+        .contact-avatar.curator {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .contact-avatar.member {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+        }
+        
+        .contact-online-status {
             width: 12px;
             height: 12px;
-            background-color: #4CAF50;
             border-radius: 50%;
-            bottom: 20px;
-            left: 48px;
+            background-color: #4CAF50;
+            position: absolute;
+            bottom: 0;
+            right: 0;
             border: 2px solid var(--dark-bg);
+        }
+        
+        .contact-online-status.offline {
+            background-color: #9e9e9e;
         }
         
         .contact-info {
             flex: 1;
-            overflow: hidden;
+            min-width: 0;
         }
         
         .contact-name {
             font-weight: 600;
             margin-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
-        .contact-text {
+        .contact-preview {
             font-size: 13px;
             color: var(--text-muted);
             white-space: nowrap;
@@ -297,19 +188,23 @@
             text-overflow: ellipsis;
         }
         
+        .contact-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-left: 10px;
+        }
+        
         .contact-time {
             font-size: 12px;
             color: var(--text-muted);
-            white-space: nowrap;
+            margin-bottom: 5px;
         }
         
         .contact-badge {
-            position: absolute;
-            right: 15px;
-            bottom: 15px;
             background-color: var(--accent-color);
-            color: white;
-            font-size: 11px;
+            color: var(--text-light);
+            font-size: 12px;
             font-weight: bold;
             width: 20px;
             height: 20px;
@@ -319,56 +214,26 @@
             align-items: center;
         }
         
-        .chat-area {
+        .chat-content {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: linear-gradient(135deg, rgba(15, 26, 32, 0.95), rgba(31, 40, 51, 0.95));
+            height: 100%;
+            position: relative;
         }
         
         .chat-header {
             padding: 15px 20px;
+            display: flex;
+            align-items: center;
             border-bottom: 1px solid rgba(61, 123, 128, 0.1);
+            background: rgba(15, 26, 32, 0.8);
+        }
+        
+        .chat-recipient {
+            flex: 1;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-        
-        .chat-user {
-            display: flex;
-            align-items: center;
-        }
-        
-        .chat-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 15px;
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-light);
-            font-weight: 600;
-            font-size: 16px;
-        }
-        
-        .chat-user-info {
-            line-height: 1.4;
-        }
-        
-        .chat-user-name {
-            font-weight: 600;
-            font-size: 16px;
-        }
-        
-        .chat-user-status {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-        
-        .chat-user-status.online {
-            color: #4CAF50;
         }
         
         .chat-actions {
@@ -377,10 +242,10 @@
         }
         
         .chat-action-btn {
-            background: none;
+            background: transparent;
             border: none;
             color: var(--text-muted);
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -393,142 +258,166 @@
             flex: 1;
             padding: 20px;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(61, 123, 128, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(214, 81, 8, 0.03) 0%, transparent 20%);
         }
         
         .message {
-            max-width: 75%;
             margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
+            max-width: 70%;
+            position: relative;
+            clear: both;
         }
         
         .message.received {
-            align-self: flex-start;
+            float: left;
         }
         
         .message.sent {
-            align-self: flex-end;
+            float: right;
         }
         
         .message-bubble {
-            padding: 12px 16px;
+            padding: 12px 15px;
             border-radius: 18px;
             position: relative;
-            color: var(--text-light);
-            font-size: 14px;
+            margin-bottom: 5px;
             line-height: 1.5;
+            font-size: 14px;
         }
         
         .message.received .message-bubble {
-            background: rgba(31, 40, 51, 0.8);
+            background-color: rgba(31, 40, 51, 0.9);
+            color: var(--text-light);
             border-bottom-left-radius: 4px;
         }
         
         .message.sent .message-bubble {
-            background: var(--primary-color);
+            background-color: rgba(61, 123, 128, 0.2);
+            color: var(--text-light);
             border-bottom-right-radius: 4px;
+        }
+        
+        .message-content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
         }
         
         .message-time {
             font-size: 11px;
             color: var(--text-muted);
-            margin-top: 5px;
-            align-self: flex-end;
+            text-align: right;
+            margin-top: 3px;
         }
         
-        .message.received .message-time {
-            align-self: flex-start;
+        .message-status {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: 5px;
         }
         
-        .message-form {
-            border-top: 1px solid rgba(61, 123, 128, 0.1);
+        .message-status.read {
+            color: var(--primary-color);
+        }
+        
+        .date-divider {
+            text-align: center;
+            margin: 20px 0;
+            clear: both;
+            position: relative;
+        }
+        
+        .date-divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
+            background-color: rgba(61, 123, 128, 0.1);
+            z-index: 1;
+        }
+        
+        .date-label {
+            display: inline-block;
+            padding: 0 15px;
+            background-color: var(--dark-bg);
+            position: relative;
+            z-index: 2;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .chat-input {
             padding: 15px 20px;
+            border-top: 1px solid rgba(61, 123, 128, 0.1);
+            background: rgba(15, 26, 32, 0.8);
             display: flex;
             align-items: center;
-            gap: 15px;
         }
         
         .message-input {
             flex: 1;
             padding: 12px 15px;
-            background-color: rgba(31, 40, 51, 0.7);
-            border: 1px solid rgba(61, 123, 128, 0.2);
-            border-radius: 20px;
+            background-color: rgba(15, 26, 32, 0.5);
+            border: 1px solid rgba(61, 123, 128, 0.1);
+            border-radius: var(--radius-md);
             color: var(--text-light);
             font-size: 14px;
-            transition: all 0.3s;
+            margin-right: 15px;
         }
         
         .message-input:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 2px rgba(61, 123, 128, 0.1);
         }
         
-        .message-attach {
-            background: none;
-            border: none;
+        .message-tools {
+            display: flex;
+            gap: 15px;
+            margin-right: 15px;
+        }
+        
+        .tool-btn {
             color: var(--text-muted);
             font-size: 18px;
             cursor: pointer;
             transition: all 0.3s;
         }
         
-        .message-attach:hover {
+        .tool-btn:hover {
             color: var(--primary-color);
         }
         
-        .message-submit {
-            width: 42px;
-            height: 42px;
-            background: var(--primary-color);
+        .send-btn {
+            width: 44px;
+            height: 44px;
+            background-color: var(--primary-color);
             border: none;
             border-radius: 50%;
             color: var(--text-light);
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
             display: flex;
             justify-content: center;
             align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
-        .message-submit:hover {
+        .send-btn:hover {
             background-color: #2a686d;
             transform: scale(1.05);
         }
         
-        .no-chat-selected {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, rgba(15, 26, 32, 0.95), rgba(31, 40, 51, 0.95));
-            color: var(--text-muted);
-        }
-        
-        .no-chat-icon {
-            font-size: 50px;
-            margin-bottom: 20px;
-            color: rgba(61, 123, 128, 0.3);
-        }
-        
-        .no-chat-text {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        
-        .no-chat-subtext {
-            font-size: 14px;
-            max-width: 300px;
-            text-align: center;
-            line-height: 1.5;
-        }
-        
+        /* Responsive Anpassungen */
         @media (max-width: 992px) {
+            .contacts-sidebar {
+                width: 250px;
+            }
+        }
+        
+        @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
             }
@@ -537,64 +426,80 @@
                 width: 100%;
                 border-right: none;
                 border-bottom: 1px solid rgba(61, 123, 128, 0.1);
+                display: flex;
+                overflow-x: auto;
+                padding: 10px;
             }
             
-            .message-container {
-                flex-direction: column;
-                max-height: none;
+            .nav-item {
+                padding: 10px 15px;
+                border-left: none;
+                border-bottom: 3px solid transparent;
+            }
+            
+            .nav-item:hover, .nav-item.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--primary-color);
             }
             
             .contacts-sidebar {
                 width: 100%;
+                max-width: 100%;
                 max-height: 300px;
+            }
+            
+            .message {
+                max-width: 85%;
             }
         }
     </style>
+  <link rel="stylesheet" href="accessibility.css">
 </head>
 <body>
     <header>
         <div class="logo-area">
-            <img src="logo.png" alt="CultureStream Logo" class="logo">
+            <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
             <div class="logo-text">CultureStream</div>
-            <div class="profile-badge"><i class="fas fa-comments"></i> Nachrichten</div>
+            <div class="messages-badge">
+                <i class="fa fa-comment"></i> Nachrichten
+            </div>
         </div>
-        
         <div class="user-area">
-            <div class="user-avatar">S</div>
-            <div class="user-name">Sarah Müller</div>
-            <button class="logout-btn">Abmelden</button>
+            <div class="user-avatar">J</div>
+            <div class="user-name">Jana Krause</div>
+            <button class="btn logout-btn">Abmelden</button>
         </div>
     </header>
     
     <div class="main-container">
         <nav>
-            <a href="member.html" class="nav-item">
-                <i class="fas fa-home"></i>
-                Dashboard
-            </a>
-            <a href="exhibition.html" class="nav-item">
-                <i class="fas fa-cube"></i>
-                Ausstellungen
-            </a>
-            <a href="events.html" class="nav-item">
-                <i class="fas fa-calendar-alt"></i>
-                Events
-            </a>
-            <a href="community.html" class="nav-item">
-                <i class="fas fa-users"></i>
-                Community
-            </a>
-            <a href="messages.html" class="nav-item active">
-                <i class="fas fa-comments"></i>
-                Nachrichten
-            </a>
-            <a href="profile.html" class="nav-item">
-                <i class="fas fa-user"></i>
-                Mein Profil
+            <a href="#" class="nav-item">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-cog"></i>
-                Einstellungen
+                <i class="fa fa-images"></i>
+                <span>Ausstellungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-calendar"></i>
+                <span>Veranstaltungen</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-users"></i>
+                <span>Community</span>
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fa fa-comment"></i>
+                <span>Nachrichten</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-user"></i>
+                <span>Profil</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fa fa-cog"></i>
+                <span>Einstellungen</span>
             </a>
         </nav>
         
@@ -607,7 +512,7 @@
                     </button>
                 </div>
                 
-                <div class="search-container">
+                <div class="search-contacts">
                     <input type="text" class="search-input" placeholder="Suche nach Kontakten...">
                 </div>
                 
@@ -681,13 +586,13 @@
                 </div>
             </div>
             
-            <div class="chat-area">
+            <div class="chat-content">
                 <div class="chat-header">
-                    <div class="chat-user">
-                        <div class="chat-avatar">M</div>
-                        <div class="chat-user-info">
-                            <div class="chat-user-name">Michael Schmidt</div>
-                            <div class="chat-user-status online">Online</div>
+                    <div class="chat-recipient">
+                        <div class="contact-avatar">M</div>
+                        <div class="contact-info">
+                            <div class="contact-name">Michael Schmidt</div>
+                            <div class="contact-time">14:23</div>
                         </div>
                     </div>
                     
@@ -734,12 +639,14 @@
                     </div>
                 </div>
                 
-                <form class="message-form">
-                    <button type="button" class="message-attach">
-                        <i class="fas fa-paperclip"></i>
-                    </button>
+                <form class="chat-input">
+                    <div class="message-tools">
+                        <button type="button" class="tool-btn">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                    </div>
                     <input type="text" class="message-input" placeholder="Schreibe eine Nachricht...">
-                    <button type="submit" class="message-submit">
+                    <button type="submit" class="send-btn">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
@@ -747,91 +654,130 @@
         </div>
     </div>
     
+    <!-- Scripts einbinden -->
+    <script src="scripts.js"></script>
+    <script src="form-validation.js"></script>
     <script>
-        // Logout-Button-Funktion
-        document.querySelector('.logout-btn').addEventListener('click', function() {
-            if (confirm('Möchtest du dich wirklich abmelden?')) {
-                window.location.href = 'index.html';
-            }
-        });
-        
-        // Kontakte auswählen
-        const contactItems = document.querySelectorAll('.contact-item');
-        contactItems.forEach(item => {
-            item.addEventListener('click', function() {
-                contactItems.forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                
-                // In einer echten Anwendung würden hier Chats geladen werden
-                this.querySelector('.contact-badge')?.remove();
-            });
-        });
-        
-        // Beispiel für Nachrichtenversand
-        const messageForm = document.querySelector('.message-form');
-        messageForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const input = this.querySelector('.message-input');
-            const message = input.value.trim();
+        CultureStream.ready(function() {
+            // Navigation-Handling
+            const navItems = document.querySelectorAll('.nav-item');
             
-            if (message) {
-                const chatMessages = document.querySelector('.chat-messages');
-                const newMessage = document.createElement('div');
-                newMessage.className = 'message sent';
-                
-                const now = new Date();
-                const hours = now.getHours().toString().padStart(2, '0');
-                const minutes = now.getMinutes().toString().padStart(2, '0');
-                const timeString = `${hours}:${minutes}`;
-                
-                newMessage.innerHTML = `
-                    <div class="message-bubble">
-                        ${message}
-                    </div>
-                    <div class="message-time">${timeString}</div>
-                `;
-                
-                chatMessages.appendChild(newMessage);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                input.value = '';
-                
-                // Simuliere eine Antwort nach 1-3 Sekunden (nur zu Demo-Zwecken)
-                setTimeout(() => {
-                    const responses = [
-                        "Danke für deine Nachricht!",
-                        "Klingt interessant, erzähl mir mehr darüber.",
-                        "Super! Ich freue mich darauf, demnächst mit dir darüber zu sprechen.",
-                        "Das ist eine tolle Idee!"
-                    ];
+            navItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function(e) {
+                    e.preventDefault();
                     
-                    const responseMessage = document.createElement('div');
-                    responseMessage.className = 'message received';
+                    // Aktive Klasse entfernen
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
                     
-                    const laterNow = new Date();
-                    const laterHours = laterNow.getHours().toString().padStart(2, '0');
-                    const laterMinutes = laterNow.getMinutes().toString().padStart(2, '0');
-                    const laterTimeString = `${laterHours}:${laterMinutes}`;
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
                     
-                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    // Benachrichtigung anzeigen für Demo-Zwecke
+                    const section = this.querySelector('span').textContent;
+                    CultureStream.notifications.info(`Navigiere zu: ${section}`);
+                });
+            });
+            
+            // Kontakt-Auswahl-Handling
+            const contactItems = document.querySelectorAll('.contact-item');
+            
+            contactItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function() {
+                    // Aktive Klasse entfernen
+                    contactItems.forEach(contact => contact.classList.remove('active'));
                     
-                    responseMessage.innerHTML = `
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
+                    
+                    // Kontaktname abrufen
+                    const contactName = this.querySelector('.contact-name').textContent;
+                    
+                    // Chat-Header aktualisieren
+                    document.querySelector('.chat-recipient .contact-name').textContent = contactName;
+                    
+                    // Benachrichtigung anzeigen
+                    CultureStream.notifications.info(`Chat mit ${contactName} geöffnet`);
+                    
+                    // Ungelesene Nachrichten zurücksetzen
+                    const badge = this.querySelector('.contact-badge');
+                    if (badge) {
+                        badge.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Nachricht-Senden-Handling
+            const messageForm = document.querySelector('.chat-input');
+            
+            CultureStream.dom.on(messageForm, 'submit', function(e) {
+                e.preventDefault();
+                
+                const input = this.querySelector('.message-input');
+                const messageText = input.value.trim();
+                
+                if (messageText) {
+                    // Neue Nachricht erstellen
+                    const chatMessages = document.querySelector('.chat-messages');
+                    const newMessage = document.createElement('div');
+                    newMessage.className = 'message sent';
+                    
+                    const now = new Date();
+                    const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                                      now.getMinutes().toString().padStart(2, '0');
+                    
+                    newMessage.innerHTML = `
                         <div class="message-bubble">
-                            ${randomResponse}
+                            <div class="message-content">${messageText}</div>
                         </div>
-                        <div class="message-time">${laterTimeString}</div>
+                        <div class="message-time">${timeString} <span class="message-status">✓</span></div>
                     `;
                     
-                    chatMessages.appendChild(responseMessage);
+                    chatMessages.appendChild(newMessage);
+                    
+                    // Chat automatisch zum Ende scrollen
                     chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 1000 + Math.random() * 2000);
+                    
+                    // Input zurücksetzen
+                    input.value = '';
+                    
+                    // Bestätigung anzeigen
+                    CultureStream.notifications.success('Nachricht gesendet');
+                }
+            });
+            
+            // Neue-Nachricht-Button
+            const newMessageBtn = document.querySelector('.new-message-btn');
+            
+            if (newMessageBtn) {
+                CultureStream.dom.on(newMessageBtn, 'click', function() {
+                    CultureStream.notifications.info('Neue Konversation starten');
+                    
+                    // Hier würde der Dialog zum Starten einer neuen Konversation geöffnet werden
+                    const recipientName = prompt('Mit wem möchtest du chatten?');
+                    
+                    if (recipientName) {
+                        CultureStream.notifications.success(`Chat mit ${recipientName} erstellt`);
+                    }
+                });
             }
-        });
-        
-        // Neue Nachricht Button
-        document.querySelector('.new-message-btn').addEventListener('click', function() {
-            alert('Neue Nachricht erstellen');
-            // In einer vollständigen Implementierung würde hier ein Dialog/Modal geöffnet
+            
+            // Logout-Button
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            CultureStream.dom.on(logoutBtn, 'click', function() {
+                if (confirm('Möchtest du dich wirklich abmelden?')) {
+                    CultureStream.notifications.info('Du wirst abgemeldet...');
+                    
+                    // Weiterleitung zur Login-Seite
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
+            });
         });
     </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
 </body>
 </html> 

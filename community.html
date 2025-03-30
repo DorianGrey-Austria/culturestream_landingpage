@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CultureStream Community - Vernetzen Sie sich mit anderen Kunstliebhabern in unserem Kunstverein">
+    <meta name="csrf-token" content="12345678">
     <title>CultureStream - Community</title>
+    
+    <!-- Gemeinsame Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+    <link rel="stylesheet" href="notifications.css">
+    
     <style>
+        /* Seitenspezifische Stile */
         :root {
             --primary-color: #3D7B80; /* Tiefes Türkis */
             --secondary-color: #A4C2A5; /* Moosgrün */
@@ -14,8 +23,19 @@
             --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
             --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
             --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
+            
+            /* Standardfarben für gemeinsame Komponenten */
+            --color-primary: #3D7B80;
+            --color-primary-rgb: 61, 123, 128;
+            --color-secondary: #A4C2A5;
+            --color-accent: #D65108;
+            --color-info: #38BDF8;
+            --color-success: #4ADE80;
+            --color-warning: #F2A65A;
+            --color-danger: #EF4444;
         }
         
+        /* Spezifische Stile für den Community-Bereich */
         * {
             margin: 0;
             padding: 0;
@@ -69,7 +89,7 @@
             padding: 4px 10px;
             border-radius: 20px;
             margin-left: 15px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
         }
@@ -161,10 +181,10 @@
 
         .welcome-banner {
             background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
-            border-radius: 10px;
+            border-radius: var(--radius-md);
             padding: 30px;
             margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-md);
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(61, 123, 128, 0.1);
@@ -595,51 +615,53 @@
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link rel="stylesheet" href="accessibility.css">
 </head>
 <body>
     <header>
         <div class="logo-area">
-            <img src="logo.png" alt="CultureStream Logo" class="logo">
+            <img src="assets/logo.png" alt="CultureStream Logo" class="logo">
             <div class="logo-text">CultureStream</div>
-            <div class="community-badge"><i class="fas fa-users"></i> Community</div>
+            <div class="community-badge">
+                <i class="fa fa-users"></i> Community
+            </div>
         </div>
-        
         <div class="user-area">
-            <div class="user-avatar">S</div>
-            <div class="user-name">Sarah Müller</div>
-            <button class="logout-btn">Abmelden</button>
+            <div class="user-avatar">L</div>
+            <div class="user-name">Lisa Weber</div>
+            <button class="btn logout-btn">Abmelden</button>
         </div>
     </header>
     
     <div class="main-container">
         <nav>
-            <a href="member.html" class="nav-item">
-                <i class="fas fa-home"></i>
-                Dashboard
+            <a href="#" class="nav-item">
+                <i class="fa fa-home"></i>
+                <span>Dashboard</span>
             </a>
-            <a href="exhibition.html" class="nav-item">
-                <i class="fas fa-cube"></i>
-                Ausstellungen
+            <a href="#" class="nav-item">
+                <i class="fa fa-images"></i>
+                <span>Ausstellungen</span>
             </a>
-            <a href="events.html" class="nav-item">
-                <i class="fas fa-calendar-alt"></i>
-                Events
+            <a href="#" class="nav-item">
+                <i class="fa fa-calendar"></i>
+                <span>Veranstaltungen</span>
             </a>
             <a href="#" class="nav-item active">
-                <i class="fas fa-users"></i>
-                Community
+                <i class="fa fa-users"></i>
+                <span>Community</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-comments"></i>
-                Nachrichten
+                <i class="fa fa-paint-brush"></i>
+                <span>Künstler</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-user"></i>
-                Mein Profil
+                <i class="fa fa-comment"></i>
+                <span>Diskussionen</span>
             </a>
             <a href="#" class="nav-item">
-                <i class="fas fa-cog"></i>
-                Einstellungen
+                <i class="fa fa-user"></i>
+                <span>Profil</span>
             </a>
         </nav>
         
@@ -916,22 +938,122 @@
         </main>
     </div>
     
+    <!-- Scripts einbinden -->
+    <script src="scripts.js"></script>
+    <script src="form-validation.js"></script>
     <script>
-        // Logout-Button-Funktion
-        document.querySelector('.logout-btn').addEventListener('click', function() {
-            if (confirm('Möchtest du dich wirklich abmelden?')) {
-                window.location.href = 'index.html';
+        CultureStream.ready(function() {
+            // Navigation-Handling
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                CultureStream.dom.on(item, 'click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aktive Klasse entfernen
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    
+                    // Aktive Klasse hinzufügen
+                    this.classList.add('active');
+                    
+                    // Benachrichtigung anzeigen für Demo-Zwecke
+                    const section = this.querySelector('span').textContent;
+                    CultureStream.notifications.info(`Navigiere zu: ${section}`);
+                });
+            });
+            
+            // Beitragsinteraktionen
+            const likeButtons = document.querySelectorAll('.post-action-like');
+            
+            likeButtons.forEach(button => {
+                CultureStream.dom.on(button, 'click', function() {
+                    const postTitle = this.closest('.post-card').querySelector('.post-title').textContent;
+                    
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        const likeCount = this.querySelector('.count');
+                        likeCount.textContent = parseInt(likeCount.textContent) - 1;
+                        CultureStream.notifications.info(`Like von "${postTitle}" entfernt`);
+                    } else {
+                        this.classList.add('active');
+                        const likeCount = this.querySelector('.count');
+                        likeCount.textContent = parseInt(likeCount.textContent) + 1;
+                        CultureStream.notifications.success(`Du likest "${postTitle}"`);
+                    }
+                });
+            });
+            
+            // Kommentarinteraktionen
+            const commentForms = document.querySelectorAll('.comment-form');
+            
+            commentForms.forEach(form => {
+                CultureStream.dom.on(form, 'submit', function(e) {
+                    e.preventDefault();
+                    
+                    const input = this.querySelector('.comment-input');
+                    const commentText = input.value.trim();
+                    
+                    if (commentText) {
+                        const postTitle = this.closest('.post-card') ? 
+                                        this.closest('.post-card').querySelector('.post-title').textContent : 
+                                        'Diskussion';
+                        
+                        CultureStream.notifications.success(`Kommentar zu "${postTitle}" wurde hinzugefügt`);
+                        input.value = '';
+                        
+                        // Hier würde normalerweise der Kommentar eingefügt werden
+                        alert('Kommentar hinzugefügt: ' + commentText);
+                    }
+                });
+            });
+            
+            // Beitragserstellung
+            const createPostForm = document.querySelector('#create-post-form');
+            
+            if (createPostForm) {
+                CultureStream.dom.on(createPostForm, 'submit', function(e) {
+                    e.preventDefault();
+                    
+                    const titleInput = this.querySelector('#post-title');
+                    const contentInput = this.querySelector('#post-content');
+                    const categorySelect = this.querySelector('#post-category');
+                    
+                    const title = titleInput.value.trim();
+                    const content = contentInput.value.trim();
+                    const category = categorySelect.value;
+                    
+                    if (title && content) {
+                        CultureStream.notifications.success('Dein Beitrag wurde erfolgreich erstellt und wird nun geprüft');
+                        
+                        // Formular zurücksetzen
+                        titleInput.value = '';
+                        contentInput.value = '';
+                        
+                        // Hier würde normalerweise der Beitrag erstellt und angezeigt werden
+                        alert(`Neuer Beitrag erstellt:\nTitel: ${title}\nKategorie: ${category}\nInhalt: ${content}`);
+                    } else {
+                        CultureStream.notifications.error('Bitte fülle alle Pflichtfelder aus');
+                    }
+                });
             }
-        });
-        
-        // Filter-Buttons Interaktion
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        filterButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
+            
+            // Logout-Button
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            CultureStream.dom.on(logoutBtn, 'click', function() {
+                if (confirm('Möchtest du dich wirklich abmelden?')) {
+                    CultureStream.notifications.info('Du wirst abgemeldet...');
+                    
+                    // Weiterleitung zur Login-Seite
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                }
             });
         });
     </script>
+  <script src="accessibility-test.js"></script>
+  <script src="accessibility-report.js"></script>
+  <script src="accessibility-test-integration.js"></script>
 </body>
 </html> 
