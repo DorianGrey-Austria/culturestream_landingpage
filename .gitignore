@@ -43,3 +43,39 @@ DeepSeek-V3/
 DeepSeek-V3/**
 node_modules/
 _backup/node_modules/
+
+# Dependency directories
+node_modules/
+_backup/node_modules/
+
+# Large files that exceed GitHub limits
+*.node
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
