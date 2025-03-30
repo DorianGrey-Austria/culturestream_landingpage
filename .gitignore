@@ -41,3 +41,5 @@ culturestream_landingpage.zip
 /DeepSeek-V3/
 DeepSeek-V3/
 DeepSeek-V3/**
+node_modules/
+_backup/node_modules/
