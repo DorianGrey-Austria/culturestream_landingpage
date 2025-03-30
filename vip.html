@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CultureStream - VIP Portal</title>
+    <style>
+        :root {
+            --primary-blue: #40B4E5;
+            --secondary-blue: #8AD9F2;
+            --light-blue: #C1E8F7;
+            --dark-bg: #121212;
+            --dark-panel: #1E1E1E;
+            --text-light: #FFFFFF;
+            --text-muted: #9E9E9E;
+            --gold: #FFD700;
+            --gold-accent: #FFC107;
+            --premium-gradient: linear-gradient(135deg, #000000, #333333);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: var(--premium-gradient);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 10;
+            border-bottom: 1px solid var(--gold-accent);
+        }
+        
+        .logo-area {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            width: 40px;
+            margin-right: 15px;
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            background: linear-gradient(90deg, var(--text-light), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .vip-badge {
+            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
+            color: #000;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+        }
+        
+        .vip-badge i {
+            margin-right: 5px;
+        }
+        
+        .user-area {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-weight: 600;
+            color: #000;
+            border: 2px solid var(--gold-accent);
+        }
+        
+        .user-name {
+            margin-right: 20px;
+        }
+        
+        .logout-btn {
+            padding: 8px 15px;
+            background-color: transparent;
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            color: var(--gold);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--gold);
+            color: #000;
+        }
+        
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        nav {
+            width: 250px;
+            background: linear-gradient(180deg, #1a1a1a, #0e0e0e);
+            padding: 20px 0;
+            border-right: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        
+        .nav-item {
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(255, 215, 0, 0.05);
+            color: var(--gold);
+            border-left-color: var(--gold);
+        }
+        
+        .nav-item i {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        main {
+            flex: 1;
+            padding: 30px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(64, 180, 229, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 20%);
+        }
+        
+        .vip-banner {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(10, 10, 10, 0.9));
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .vip-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 L80,50 M50,20 L50,80" stroke="%23FFD700" stroke-width="0.5" opacity="0.2"/></svg>') repeat;
+            opacity: 0.1;
+        }
+        
+        .vip-banner::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+            top: -100px;
+            right: -50px;
+            opacity: 0.3;
+            border-radius: 50%;
+        }
+        
+        .vip-banner h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--gold);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .vip-banner h1::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+        }
+        
+        .vip-banner p {
+            color: var(--text-muted);
+            font-size: 16px;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .vip-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .vip-stat {
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            flex: 1;
+            text-align: center;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .premium-label {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--gold), var(--gold-accent));
+            color: #000;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+            vertical-align: middle;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.9));
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+        
+        .card h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+        }
+        
+        .card h3 i {
+            margin-right: 10px;
+        }
+        
+        .vip-event-list {
+            margin-top: 20px;
+        }
+        
+        .vip-event {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 3px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .vip-event:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+            border-left-color: var(--gold);
+        }
+        
+        .vip-event-date {
+            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
+            color: #000;
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .vip-event-date .day {
+            font-size: 22px;
+        }
+        
+        .vip-event-content {
+            flex: 1;
+        }
+        
+        .vip-event-title {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+        
+        .vip-event-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .vip-exclusive {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
+            color: #000;
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+        
+        .vip-btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-accent));
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            margin-top: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .vip-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .vip-benefits {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .vip-benefits li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .vip-benefits li:last-child {
+            border-bottom: none;
+        }
+        
+        .vip-benefits i {
+            color: var(--gold);
+            margin-right: 10px;
+        }
+        
+        .vip-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .vip-gallery-item {
+            height: 100px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(255, 215, 0, 0.1);
+            transition: all 0.3s;
+        }
+        
+        .vip-gallery-item:hover {
+            transform: scale(1.05);
+            border-color: var(--gold);
+        }
+        
+        .vip-gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.3s;
+        }
+        
+        .vip-gallery-item:hover img {
+            filter: brightness(1.2);
+        }
+        
+        .vip-gallery-item .gallery-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 5px 10px;
+            background: rgba(0, 0, 0, 0.7);
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        
+        .vip-gallery-item:nth-child(1) {
+            background-color: #ff6b6b;
+        }
+        
+        .vip-gallery-item:nth-child(2) {
+            background-color: #4ecdc4;
+        }
+        
+        .vip-gallery-item:nth-child(3) {
+            background-color: #1a535c;
+        }
+        
+        .vip-gallery-item:nth-child(4) {
+            background-color: #ff9f1c;
+        }
+        
+        .see-all {
+            display: block;
+            text-align: right;
+            color: var(--gold);
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        
+        .see-all:hover {
+            color: var(--gold-accent);
+            text-decoration: underline;
+        }
+        
+        .digital-dots {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 200px;
+            height: 200px;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .digital-dots .dot {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: var(--gold);
+            border-radius: 50%;
+        }
+        
+        .portal-effect {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-accent));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #000;
+            font-size: 22px;
+            cursor: pointer;
+            box-shadow: 0 0 0 rgba(255, 215, 0, 0.4);
+            animation: pulse 2s infinite;
+            z-index: 100;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(255, 215, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+            }
+        }
+        
+        .vip-tooltip {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: var(--text-light);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-area">
+            <img src="logo.png" alt="CultureStream Logo" class="logo">
+            <div class="logo-text">CultureStream</div>
+            <div class="vip-badge"><i class="fas fa-crown"></i> VIP</div>
+        </div>
+        
+        <div class="user-area">
+            <div class="user-avatar">V</div>
+            <div class="user-name">Viktoria Meier</div>
+            <button class="logout-btn">Abmelden</button>
+        </div>
+    </header>
+    
+    <div class="main-container">
+        <nav>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-crown"></i>
+                VIP-Übersicht
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-calendar-star"></i>
+                Exklusive Events
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-video"></i>
+                Premium Portale
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-users-crown"></i>
+                VIP Community
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-compass"></i>
+                Kulturelle Entdeckungen
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-gem"></i>
+                Vorteile & Angebote
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                Einstellungen
+            </a>
+        </nav>
+        
+        <main>
+            <div class="vip-banner">
+                <h1>Willkommen im VIP-Portal, Viktoria!</h1>
+                <p>Genieße deine exklusiven Vorteile als Premium-Mitglied und entdecke neue kulturelle Horizonte mit CultureStream. Dein persönliches Portal zu einzigartigen kulturellen Erlebnissen steht dir jederzeit zur Verfügung.</p>
+                <a href="#" class="vip-btn">Persönliche Portal-Session starten</a>
+                
+                <div class="vip-stats">
+                    <div class="vip-stat">
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">Exklusive Events</div>
+                    </div>
+                    <div class="vip-stat">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Premium-Portale</div>
+                    </div>
+                    <div class="vip-stat">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Verfügbare Credits</div>
+                    </div>
+                    <div class="vip-stat">
+                        <div class="stat-value">5</div>
+                        <div class="stat-label">Neue Nachrichten</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="vip-exclusive">NUR FÜR VIPs</div>
+                    <h3><i class="fas fa-star"></i> Premium-Events</h3>
+                    <div class="vip-event-list">
+                        <div class="vip-event">
+                            <div class="vip-event-date">
+                                <span class="day">12</span>
+                                <span>Mai</span>
+                            </div>
+                            <div class="vip-event-content">
+                                <div class="vip-event-title">Private Führung: Louvre nach Stunden</div>
+                                <div class="vip-event-desc">Exklusive virtuelle Führung durch den Louvre, wenn die Türen für die Öffentlichkeit geschlossen sind.</div>
+                                <a href="#" class="vip-btn">Reservieren</a>
+                            </div>
+                        </div>
+                        <div class="vip-event">
+                            <div class="vip-event-date">
+                                <span class="day">19</span>
+                                <span>Mai</span>
+                            </div>
+                            <div class="vip-event-content">
+                                <div class="vip-event-title">Gespräch mit Weltraumarchitekten</div>
+                                <div class="vip-event-desc">Interaktive Session mit führenden Architekten der internationalen Raumstation.</div>
+                                <a href="#" class="vip-btn">Reservieren</a>
+                            </div>
+                        </div>
+                        <div class="vip-event">
+                            <div class="vip-event-date">
+                                <span class="day">25</span>
+                                <span>Mai</span>
+                            </div>
+                            <div class="vip-event-content">
+                                <div class="vip-event-title">Weinverkostung mit Sommeliers</div>
+                                <div class="vip-event-desc">Gemeinsames Wein-Tasting über Portale mit Experten aus Frankreich, Italien und Chile.</div>
+                                <a href="#" class="vip-btn">Reservieren</a>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="see-all">Alle Premium-Events anzeigen <i class="fas fa-arrow-right"></i></a>
+                </div>
+                
+                <div class="card">
+                    <h3><i class="fas fa-gem"></i> Deine VIP-Vorteile</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Als VIP-Mitglied genießt du diese exklusiven Vorteile bei CultureStream:</p>
+                    
+                    <ul class="vip-benefits">
+                        <li><i class="fas fa-check-circle"></i> Unbegrenzter Zugang zu allen Premium-Portalen</li>
+                        <li><i class="fas fa-check-circle"></i> Priorisierte Buchung für kulturelle Events</li>
+                        <li><i class="fas fa-check-circle"></i> Persönliche Echtzeit-Übersetzung in 12 Sprachen</li>
+                        <li><i class="fas fa-check-circle"></i> Dedizierte VIP-Hosts für private Sessions</li>
+                        <li><i class="fas fa-check-circle"></i> Fortgeschrittene AR-Funktionen für immersive Erlebnisse</li>
+                        <li><i class="fas fa-check-circle"></i> Monatliche Credits für Premium-Inhalte</li>
+                    </ul>
+                    
+                    <div style="margin-top: 20px; padding: 15px; background-color: rgba(255, 215, 0, 0.1); border-radius: 8px; position: relative; border-left: 3px solid var(--gold);">
+                        <i class="fas fa-lightbulb" style="color: var(--gold); margin-right: 10px;"></i>
+                        <span style="color: var(--text-muted); font-size: 14px;">Insider-Tipp: Nutze deine monatlichen Credits für eine private Portal-Session mit unserem Kulturexperten Marco, der diese Woche live aus Kyoto berichtet!</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-globe"></i> Exklusive Kultur-Einblicke</h3>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Unsere neuesten Premium-Inhalte, kuratiert speziell für VIP-Mitglieder:</p>
+                
+                <div class="vip-gallery">
+                    <div class="vip-gallery-item">
+                        <div class="gallery-label">Kyoto Garden</div>
+                    </div>
+                    <div class="vip-gallery-item">
+                        <div class="gallery-label">Santorini Portal</div>
+                    </div>
+                    <div class="vip-gallery-item">
+                        <div class="gallery-label">NY Philharmonic</div>
+                    </div>
+                    <div class="vip-gallery-item">
+                        <div class="gallery-label">Machu Picchu</div>
+                    </div>
+                    <div class="vip-gallery-item">
+                        <div class="gallery-label">Arctic Lights</div>
+                    </div>
+                    <div class="vip-gallery-item">
+                        <div class="gallery-label">Dubai Future</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 25px; background-color: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 20px; border: 1px solid rgba(255, 215, 0, 0.1);">
+                    <h4 style="color: var(--gold); margin-bottom: 15px; font-size: 16px;"><i class="fas fa-star"></i> Feature der Woche</h4>
+                    <p style="color: var(--text-muted); margin-bottom: 15px; font-size: 14px;">Unsere neue Echtzeit-Hologramm-Funktion erlaubt es dir, 3D-Objekte aus anderen Kulturen in deinen eigenen Raum zu projizieren. Perfekt für tiefergehende kulturelle Studien und immersive Erlebnisse.</p>
+                    <p style="color: var(--text-muted); font-size: 14px; font-style: italic;">
+                        "Mit der Hologramm-Funktion konnte ich antike ägyptische Artefakte in meinem Wohnzimmer studieren - eine vollkommen neue Dimension des kulturellen Lernens!" <br>
+                        <span style="color: var(--gold); font-weight: 500;">- Maria K., VIP-Mitglied seit 2022</span>
+                    </p>
+                    <a href="#" class="vip-btn" style="margin-top: 15px;">Funktion aktivieren</a>
+                </div>
+                
+                <a href="#" class="see-all">Alle Premium-Inhalte erkunden <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </main>
+    </div>
+    
+    <div class="portal-effect" title="Premium-Portal aktivieren">
+        <i class="fas fa-crown"></i>
+    </div>
+    
+    <div class="digital-dots">
+        <!-- Dynamisch generierte Punkte via JavaScript -->
+    </div>
+    
+    <script>
+        // Digitale Punkte im Hintergrund generieren
+        const dotsContainer = document.querySelector('.digital-dots');
+        for (let i = 0; i < 30; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            dot.style.top = `${Math.random() * 100}%`;
+            dot.style.left = `${Math.random() * 100}%`;
+            dotsContainer.appendChild(dot);
+        }
+        
+        // Logout-Button-Funktion
+        document.querySelector('.logout-btn').addEventListener('click', function() {
+            if (confirm('Möchtest du dich wirklich abmelden?')) {
+                window.location.href = 'index.html';
+            }
+        });
+        
+        // Premium-Portal-Button
+        document.querySelector('.portal-effect').addEventListener('click', function() {
+            alert('✨ Premium-Portal wird aktiviert! Verbinde dich mit exklusiven VIP-Inhalten und kulturellen Erlebnissen. Diese Funktion wird in Kürze freigeschaltet.');
+        });
+        
+        // Tooltip für VIP-Gallery-Items
+        const galleryItems = document.querySelectorAll('.vip-gallery-item');
+        const tooltipTexts = [
+            "Erlebe die verzaubernden Gärten Kyotos in einer privaten Portal-Session mit lokalen Gärtnern.",
+            "Genieße den Sonnenuntergang über Santorini mit einem privaten Kulturführer und lerne die lokalen Traditionen kennen.",
+            "Exklusives virtuelles Konzert der New York Philharmonic mit VIP-Backstage-Zugang.",
+            "Archäologie-Expedition nach Machu Picchu mit führenden Experten der Inka-Kultur.",
+            "Erlebe das Nordlicht in Echtzeit mit unserem Portal in Norwegen - inkl. wissenschaftlicher Erklärungen.",
+            "Futuristische Architektur-Tour durch Dubai mit exklusivem Zugang zu noch nicht eröffneten Gebäuden."
+        ];
+        
+        // Tooltip erstellen und anhängen
+        const tooltip = document.createElement('div');
+        tooltip.classList.add('vip-tooltip');
+        document.body.appendChild(tooltip);
+        
+        // Event-Listener für Gallery-Items
+        galleryItems.forEach((item, index) => {
+            item.addEventListener('mouseenter', function(e) {
+                tooltip.textContent = tooltipTexts[index] || "Exklusiver VIP-Inhalt";
+                tooltip.style.top = `${e.clientY + 20}px`;
+                tooltip.style.left = `${e.clientX + 10}px`;
+                tooltip.style.opacity = 1;
+            });
+            
+            item.addEventListener('mousemove', function(e) {
+                tooltip.style.top = `${e.clientY + 20}px`;
+                tooltip.style.left = `${e.clientX + 10}px`;
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                tooltip.style.opacity = 0;
+            });
+        });
+    </script>
+</body>
+</html> 
