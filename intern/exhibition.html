@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="CultureStream Ausstellungsraum - Entdecken Sie digitale Kunstausstellungen in unserem Kunstverein">
     <meta name="csrf-token" content="12345678">
-    <title>CultureStream - Ausstellungsraum</title>
+    <title>CultureStream - Interne Ausstellungsübersicht</title>
     
     <!-- Gemeinsame Stylesheets -->
     <link rel="stylesheet" href="styles.css">
@@ -17,24 +17,15 @@
     <style>
         /* Seitenspezifische Stile */
         :root {
-            --primary-color: #3D7B80; /* Tiefes Türkis */
-            --secondary-color: #A4C2A5; /* Moosgrün */
-            --accent-color: #D65108; /* Terrakotta */
-            --light-accent: #F2A65A; /* Sanftes Orange */
-            --dark-bg: #0F1A20; /* Fast-Schwarz mit Blauton */
-            --dark-panel: #1F2833; /* Dunkelgrauer Blauton */
-            --text-light: #F6F8FF; /* Leicht bläuliches Weiß */
-            --text-muted: #B3C0D1; /* Gedämpftes Blaugrau */
-            
-            /* Standardfarben für gemeinsame Komponenten */
-            --color-primary: #3D7B80;
-            --color-primary-rgb: 61, 123, 128;
-            --color-secondary: #A4C2A5;
-            --color-accent: #D65108;
-            --color-info: #38BDF8;
-            --color-success: #4ADE80;
-            --color-warning: #F2A65A;
-            --color-danger: #EF4444;
+            --primary: #D65108;
+            --secondary: #e67e30;
+            --accent: #f8eee2;
+            --background: #ffffff;
+            --foreground: #333333;
+            --border: #e2e8f0;
+            --input: #e2e8f0;
+            --ring: #d65108;
+            --radius: 0.5rem;
         }
         
         /* Spezifische Stile für den Ausstellungsbereich */
@@ -42,1199 +33,487 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
         }
         
         body {
-            background-color: var(--dark-bg);
-            color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
         }
         
-        header {
-            background: linear-gradient(135deg, var(--dark-panel), #131b23);
-            padding: 20px;
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-            position: relative;
-            z-index: 10;
-            border-bottom: 1px solid var(--primary-color);
+            padding: 1rem 2rem;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         
-        .logo-area {
+        .logo-container {
             display: flex;
             align-items: center;
+            gap: 1rem;
         }
         
-        .logo {
-            width: 40px;
-            margin-right: 15px;
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
         }
         
         .logo-text {
-            font-size: 24px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            background: linear-gradient(90deg, var(--text-light), var(--primary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .exhibition-badge {
-            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
-            color: var(--text-light);
-            font-size: 12px;
+            font-size: 1.5rem;
             font-weight: bold;
-            padding: 4px 10px;
-            border-radius: 20px;
-            margin-left: 15px;
-            box-shadow: var(--shadow-sm);
+            color: var(--primary);
+        }
+        
+        .header-buttons {
             display: flex;
-            align-items: center;
+            gap: 1rem;
         }
         
-        .exhibition-badge i {
-            margin-right: 5px;
-        }
-        
-        .user-area {
-            display: flex;
-            align-items: center;
-        }
-        
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            font-weight: 600;
-            color: var(--text-light);
-            border: 2px solid var(--primary-color);
-        }
-        
-        .user-name {
-            margin-right: 20px;
-        }
-        
-        .logout-btn {
-            padding: 8px 15px;
-            background-color: transparent;
-            border: 1px solid var(--accent-color);
-            border-radius: 4px;
-            color: var(--accent-color);
+        .header-button {
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
+            text-decoration: none;
         }
         
-        .logout-btn:hover {
-            background-color: var(--accent-color);
-            color: var(--text-light);
+        .home-button {
+            background-color: transparent;
+            color: #D65108;
+            border: 1px solid #D65108;
+        }
+        
+        .home-button:hover {
+            background-color: rgba(214, 81, 8, 0.1);
+        }
+        
+        .logout-button {
+            background-color: transparent;
+            color: #666;
+            border: 1px solid #666;
+        }
+        
+        .logout-button:hover {
+            background-color: rgba(102, 102, 102, 0.1);
         }
         
         .main-container {
-            display: flex;
-            min-height: calc(100vh - 80px);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
         
-        nav {
-            width: 250px;
-            background: linear-gradient(180deg, #1a2530, #0f1a20);
-            padding: 20px 0;
-            border-right: 1px solid rgba(214, 81, 8, 0.1);
-        }
-        
-        .nav-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-        
-        .nav-item:hover, .nav-item.active {
-            background-color: rgba(214, 81, 8, 0.1);
-            color: var(--accent-color);
-            border-left-color: var(--accent-color);
-        }
-        
-        .nav-item i {
-            margin-right: 15px;
-            font-size: 18px;
-            width: 20px;
+        .page-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
             text-align: center;
-        }
-        
-        main {
-            flex: 1;
-            padding: 30px;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(214, 81, 8, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(61, 123, 128, 0.03) 0%, transparent 20%);
-        }
-        
-        .exhibition-header {
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        .exhibition-header h1 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            color: var(--text-light);
-            position: relative;
-            display: inline-block;
-        }
-        
-        .exhibition-header h1::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-color), transparent);
-        }
-        
-        .exhibition-header p {
-            max-width: 700px;
-            color: var(--text-muted);
-            font-size: 16px;
-            line-height: 1.6;
         }
         
         .exhibition-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+            gap: 2rem;
+            margin-top: 2rem;
         }
         
         .exhibition-card {
-            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
-            border-radius: var(--radius-md);
+            border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
-            position: relative;
-            border: 1px solid rgba(214, 81, 8, 0.1);
         }
         
         .exhibition-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--accent-color);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
         
         .exhibition-image {
             height: 200px;
             overflow: hidden;
-            position: relative;
         }
         
         .exhibition-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.5s;
         }
         
         .exhibition-card:hover .exhibition-image img {
             transform: scale(1.05);
         }
         
-        .exhibition-category {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(15, 26, 32, 0.8);
-            color: var(--text-light);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            z-index: 1;
-        }
-        
-        .exhibition-type {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
-            color: var(--text-light);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            z-index: 1;
-        }
-        
         .exhibition-details {
-            padding: 20px;
+            padding: 1.5rem;
+            background-color: white;
         }
         
-        .exhibition-details h3 {
-            margin-bottom: 10px;
-            font-size: 18px;
-            color: var(--text-light);
+        .exhibition-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--foreground);
         }
         
         .exhibition-meta {
             display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            color: var(--text-muted);
-            font-size: 12px;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
         }
         
-        .exhibition-meta div {
+        .exhibition-date,
+        .exhibition-location {
+            font-size: 0.875rem;
+            color: #666;
             display: flex;
             align-items: center;
-            margin-right: 15px;
-        }
-        
-        .exhibition-meta i {
-            margin-right: 5px;
-            font-size: 14px;
+            gap: 0.25rem;
         }
         
         .exhibition-description {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 15px;
-            line-height: 1.5;
+            margin-bottom: 1rem;
+            color: var(--foreground);
+            font-size: 0.9375rem;
         }
         
-        .exhibition-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .exhibition-count {
-            color: var(--accent-color);
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .exhibition-count i {
-            margin-right: 5px;
-        }
-        
-        .current-exhibition {
-            background: linear-gradient(135deg, rgba(31, 40, 51, 0.9), rgba(15, 26, 32, 0.9));
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            margin-bottom: 40px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(214, 81, 8, 0.2);
-        }
-        
-        .current-exhibition::before {
-            content: '';
-            position: absolute;
-            right: -50px;
-            top: -50px;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(214, 81, 8, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 0;
-        }
-        
-        .current-exhibition h2 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: var(--text-light);
-            position: relative;
-            z-index: 1;
-        }
-        
-        .current-exhibition h2::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-color), transparent);
-        }
-        
-        .current-exhibition-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .current-exhibition-images {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .featured-image {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            border-radius: 8px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 48px;
-            color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .image-gallery {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .gallery-thumbnail {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
-            border-radius: 4px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.3s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            color: rgba(255, 255, 255, 0.3);
-        }
-        
-        .gallery-thumbnail:hover, .gallery-thumbnail.active {
-            opacity: 1;
-        }
-        
-        .current-exhibition-info {
-            flex: 1;
-            min-width: 300px;
-        }
-        
-        .exhibition-info-heading {
-            font-size: 28px;
-            margin-bottom: 5px;
-            color: var(--text-light);
-        }
-        
-        .exhibition-info-artist {
-            font-size: 18px;
-            color: var(--accent-color);
-            margin-bottom: 20px;
-        }
-        
-        .exhibition-info-desc {
-            color: var(--text-muted);
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-        
-        .exhibition-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: linear-gradient(135deg, rgba(31, 40, 51, 0.8), rgba(15, 26, 32, 0.8));
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(214, 81, 8, 0.1);
-        }
-        
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .filter-label {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-        
-        .filter-options {
-            display: flex;
-            gap: 8px;
-        }
-        
-        .filter-option {
-            padding: 5px 12px;
-            background-color: rgba(15, 26, 32, 0.6);
-            border: 1px solid rgba(214, 81, 8, 0.2);
-            border-radius: 20px;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 12px;
-        }
-        
-        .filter-option:hover, .filter-option.active {
-            background-color: rgba(214, 81, 8, 0.1);
-            color: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-        
-        .featured-exhibition {
-            margin-bottom: 40px;
-            position: relative;
-        }
-        
-        .featured-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .featured-title {
-            font-size: 24px;
-            color: var(--text-light);
-            position: relative;
-            padding-left: 15px;
-        }
-        
-        .featured-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 5px;
-            bottom: 5px;
-            width: 3px;
-            background: linear-gradient(180deg, var(--accent-color), var(--light-accent));
-            border-radius: 3px;
-        }
-        
-        .carousel-controls {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .carousel-control {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: rgba(15, 26, 32, 0.6);
-            border: 1px solid rgba(214, 81, 8, 0.2);
-            color: var(--text-light);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .carousel-control:hover {
-            background-color: rgba(214, 81, 8, 0.1);
-            color: var(--accent-color);
-            border-color: var(--accent-color);
-        }
-        
-        .carousel-container {
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .carousel-track {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-            gap: 20px;
-        }
-        
-        .carousel-slide {
-            flex: 0 0 calc(33.333% - 20px);
-            min-width: 300px;
-        }
-        
-        .search-box {
-            position: relative;
-        }
-        
-        .search-box input {
-            padding: 10px 15px 10px 40px;
-            background-color: rgba(31, 40, 51, 0.6);
-            border: 1px solid rgba(214, 81, 8, 0.2);
-            border-radius: 20px;
-            color: var(--text-light);
-            font-size: 14px;
-            width: 250px;
-            transition: all 0.3s;
-        }
-        
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            width: 300px;
-        }
-        
-        .search-box i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-        
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 40px;
-            gap: 5px;
-        }
-        
-        .page-button {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: rgba(31, 40, 51, 0.6);
-            border: 1px solid rgba(214, 81, 8, 0.2);
-            border-radius: 8px;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .page-button:hover, .page-button.active {
-            background-color: var(--accent-color);
-            color: var(--text-light);
-        }
-        
-        .section-title {
-            font-size: 22px;
-            margin-bottom: 20px;
-            color: var(--text-light);
-            position: relative;
+        .exhibition-status {
             display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
         
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-color), transparent);
+        .status-active {
+            background-color: #d1fae5;
+            color: #065f46;
         }
         
-        .immersive-view {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-color), var(--light-accent));
+        .status-upcoming {
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+        
+        .status-ended {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .exhibition-actions {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--text-light);
-            font-size: 22px;
-            cursor: pointer;
-            box-shadow: 0 0 0 rgba(214, 81, 8, 0.4);
-            animation: pulse 2s infinite;
-            z-index: 100;
-        }
-        
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 0 0 0 rgba(214, 81, 8, 0.4);
-            }
-            70% {
-                box-shadow: 0 0 0 15px rgba(214, 81, 8, 0);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(214, 81, 8, 0);
-            }
-        }
-        
-        /* Mobile Navigation Styles */
-        .mobile-menu-toggle {
-            display: none;
-            flex-direction: column;
             justify-content: space-between;
-            width: 30px;
-            height: 21px;
-            cursor: pointer;
-            z-index: 1000;
-        }
-        
-        .mobile-menu-toggle span {
-            display: block;
-            height: 3px;
-            width: 100%;
-            background-color: var(--text-light);
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-        
-        .mobile-menu-toggle.active span:nth-child(1) {
-            transform: translateY(9px) rotate(45deg);
-        }
-        
-        .mobile-menu-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .mobile-menu-toggle.active span:nth-child(3) {
-            transform: translateY(-9px) rotate(-45deg);
-        }
-        
-        .connection-dropdown {
-            position: relative;
-        }
-        
-        .connection-dropdown-toggle {
-            cursor: pointer;
-            display: flex;
             align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
         }
         
-        .connection-dropdown-toggle i {
-            margin-left: 5px;
-            transition: transform 0.3s;
-        }
-        
-        .connection-dropdown-toggle.active i {
-            transform: rotate(180deg);
-        }
-        
-        .connection-dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--dark-panel);
-            border: 1px solid rgba(61, 123, 128, 0.2);
-            border-radius: 8px;
-            padding: 10px 0;
-            min-width: 200px;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: none;
-        }
-        
-        .connection-dropdown-menu.active {
-            display: block;
-        }
-        
-        .connection-dropdown-item {
-            padding: 10px 15px;
-            color: var(--text-muted);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            transition: all 0.2s;
-        }
-        
-        .connection-dropdown-item:hover {
-            background: rgba(61, 123, 128, 0.1);
-            color: var(--primary-color);
-        }
-        
-        .connection-dropdown-item i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-        
-        /* City Selection Dropdown */
-        .city-filter {
-            display: flex;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-            gap: 10px;
-        }
-        
-        .city-dropdown {
-            position: relative;
-        }
-        
-        .city-dropdown-toggle {
-            padding: 8px 15px;
-            background: var(--dark-panel);
-            border: 1px solid rgba(61, 123, 128, 0.3);
-            border-radius: 6px;
-            color: var(--text-light);
+        .action-button {
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            user-select: none;
+            transition: background-color 0.3s;
         }
         
-        .city-dropdown-toggle i {
-            margin-left: 8px;
-            transition: transform 0.3s;
+        .view-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
         }
         
-        .city-dropdown-toggle.active i {
-            transform: rotate(180deg);
+        .view-button:hover {
+            background-color: var(--secondary);
         }
         
-        .city-dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 5px;
-            background: var(--dark-panel);
-            border: 1px solid rgba(61, 123, 128, 0.2);
-            border-radius: 8px;
-            padding: 10px 0;
-            min-width: 200px;
-            max-height: 300px;
-            overflow-y: auto;
-            z-index: 100;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            display: none;
+        .edit-button {
+            background-color: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
         }
         
-        .city-dropdown-menu.active {
-            display: block;
+        .edit-button:hover {
+            background-color: rgba(214, 81, 8, 0.1);
         }
         
-        .city-dropdown-item {
-            padding: 8px 15px;
-            color: var(--text-muted);
-            text-decoration: none;
-            display: block;
-            transition: all 0.2s;
-            cursor: pointer;
+        .tools-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background-color: var(--accent);
+            border-radius: var(--radius);
         }
         
-        .city-dropdown-item:hover {
-            background: rgba(61, 123, 128, 0.1);
-            color: var(--primary-color);
+        .tools-section h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
         }
         
-        .city-dropdown-item.active {
-            color: var(--primary-color);
-            background: rgba(61, 123, 128, 0.05);
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tool-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .tool-title {
             font-weight: 600;
+            margin-bottom: 0.5rem;
         }
         
-        /* Footer Style */
-        .copyright {
-            background: var(--dark-panel);
-            padding: 15px;
+        .tool-description {
+            font-size: 0.875rem;
+            color: #666;
+        }
+        
+        footer {
+            background-color: var(--accent);
+            padding: 2rem;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 14px;
-            border-top: 1px solid rgba(61, 123, 128, 0.1);
+            margin-top: 4rem;
         }
         
-        /* Responsive Styles */
-        @media (max-width: 1024px) {
-            .exhibition-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-menu-toggle {
-                display: flex;
-            }
-            
-            .user-area {
-                margin-right: 15px;
-            }
-            
-            .user-name {
-                display: none;
-            }
-            
-            nav {
-                position: fixed;
-                left: -250px;
-                top: 80px;
-                height: calc(100vh - 80px);
-                transition: left 0.3s ease;
-                z-index: 100;
-            }
-            
-            nav.active {
-                left: 0;
-            }
-            
-            .main-container {
-                flex-direction: column;
-            }
-            
-            main {
-                padding: 20px;
-            }
-            
-            .exhibition-grid {
-                grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-            }
-            
-            .city-filter {
-                flex-direction: column;
-                align-items: stretch;
-            }
+        .copyright {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--foreground);
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <!-- Skip Link für Tastaturnavigation -->
-    <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
-
-    <header>
-        <div class="logo-area">
-            <img src="logo.png" alt="CultureStream Logo" class="logo">
-            <span class="logo-text">CultureStream</span>
-            <div class="exhibition-badge">
-                <i class="fas fa-paint-brush"></i> Ausstellungen
-            </div>
+    <header class="header-container">
+        <div class="logo-container">
+            <img src="../images/Logo.jpg" alt="CultureStream Logo" class="logo-image">
+            <div class="logo-text">CultureStream</div>
         </div>
-        
-        <div class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menü öffnen">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        
-        <div class="user-area">
-            <div class="connection-dropdown">
-                <div class="connection-dropdown-toggle" id="connection-toggle" aria-expanded="false" aria-haspopup="true">
-                    <div class="user-avatar" aria-hidden="true">KM</div>
-                    <span class="user-name">Kunst Museum</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                
-                <div class="connection-dropdown-menu" id="connection-menu" aria-labelledby="connection-toggle">
-                    <a href="#" class="connection-dropdown-item">
-                        <i class="fas fa-user"></i> Mein Profil
-                    </a>
-                    <a href="#" class="connection-dropdown-item">
-                        <i class="fas fa-cog"></i> Einstellungen
-                    </a>
-                    <a href="#" class="connection-dropdown-item">
-                        <i class="fas fa-palette"></i> Meine Ausstellungen
-                    </a>
-                    <a href="#" class="connection-dropdown-item">
-                        <i class="fas fa-ticket-alt"></i> Meine Tickets
-                    </a>
-                    <a href="#" class="connection-dropdown-item">
-                        <i class="fas fa-bell"></i> Benachrichtigungen
-                    </a>
-                    <hr style="border: none; border-top: 1px solid rgba(61, 123, 128, 0.2); margin: 5px 0;">
-                    <a href="#" class="connection-dropdown-item">
-                        <i class="fas fa-sign-out-alt"></i> Ausloggen
-                    </a>
-                </div>
-            </div>
-            
-            <button class="logout-btn">Abmelden</button>
+        <div class="header-buttons">
+            <a href="index.html" class="header-button home-button">Dashboard</a>
+            <a href="../index.html" class="header-button logout-button">Abmelden</a>
         </div>
     </header>
 
-    <div class="main-container">
-        <nav id="side-nav">
-            <a href="#" class="nav-item active">
-                <i class="fas fa-home"></i> Dashboard
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-palette"></i> Ausstellungen
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-calendar-alt"></i> Veranstaltungen
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-users"></i> Community
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-star"></i> VIP-Inhalte
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-envelope"></i> Nachrichten
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-cog"></i> Einstellungen
-            </a>
-        </nav>
+    <main class="main-container">
+        <h1 class="page-title">Interne Ausstellungsübersicht</h1>
+        
+        <div class="exhibition-grid">
+            <!-- Ausstellung 1 -->
+            <div class="exhibition-card">
+                <div class="exhibition-image">
+                    <img src="../assets/exhibitions/exhibition1.jpg" alt="Zeitgenössische Kunst Ausstellung">
+                </div>
+                <div class="exhibition-details">
+                    <h3 class="exhibition-title">Farbe und Form</h3>
+                    <div class="exhibition-meta">
+                        <div class="exhibition-location">Kunstmuseum Berlin</div>
+                        <div class="exhibition-date">12. Juni - 15. September 2023</div>
+                    </div>
+                    <p class="exhibition-description">
+                        Eine Ausstellung über die Beziehung zwischen Farbe und Form in der zeitgenössischen Kunst.
+                    </p>
+                    <span class="exhibition-status status-active">Aktiv</span>
+                    <div class="exhibition-actions">
+                        <button class="action-button view-button">Anzeigen</button>
+                        <button class="action-button edit-button">Bearbeiten</button>
+                    </div>
+                </div>
+            </div>
 
-        <main id="main-content">
-            <div class="exhibition-header">
-                <h1>Aktuelle Ausstellungen</h1>
-                <p>Entdecke faszinierende digitale Kunstausstellungen von Künstlern aus der ganzen Welt. Tauche ein in die Welt der Kunst, wann und wo du willst.</p>
-            </div>
-            
-            <div class="city-filter">
-                <div class="city-dropdown">
-                    <div class="city-dropdown-toggle" id="city-toggle" aria-expanded="false" aria-haspopup="true">
-                        Stadt auswählen <i class="fas fa-chevron-down"></i>
+            <!-- Ausstellung 2 -->
+            <div class="exhibition-card">
+                <div class="exhibition-image">
+                    <img src="../assets/exhibitions/exhibition2.jpg" alt="Digitale Kunstausstellung">
+                </div>
+                <div class="exhibition-details">
+                    <h3 class="exhibition-title">Digitale Horizonte</h3>
+                    <div class="exhibition-meta">
+                        <div class="exhibition-location">Ars Electronica Center Linz</div>
+                        <div class="exhibition-date">3. August - 12. November 2023</div>
                     </div>
-                    
-                    <div class="city-dropdown-menu" id="city-menu" aria-labelledby="city-toggle">
-                        <div class="city-dropdown-item active" data-city="all">Alle Städte</div>
-                        <div class="city-dropdown-item" data-city="berlin">Berlin</div>
-                        <div class="city-dropdown-item" data-city="hamburg">Hamburg</div>
-                        <div class="city-dropdown-item" data-city="muenchen">München</div>
-                        <div class="city-dropdown-item" data-city="koeln">Köln</div>
-                        <div class="city-dropdown-item" data-city="frankfurt">Frankfurt</div>
-                        <div class="city-dropdown-item" data-city="duesseldorf">Düsseldorf</div>
-                        <div class="city-dropdown-item" data-city="stuttgart">Stuttgart</div>
-                        <div class="city-dropdown-item" data-city="leipzig">Leipzig</div>
-                        <div class="city-dropdown-item" data-city="dresden">Dresden</div>
-                        <div class="city-dropdown-item" data-city="hannover">Hannover</div>
-                        <div class="city-dropdown-item" data-city="nuernberg">Nürnberg</div>
-                        <div class="city-dropdown-item" data-city="wien">Wien</div>
-                        <div class="city-dropdown-item" data-city="zuerich">Zürich</div>
-                        <div class="city-dropdown-item" data-city="basel">Basel</div>
+                    <p class="exhibition-description">
+                        Erkundung der neuesten Entwicklungen in der digitalen Kunst und interaktiven Medien.
+                    </p>
+                    <span class="exhibition-status status-active">Aktiv</span>
+                    <div class="exhibition-actions">
+                        <button class="action-button view-button">Anzeigen</button>
+                        <button class="action-button edit-button">Bearbeiten</button>
                     </div>
                 </div>
-                
-                <div class="filter-options">
-                    <label class="custom-checkbox">
-                        <input type="checkbox" id="filter-current">
-                        <span class="checkbox-label">Nur aktuelle Ausstellungen</span>
-                    </label>
-                    
-                    <label class="custom-checkbox">
-                        <input type="checkbox" id="filter-free">
-                        <span class="checkbox-label">Kostenlose Eintritte</span>
-                    </label>
-                    
-                    <label class="custom-checkbox">
-                        <input type="checkbox" id="filter-vip">
-                        <span class="checkbox-label">VIP-Angebote</span>
-                    </label>
+            </div>
+
+            <!-- Ausstellung 3 -->
+            <div class="exhibition-card">
+                <div class="exhibition-image">
+                    <img src="../assets/exhibitions/exhibition3.jpg" alt="Historische Kunstausstellung">
+                </div>
+                <div class="exhibition-details">
+                    <h3 class="exhibition-title">Klassische Meisterwerke</h3>
+                    <div class="exhibition-meta">
+                        <div class="exhibition-location">Kunsthalle Wien</div>
+                        <div class="exhibition-date">20. Mai - 30. Juli 2023</div>
+                    </div>
+                    <p class="exhibition-description">
+                        Eine Sammlung klassischer Meisterwerke aus dem 17. bis 19. Jahrhundert.
+                    </p>
+                    <span class="exhibition-status status-ended">Beendet</span>
+                    <div class="exhibition-actions">
+                        <button class="action-button view-button">Anzeigen</button>
+                        <button class="action-button edit-button">Bearbeiten</button>
+                    </div>
                 </div>
             </div>
-            
-            <div class="exhibition-grid">
-                <!-- Ausstellungskarten werden hier dynamisch eingefügt -->
+
+            <!-- Ausstellung 4 -->
+            <div class="exhibition-card">
+                <div class="exhibition-image">
+                    <img src="../assets/exhibitions/exhibition4.jpg" alt="Moderne Kunstausstellung">
+                </div>
+                <div class="exhibition-details">
+                    <h3 class="exhibition-title">Licht und Schatten</h3>
+                    <div class="exhibition-meta">
+                        <div class="exhibition-location">Museum für Moderne Kunst Frankfurt</div>
+                        <div class="exhibition-date">5. Oktober - 15. Dezember 2023</div>
+                    </div>
+                    <p class="exhibition-description">
+                        Eine kreative Auseinandersetzung mit Licht und Schatten in verschiedenen Kunstformen.
+                    </p>
+                    <span class="exhibition-status status-upcoming">Bevorstehend</span>
+                    <div class="exhibition-actions">
+                        <button class="action-button view-button">Anzeigen</button>
+                        <button class="action-button edit-button">Bearbeiten</button>
+                    </div>
+                </div>
             </div>
-        </main>
-    </div>
-    
-    <footer class="copyright">
-        &copy; Verein CultureStream. Alle Rechte vorbehalten.
+
+            <!-- Ausstellung 5 -->
+            <div class="exhibition-card">
+                <div class="exhibition-image">
+                    <img src="../assets/exhibitions/exhibition5.jpg" alt="Fotografieausstellung">
+                </div>
+                <div class="exhibition-details">
+                    <h3 class="exhibition-title">Perspektiven</h3>
+                    <div class="exhibition-meta">
+                        <div class="exhibition-location">Haus der Fotografie Hamburg</div>
+                        <div class="exhibition-date">15. Juli - 30. September 2023</div>
+                    </div>
+                    <p class="exhibition-description">
+                        Eine Ausstellung zeitgenössischer Fotografie, die verschiedene Perspektiven auf globale Themen bietet.
+                    </p>
+                    <span class="exhibition-status status-active">Aktiv</span>
+                    <div class="exhibition-actions">
+                        <button class="action-button view-button">Anzeigen</button>
+                        <button class="action-button edit-button">Bearbeiten</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ausstellung 6 -->
+            <div class="exhibition-card">
+                <div class="exhibition-image">
+                    <img src="../assets/exhibitions/exhibition6.jpg" alt="Skulpturenausstellung">
+                </div>
+                <div class="exhibition-details">
+                    <h3 class="exhibition-title">Form und Raum</h3>
+                    <div class="exhibition-meta">
+                        <div class="exhibition-location">Skulpturenpark Köln</div>
+                        <div class="exhibition-date">1. Juni - 31. August 2023</div>
+                    </div>
+                    <p class="exhibition-description">
+                        Eine Ausstellung zeitgenössischer Skulpturen, die das Verhältnis von Form und Raum erforscht.
+                    </p>
+                    <span class="exhibition-status status-active">Aktiv</span>
+                    <div class="exhibition-actions">
+                        <button class="action-button view-button">Anzeigen</button>
+                        <button class="action-button edit-button">Bearbeiten</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tools-section">
+            <h2>Verwaltungswerkzeuge</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">➕</div>
+                    <h3 class="tool-title">Neue Ausstellung erstellen</h3>
+                    <p class="tool-description">Erstellen Sie eine neue Ausstellung und fügen Sie sie zum Katalog hinzu.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">📊</div>
+                    <h3 class="tool-title">Statistiken einsehen</h3>
+                    <p class="tool-description">Besucher, Verweildauer und andere Metriken für Ausstellungen.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔍</div>
+                    <h3 class="tool-title">Ausstellungsreviews</h3>
+                    <p class="tool-description">Feedback und Bewertungen von Besuchern einsehen und verwalten.</p>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">🔄</div>
+                    <h3 class="tool-title">Ausstellungsupdates</h3>
+                    <p class="tool-description">Aktualisieren Sie laufende Ausstellungen mit neuen Inhalten.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="logo-container" style="justify-content: center;">
+            <img src="../images/Logo.jpg" alt="CultureStream Logo" class="logo-image" style="width: 40px; height: 40px;">
+            <div class="logo-text">CultureStream</div>
+        </div>
+        <div class="copyright">
+            © 2024 CultureStream. Alle Rechte vorbehalten.
+        </div>
     </footer>
 
-    <!-- Scripts einbinden -->
-    <script src="scripts.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Beispieldaten für Ausstellungen
-            const exhibitions = [
-                {
-                    title: "Moderne Perspektiven",
-                    artist: "Kunstmuseum Berlin",
-                    dates: "12. Juni - 30. September 2023",
-                    city: "berlin",
-                    image: "https://source.unsplash.com/random/400x300?modern,art",
-                    description: "Eine einzigartige Sammlung zeitgenössischer Kunstwerke, die neue Perspektiven auf das moderne Leben bieten.",
-                    tags: ["Modern", "Zeitgenössisch", "Malerei"]
-                },
-                {
-                    title: "Farbräume",
-                    artist: "Galerie Hamburg",
-                    dates: "5. Juli - 15. Oktober 2023",
-                    city: "hamburg",
-                    image: "https://source.unsplash.com/random/400x300?colorful,abstract",
-                    description: "Tauchen Sie ein in die faszinierende Welt der Farben und erleben Sie, wie Künstler unterschiedliche Farbräume kreieren.",
-                    tags: ["Farben", "Abstrakt", "Installation"]
-                },
-                {
-                    title: "Digitale Evolution",
-                    artist: "Media Lab München",
-                    dates: "20. August - 10. November 2023",
-                    city: "muenchen",
-                    image: "https://source.unsplash.com/random/400x300?digital,art",
-                    description: "Eine bahnbrechende Ausstellung, die die Entwicklung digitaler Kunst und ihren Einfluss auf die moderne Gesellschaft untersucht.",
-                    tags: ["Digital", "Interaktiv", "Innovation"]
-                },
-                {
-                    title: "Natürliche Strukturen",
-                    artist: "Naturkunstforum Köln",
-                    dates: "15. September - 20. Dezember 2023",
-                    city: "koeln",
-                    image: "https://source.unsplash.com/random/400x300?nature,patterns",
-                    description: "Eine faszinierende Erkundung der Muster und Strukturen in der Natur, übersetzt in künstlerische Ausdrucksformen.",
-                    tags: ["Natur", "Strukturen", "Skulptur"]
-                },
-                {
-                    title: "Urban Visions",
-                    artist: "Frankfurter Stadtgalerie",
-                    dates: "2. Oktober - 28. Februar 2024",
-                    city: "frankfurt",
-                    image: "https://source.unsplash.com/random/400x300?urban,city,art",
-                    description: "Urbane Landschaften und städtisches Leben durch die Augen zeitgenössischer Künstler.",
-                    tags: ["Urban", "Stadt", "Fotografie"]
-                },
-                {
-                    title: "Klassische Moderne",
-                    artist: "Kunsthalle Wien",
-                    dates: "10. November - 15. März 2024",
-                    city: "wien",
-                    image: "https://source.unsplash.com/random/400x300?classic,modern,art",
-                    description: "Eine Retrospektive der klassischen modernen Kunst des frühen 20. Jahrhunderts mit Werken von Kandinsky, Klee und Mondrian.",
-                    tags: ["Klassische Moderne", "Historie", "Malerei"]
-                }
-            ];
-            
-            // Ausstellungskarten dynamisch erstellen
-            const exhibitionGrid = document.querySelector('.exhibition-grid');
-            
-            function renderExhibitions(filter = 'all') {
-                exhibitionGrid.innerHTML = '';
-                
-                exhibitions.forEach(exhibition => {
-                    if (filter === 'all' || exhibition.city === filter) {
-                        const card = document.createElement('article');
-                        card.className = 'exhibition-card';
-                        card.setAttribute('data-city', exhibition.city);
-                        
-                        card.innerHTML = `
-                            <div class="exhibition-image">
-                                <img src="${exhibition.image}" alt="${exhibition.title}">
-                            </div>
-                            <div class="exhibition-content" style="padding: 20px;">
-                                <h3 style="margin-bottom: 10px; color: var(--text-light);">${exhibition.title}</h3>
-                                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 5px;">${exhibition.artist}</p>
-                                <p style="color: var(--accent-color); font-size: 14px; margin-bottom: 15px;">${exhibition.dates}</p>
-                                <p style="color: var(--text-muted); font-size: 14px; line-height: 1.5; margin-bottom: 15px;">${exhibition.description}</p>
-                                <div style="display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 15px;">
-                                    ${exhibition.tags.map(tag => `<span style="background: rgba(61, 123, 128, 0.2); padding: 4px 8px; border-radius: 4px; font-size: 12px; color: var(--text-light);">${tag}</span>`).join('')}
-                                </div>
-                                <a href="#" style="display: inline-block; padding: 8px 15px; background: var(--primary-color); color: var(--text-light); text-decoration: none; border-radius: 4px; transition: all 0.3s;">Mehr erfahren</a>
-                            </div>
-                        `;
-                        
-                        exhibitionGrid.appendChild(card);
-                    }
-                });
-            }
-            
-            // Mobile Menu Toggle
-            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-            const sideNav = document.getElementById('side-nav');
-            
-            mobileMenuToggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                sideNav.classList.toggle('active');
-                
-                // ARIA für Barrierefreiheit
-                const isExpanded = sideNav.classList.contains('active');
-                this.setAttribute('aria-expanded', isExpanded);
-                
-                if (isExpanded) {
-                    this.setAttribute('aria-label', 'Menü schließen');
-                } else {
-                    this.setAttribute('aria-label', 'Menü öffnen');
-                }
+        // Einfaches Script für die Demonstration der Funktionalität
+        document.querySelectorAll('.view-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.exhibition-card');
+                const title = card.querySelector('.exhibition-title').textContent;
+                alert(`Ausstellung "${title}" wird angezeigt.`);
             });
-            
-            // Connection Dropdown Toggle
-            const connectionToggle = document.getElementById('connection-toggle');
-            const connectionMenu = document.getElementById('connection-menu');
-            
-            connectionToggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                connectionMenu.classList.toggle('active');
-                
-                // ARIA für Barrierefreiheit
-                const isExpanded = connectionMenu.classList.contains('active');
-                this.setAttribute('aria-expanded', isExpanded);
+        });
+
+        document.querySelectorAll('.edit-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const card = this.closest('.exhibition-card');
+                const title = card.querySelector('.exhibition-title').textContent;
+                alert(`Ausstellung "${title}" wird bearbeitet.`);
             });
-            
-            // City Dropdown Toggle
-            const cityToggle = document.getElementById('city-toggle');
-            const cityMenu = document.getElementById('city-menu');
-            const cityItems = document.querySelectorAll('.city-dropdown-item');
-            
-            cityToggle.addEventListener('click', function() {
-                this.classList.toggle('active');
-                cityMenu.classList.toggle('active');
-                
-                // ARIA für Barrierefreiheit
-                const isExpanded = cityMenu.classList.contains('active');
-                this.setAttribute('aria-expanded', isExpanded);
-            });
-            
-            cityItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const city = this.getAttribute('data-city');
-                    cityItems.forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    cityToggle.textContent = this.textContent;
-                    cityToggle.innerHTML = this.textContent + ' <i class="fas fa-chevron-down"></i>';
-                    cityMenu.classList.remove('active');
-                    cityToggle.classList.remove('active');
-                    cityToggle.setAttribute('aria-expanded', 'false');
-                    
-                    renderExhibitions(city);
-                });
-            });
-            
-            // Klicks außerhalb der Dropdowns schließen diese
-            document.addEventListener('click', function(event) {
-                // Connection Dropdown
-                if (!connectionToggle.contains(event.target) && !connectionMenu.contains(event.target)) {
-                    connectionToggle.classList.remove('active');
-                    connectionMenu.classList.remove('active');
-                    connectionToggle.setAttribute('aria-expanded', 'false');
-                }
-                
-                // City Dropdown
-                if (!cityToggle.contains(event.target) && !cityMenu.contains(event.target)) {
-                    cityToggle.classList.remove('active');
-                    cityMenu.classList.remove('active');
-                    cityToggle.setAttribute('aria-expanded', 'false');
-                }
-            });
-            
-            // Initiale Ausstellungen rendern
-            renderExhibitions();
-            
-            // Tastaturunterstützung für Dropdowns
-            connectionToggle.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                }
-            });
-            
-            cityToggle.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                }
-            });
-            
-            cityItems.forEach(item => {
-                item.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        this.click();
-                    }
-                });
-                
-                // Tabindex für Tastaturnavigation
-                item.setAttribute('tabindex', '0');
+        });
+
+        document.querySelectorAll('.tool-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.tool-title').textContent;
+                alert(`Werkzeug "${title}" wird geöffnet.`);
             });
         });
     </script>

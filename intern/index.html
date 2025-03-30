@@ -3,89 +3,376 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="CultureStream Interner Bereich - Willkommen im internen Bereich von CultureStream">
-    <meta http-equiv="refresh" content="0;url=exhibition.html"> <!-- Automatische Weiterleitung zur Ausstellungsseite -->
-    <title>CultureStream Intern - Weiterleitung</title>
+    <title>CultureStream - Interner Bereich</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0F1A20;
-            color: #F6F8FF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        :root {
+            --primary: #D65108;
+            --secondary: #e67e30;
+            --accent: #f8eee2;
+            --background: #ffffff;
+            --foreground: #333333;
+            --border: #e2e8f0;
+            --input: #e2e8f0;
+            --ring: #d65108;
+            --radius: 0.5rem;
+        }
+
+        * {
             margin: 0;
-            flex-direction: column;
-            text-align: center;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
         }
-        
-        .container {
-            max-width: 600px;
-            padding: 40px;
-            background-color: #1F2833;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        h1 {
-            color: #3D7B80;
-            margin-bottom: 20px;
-        }
-        
-        p {
-            margin-bottom: 30px;
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
             line-height: 1.6;
         }
-        
-        .loader {
-            display: inline-block;
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-image {
             width: 50px;
             height: 50px;
-            border: 5px solid rgba(61, 123, 128, 0.3);
-            border-radius: 50%;
-            border-top-color: #3D7B80;
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 20px;
+            border-radius: 10px;
         }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background-color: #3D7B80;
-            color: #F6F8FF;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .header-button {
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
             transition: all 0.3s;
+            text-decoration: none;
         }
-        
-        .btn:hover {
-            background-color: #A4C2A5;
+
+        .home-button {
+            background-color: transparent;
+            color: #D65108;
+            border: 1px solid #D65108;
         }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+
+        .home-button:hover {
+            background-color: rgba(214, 81, 8, 0.1);
+        }
+
+        .login-button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .login-button:hover {
+            background-color: var(--secondary);
+        }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .auth-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--input);
+            border-radius: var(--radius);
+            font-size: 1rem;
+        }
+
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: var(--ring);
+            box-shadow: 0 0 0 2px rgba(214, 81, 8, 0.2);
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: var(--secondary);
+        }
+
+        .login-options {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .login-options a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .login-options a:hover {
+            text-decoration: underline;
+        }
+
+        .user-card {
+            display: none;
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .user-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .user-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-role {
+            font-size: 0.875rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .dashboard-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .menu-item {
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            background-color: var(--accent);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .menu-title {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-description {
+            font-size: 0.875rem;
+            color: var(--foreground);
+            opacity: 0.8;
+        }
+
+        footer {
+            background-color: var(--accent);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .copyright {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--foreground);
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="loader"></div>
-        <h1>Willkommen im internen Bereich</h1>
-        <p>Sie werden automatisch zum internen Bereich weitergeleitet. Falls die Weiterleitung nicht funktioniert, klicken Sie bitte auf den Button unten.</p>
-        <a href="exhibition.html" class="btn">Zum internen Bereich</a>
-    </div>
-    
-    <div style="margin-top: 30px;">
-        <p style="color: #B3C0D1; font-size: 14px;">
-            Login-Credentials für die verschiedenen Bereiche:<br>
-            Admin: admin@culturestream.de / admin123<br>
-            Member: member@culturestream.de / member123<br>
-            VIP: vip@culturestream.de / vip123<br>
-            Community: community@culturestream.de / community123<br>
-            Künstler: artist@culturestream.de / artist123
-        </p>
-    </div>
+    <header class="header-container">
+        <div class="logo-container">
+            <img src="../images/Logo.jpg" alt="CultureStream Logo" class="logo-image">
+            <div class="logo-text">CultureStream</div>
+        </div>
+        <div class="header-buttons">
+            <a href="../index.html" class="header-button home-button">Zurück zur Hauptseite</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="auth-container" id="login-form">
+            <h1>Interner Bereich</h1>
+            <form id="auth-form">
+                <div class="form-group">
+                    <label for="email">E-Mail</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Passwort</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="submit-button">Anmelden</button>
+                <div class="login-options">
+                    <a href="#">Passwort vergessen?</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="user-card" id="user-dashboard">
+            <div class="user-header">
+                <div class="user-avatar">U</div>
+                <div class="user-info">
+                    <h2 id="user-name">Benutzername</h2>
+                    <div class="user-role" id="user-role">Rolle</div>
+                </div>
+            </div>
+            <p>Willkommen im internen Bereich von CultureStream. Hier können Sie Ihre Projekte verwalten, Statistiken einsehen und mehr.</p>
+            
+            <div class="dashboard-menu">
+                <div class="menu-item">
+                    <div class="menu-icon">📊</div>
+                    <div class="menu-title">Statistiken</div>
+                    <div class="menu-description">Besucher, Interaktionen und mehr</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">🎨</div>
+                    <div class="menu-title">Projekte</div>
+                    <div class="menu-description">Verwalten Sie Ihre kreativen Projekte</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">👥</div>
+                    <div class="menu-title">Community</div>
+                    <div class="menu-description">Verbinden Sie sich mit anderen Kreativen</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-icon">📝</div>
+                    <div class="menu-title">Inhalte</div>
+                    <div class="menu-description">Erstellen und bearbeiten Sie Inhalte</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="logo-container" style="justify-content: center;">
+            <img src="../images/Logo.jpg" alt="CultureStream Logo" class="logo-image" style="width: 40px; height: 40px;">
+            <div class="logo-text">CultureStream</div>
+        </div>
+        <div class="copyright">
+            © 2024 CultureStream. Alle Rechte vorbehalten.
+        </div>
+    </footer>
+
+    <script>
+        // Einfaches Login-Script für Demo-Zwecke
+        document.getElementById('auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Demo-Zugangsdaten
+            const validCredentials = [
+                { email: 'admin@culturestream.org', password: 'admin123', name: 'Administrator', role: 'Admin' },
+                { email: 'member@culturestream.org', password: 'member123', name: 'Max Mustermann', role: 'Mitglied' },
+                { email: 'vip@culturestream.org', password: 'vip123', name: 'Maria Musterfrau', role: 'VIP-Mitglied' },
+                { email: 'community@culturestream.org', password: 'community123', name: 'Thomas Test', role: 'Community-Manager' },
+                { email: 'artist@culturestream.org', password: 'artist123', name: 'Anna Artist', role: 'Künstler:in' }
+            ];
+            
+            const user = validCredentials.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                // Login erfolgreich
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('user-dashboard').style.display = 'block';
+                
+                // Benutzerdaten anzeigen
+                document.getElementById('user-name').textContent = user.name;
+                document.getElementById('user-role').textContent = user.role;
+                document.querySelector('.user-avatar').textContent = user.name.charAt(0);
+            } else {
+                // Login fehlgeschlagen
+                alert('Ungültige Zugangsdaten. Bitte versuchen Sie es erneut.');
+            }
+        });
+    </script>
 </body>
 </html> 
