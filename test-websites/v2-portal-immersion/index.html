@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CultureStream - Portal Immersion</title>
+    <meta name="description" content="Erleben Sie die Zukunft der kulturellen Vernetzung in einer immersiven 3D-Umgebung.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Tech/Startup Dark Mode Palette */
+            --color-dark-bg: #0F172A;
+            --color-dark-surface: #1E293B;
+            --color-indigo: #4F46E5;
+            --color-cyan: #06B6D4;
+            --color-white: #FFFFFF;
+            --color-gray-400: #94A3B8;
+            --color-gray-600: #475569;
+
+            /* Glassmorphism */
+            --glass-bg: rgba(30, 41, 59, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.1);
+
+            /* Shadow System */
+            --shadow-z2: 0 2px 6px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+            --shadow-z3: 0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+            --shadow-z4: 0 8px 24px rgba(0,0,0,0.5), 0 4px 8px rgba(0,0,0,0.4);
+
+            /* Animation */
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--color-white);
+            background: var(--color-dark-bg);
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            line-height: 1.2;
+            font-weight: 800;
+        }
+
+        h1 { font-size: clamp(2.5rem, 8vw, 5rem); }
+        h2 { font-size: clamp(2rem, 5vw, 3.5rem); }
+        h3 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+        p { font-size: 1.125rem; line-height: 1.6; color: var(--color-gray-400); }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 2rem;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        nav.scrolled {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-z3);
+        }
+
+        nav .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--color-indigo), var(--color-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a:not(.logo) {
+            color: var(--color-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s var(--ease-smooth);
+        }
+
+        nav a:not(.logo):hover {
+            color: var(--color-cyan);
+        }
+
+        /* Hero Section with 3D Background */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(79, 70, 229, 0.3), transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(6, 182, 212, 0.2), transparent 50%),
+                        var(--color-dark-bg);
+            z-index: 0;
+        }
+
+        /* Animated 3D Circles */
+        .globe-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            z-index: 1;
+        }
+
+        .globe-ring {
+            position: absolute;
+            border: 2px solid rgba(79, 70, 229, 0.3);
+            border-radius: 50%;
+            animation: rotateRing 20s linear infinite;
+        }
+
+        .globe-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            animation-duration: 20s;
+        }
+
+        .globe-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+            border-color: rgba(6, 182, 212, 0.3);
+            animation-duration: 15s;
+            animation-direction: reverse;
+        }
+
+        .globe-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-color: rgba(79, 70, 229, 0.4);
+            animation-duration: 25s;
+        }
+
+        @keyframes rotateRing {
+            from { transform: rotateY(0deg) rotateX(60deg); }
+            to { transform: rotateY(360deg) rotateX(60deg); }
+        }
+
+        /* Portal Points */
+        .portal-point {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--color-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--color-cyan);
+            animation: pulse 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        .portal-point:hover {
+            transform: scale(1.5);
+            box-shadow: 0 0 30px var(--color-cyan);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1000px;
+        }
+
+        .hero h1 {
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #FFFFFF, var(--color-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s var(--ease-smooth);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--color-gray-400);
+            animation: fadeInUp 1s 0.2s var(--ease-smooth) backwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s 0.4s var(--ease-smooth) backwards;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s var(--ease-smooth);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-indigo), var(--color-cyan));
+            color: white;
+            box-shadow: var(--shadow-z2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: var(--shadow-z4);
+        }
+
+        .btn-ghost {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: white;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--color-cyan);
+        }
+
+        /* Video Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            animation: fadeIn 0.3s var(--ease-smooth);
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .video-container {
+            position: relative;
+            max-width: 1200px;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: black;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-z4);
+            animation: scaleIn 0.4s var(--ease-bounce);
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -3rem;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: var(--color-cyan);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+        }
+
+        /* Glassmorphic Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-z2);
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px) rotateX(2deg);
+            box-shadow: var(--shadow-z4);
+            border-color: var(--color-cyan);
+        }
+
+        /* Vision Grid */
+        .vision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .vision-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--color-indigo), var(--color-cyan));
+            border-radius: 16px;
+            font-size: 2.5rem;
+        }
+
+        .glass-card h3 {
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        .team-card {
+            perspective: 1000px;
+        }
+
+        .team-card-inner {
+            position: relative;
+            width: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .team-card:hover .team-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .team-card-front,
+        .team-card-back {
+            backface-visibility: hidden;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .team-card-front {
+            background: var(--color-dark-surface);
+        }
+
+        .team-card-back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, var(--color-indigo), var(--color-cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--color-indigo), var(--color-cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            font-weight: 900;
+            color: white;
+        }
+
+        .team-info {
+            padding: 2rem;
+        }
+
+        .team-info h3 {
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .team-role {
+            color: var(--color-cyan);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* Quotes */
+        .quotes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .quote-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-left: 4px solid var(--color-cyan);
+            border-radius: 12px;
+            padding: 2.5rem;
+        }
+
+        .quote-text {
+            font-size: 1.25rem;
+            font-style: italic;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .quote-author {
+            font-weight: 600;
+            color: var(--color-cyan);
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s var(--ease-smooth);
+        }
+
+        .contact-form input::placeholder,
+        .contact-form textarea::placeholder {
+            color: var(--color-gray-400);
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--color-cyan);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .contact-info h3 {
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .contact-item {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-dark-surface);
+            padding: 3rem 0 1.5rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        footer a {
+            color: var(--color-gray-400);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--color-cyan);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .globe-container {
+                width: 400px;
+                height: 400px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--color-cyan);
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        *:focus-visible {
+            outline: 2px solid var(--color-cyan);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="#" class="logo">CultureStream</a>
+            <ul role="list">
+                <li><a href="#vision">Vision</a></li>
+                <li><a href="#portale">Portale</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+
+        <!-- 3D Globe Simulation -->
+        <div class="globe-container">
+            <div class="globe-ring"></div>
+            <div class="globe-ring"></div>
+            <div class="globe-ring"></div>
+            <div class="portal-point" style="top: 30%; left: 20%;" title="Wien"></div>
+            <div class="portal-point" style="top: 40%; left: 50%;" title="Berlin"></div>
+            <div class="portal-point" style="top: 50%; left: 80%;" title="Tokyo"></div>
+            <div class="portal-point" style="top: 70%; left: 35%;" title="Paris"></div>
+        </div>
+
+        <div class="hero-content">
+            <h1>Das Fenster zur Welt!!</h1>
+            <p>Erleben Sie die Zukunft der kulturellen Vernetzung in einer immersiven 3D-Umgebung</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="openVideoModal()">
+                    <span>▶</span>
+                    <span>Portal in Aktion</span>
+                </button>
+                <a href="#portale" class="btn btn-ghost">Mehr erfahren</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-modal" onclick="closeVideoModal(event)">
+        <div class="video-container" onclick="event.stopPropagation()">
+            <button class="close-modal" onclick="closeVideoModal()">&times;</button>
+            <video id="modalVideo" controls>
+                <source src="./videos/prevideo-culturestream.mp4" type="video/mp4">
+                Ihr Browser unterstützt das Video-Tag nicht.
+            </video>
+        </div>
+    </div>
+
+    <main id="main-content">
+        <!-- Vision Section -->
+        <section id="vision">
+            <div class="container">
+                <h2 style="text-align: center;">Die drei Säulen</h2>
+                <p style="text-align: center; max-width: 800px; margin: 1rem auto;">Unsere Vision für eine besser vernetzte Welt</p>
+
+                <div class="vision-grid">
+                    <div class="glass-card">
+                        <div class="vision-icon">🌍</div>
+                        <h3>Globale Vernetzung</h3>
+                        <p>Verbinden Sie sich mit Menschen weltweit. Unsere Portale ermöglichen es Ihnen, Grenzen zu überwinden und authentische Verbindungen in Echtzeit aufzubauen.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="vision-icon">🎭</div>
+                        <h3>Kultureller Austausch</h3>
+                        <p>Fördern Sie interkulturellen Dialog. Entdecken Sie vielfältige Perspektiven durch lebendige Diskussionen und bauen Sie kulturelle Barrieren ab.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="vision-icon">🎨</div>
+                        <h3>Kreative Innovation</h3>
+                        <p>Erleben Sie Kunst und Kultur in einer völlig neuen digitalen Dimension. Künstler:innen können ihre Kreativität grenzenlos entfalten.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portal Technology -->
+        <section id="portale" style="background: var(--color-dark-surface);">
+            <div class="container">
+                <h2>Portal-Technologie</h2>
+                <p style="max-width: 800px;">Hochmoderne interaktive Schnittstellen für Echtzeitkommunikation</p>
+
+                <div class="vision-grid">
+                    <div class="glass-card">
+                        <div class="vision-icon">📹</div>
+                        <h3>HD-Kameras</h3>
+                        <p>Erfassen feine Details und Mimik für natürliche Kommunikation - als wären Sie direkt vor Ort.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="vision-icon">🎤</div>
+                        <h3>Hochentwickelte Mikrofone</h3>
+                        <p>Klare Tonübertragung auch bei leisen Stimmen für authentischen Dialog.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="vision-icon">💡</div>
+                        <h3>LED-Technologie</h3>
+                        <p>Konstante Bildqualität bei verschiedenen Lichtverhältnissen.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="vision-icon">🤖</div>
+                        <h3>KI-Übersetzung</h3>
+                        <p>Sprechen Sie in Ihrer Muttersprache - die KI übersetzt in Echtzeit für echtes gegenseitiges Verständnis.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="vision-icon">🎮</div>
+                        <h3>Gamification</h3>
+                        <p>Spielerische Elemente mit Belohnungssystem steigern das Engagement und machen Lernen interaktiv.</p>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="vision-icon">🔒</div>
+                        <h3>Robuste Infrastruktur</h3>
+                        <p>Stabile Echtzeitübertragung ohne Verzögerung für nahtlose Kommunikation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section id="team">
+            <div class="container">
+                <h2>Unser Team</h2>
+                <p>Die Menschen hinter CultureStream</p>
+
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-card-inner">
+                            <div class="team-card-front">
+                                <div class="team-photo">M</div>
+                                <div class="team-info">
+                                    <h3>Max</h3>
+                                    <div class="team-role">Gründer & CEO</div>
+                                    <p>Ehemaliger Vermessungstechniker und DJ.</p>
+                                </div>
+                            </div>
+                            <div class="team-card-back">
+                                <p>Die Idee entstand 2019 aus dem Wunsch, Kunst und Technologie zu verbinden. Max kombiniert technische Präzision mit der Leidenschaft für kulturelle Verbindungen.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-card-inner">
+                            <div class="team-card-front">
+                                <div class="team-photo">D</div>
+                                <div class="team-info">
+                                    <h3>Dorian</h3>
+                                    <div class="team-role">Mitbegründer & Marketing</div>
+                                    <p>Webdesigner und KI-Enthusiast.</p>
+                                </div>
+                            </div>
+                            <div class="team-card-back">
+                                <p>Brückenbauer zwischen Kunst und Technologie. Seine Marketing-Expertise macht ihn zum perfekten Kommunikator der CultureStream-Vision.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-card-inner">
+                            <div class="team-card-front">
+                                <div class="team-photo">M</div>
+                                <div class="team-info">
+                                    <h3>Martha</h3>
+                                    <div class="team-role">Design</div>
+                                    <p>FH-Absolventin, Designerin und Videokünstlerin.</p>
+                                </div>
+                            </div>
+                            <div class="team-card-back">
+                                <p>Bringt zeitgemäßes Design-Gespür und visuelles Storytelling in jedes Projekt. Ihre kreativen Visionen prägen die ästhetische Identität.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-card-inner">
+                            <div class="team-card-front">
+                                <div class="team-photo">L</div>
+                                <div class="team-info">
+                                    <h3>Leo</h3>
+                                    <div class="team-role">Creative Director</div>
+                                    <p>Bildhauer und kreativer Kopf.</p>
+                                </div>
+                            </div>
+                            <div class="team-card-back">
+                                <p>Gestaltet physische und digitale Räume, die Menschen verbinden und zum Dialog einladen. Künstlerische Vision trifft handwerkliches Können.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quotes -->
+        <section style="background: var(--color-dark-surface);">
+            <div class="container">
+                <h2 style="text-align: center;">Inspiration</h2>
+
+                <div class="quotes-grid">
+                    <div class="quote-card">
+                        <div class="quote-text">"Kreativität ist, verschiedene Dinge zu sehen und Verbindungen zwischen ihnen zu finden."</div>
+                        <div class="quote-author">— Ai Weiwei</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">"Der wahre Entdecker ist nicht derjenige, der neue Länder findet, sondern der, der mit neuen Augen sieht."</div>
+                        <div class="quote-author">— Marcel Proust</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">"Ohne Kultur bleibt der Mensch ein Fremder für sich selbst."</div>
+                        <div class="quote-author">— François Mitterrand</div>
+                    </div>
+
+                    <div class="quote-card">
+                        <div class="quote-text">"The more we share, the more we have."</div>
+                        <div class="quote-author">— Leonard Nimoy</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="kontakt">
+            <div class="container">
+                <h2>Kontakt</h2>
+
+                <div class="contact-grid">
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <input type="text" name="name" placeholder="Name *" required>
+                            <input type="email" name="email" placeholder="Email *" required>
+                            <textarea name="message" placeholder="Ihre Nachricht *" required></textarea>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem; color: var(--color-gray-400);">
+                                <input type="checkbox" required style="width: auto; margin: 0;">
+                                <span>Ich stimme der Datenschutzerklärung zu *</span>
+                            </label>
+                            <button type="submit" class="btn btn-primary">Nachricht senden</button>
+                        </form>
+                    </div>
+
+                    <div class="contact-info">
+                        <h3>Kontaktinformationen</h3>
+
+                        <div class="contact-item">
+                            <strong>Email</strong><br>
+                            <a href="mailto:info@culturestream.at">info@culturestream.at</a>
+                        </div>
+
+                        <div class="contact-item">
+                            <strong>WhatsApp</strong><br>
+                            <a href="https://wa.me/436504251513">+43 650 4251513</a>
+                        </div>
+
+                        <div class="contact-item">
+                            <strong>Website</strong><br>
+                            <a href="https://culturestream.at" target="_blank">culturestream.at</a>
+                        </div>
+
+                        <div class="contact-item">
+                            <strong>Standort</strong><br>
+                            Wien, Österreich
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+                <p style="color: var(--color-gray-400);">&copy; 2025 CultureStream. Alle Rechte vorbehalten.</p>
+                <div>
+                    <a href="#">Impressum</a> |
+                    <a href="#">Datenschutz</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Video Modal
+        function openVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const video = document.getElementById('modalVideo');
+            modal.classList.add('active');
+            video.play();
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal(event) {
+            if (!event || event.target.id === 'videoModal' || event.target.classList.contains('close-modal')) {
+                const modal = document.getElementById('videoModal');
+                const video = document.getElementById('modalVideo');
+                modal.classList.remove('active');
+                video.pause();
+                document.body.style.overflow = '';
+            }
+        }
+
+        // ESC key to close modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Vielen Dank für Ihre Nachricht! Wir werden uns bald bei Ihnen melden.');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

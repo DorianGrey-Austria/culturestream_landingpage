@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CultureStream - Das Fenster zur Welt</title>
+    <meta name="description" content="Minimalistisches Portal für kulturellen Austausch">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Monochrome + Single Accent */
+            --color-black: #000000;
+            --color-white: #FFFFFF;
+            --color-orange: #FF6B35;
+            --color-gray: #666666;
+
+            /* 90-10 Principle: Extreme Whitespace */
+            --spacing-xs: 1rem;
+            --spacing-s: 2rem;
+            --spacing-m: 4rem;
+            --spacing-l: 8rem;
+            --spacing-xl: 12rem;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--color-black);
+            background: var(--color-white);
+        }
+
+        /* Typography - Bold & Oversized */
+        h1 {
+            font-size: clamp(4rem, 12vw, 8rem);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -0.01em;
+            text-transform: uppercase;
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-size: clamp(1.125rem, 2vw, 1.5rem);
+            line-height: 1.6;
+            color: var(--color-gray);
+        }
+
+        /* Navigation - Minimal */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--color-white);
+            border-bottom: 2px solid var(--color-black);
+        }
+
+        nav .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--spacing-s) var(--spacing-m);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-black);
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        nav ul {
+            display: flex;
+            gap: var(--spacing-s);
+            list-style: none;
+        }
+
+        nav a:not(.logo) {
+            color: var(--color-black);
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+        }
+
+        nav a:not(.logo):hover {
+            color: var(--color-orange);
+        }
+
+        /* Hero Section - Full Screen Text */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-m);
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+        }
+
+        .hero h1 {
+            margin-bottom: var(--spacing-s);
+        }
+
+        .hero p {
+            max-width: 800px;
+            margin: 0 auto var(--spacing-m);
+        }
+
+        /* Button - Orange Accent */
+        .btn {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            font-size: 1.125rem;
+            font-weight: 900;
+            text-decoration: none;
+            border-radius: 0;
+            background: var(--color-orange);
+            color: var(--color-white);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: var(--color-black);
+            transform: scale(1.02);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Scroll Arrow */
+        .scroll-arrow {
+            margin-top: var(--spacing-l);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-arrow svg {
+            width: 32px;
+            height: 32px;
+            stroke: var(--color-black);
+            stroke-width: 2;
+            fill: none;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+
+        /* Container - Max Width */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-m);
+        }
+
+        /* Section - Extreme Padding */
+        section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .section-small {
+            padding: var(--spacing-l) 0;
+        }
+
+        /* Split Screen Layout */
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-l);
+            align-items: center;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: var(--color-black);
+            color: var(--color-white);
+            padding: var(--spacing-xl) var(--spacing-m);
+        }
+
+        .video-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .video-wrapper h2 {
+            color: var(--color-white);
+            margin-bottom: var(--spacing-s);
+        }
+
+        .video-wrapper p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: var(--spacing-m);
+        }
+
+        .video-container {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            background: var(--color-gray);
+        }
+
+        .video-container img,
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-container video {
+            display: none;
+        }
+
+        .video-container.playing video {
+            display: block;
+        }
+
+        .video-container.playing .video-poster {
+            display: none;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--color-orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            border: 4px solid var(--color-white);
+        }
+
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: var(--color-black);
+        }
+
+        .play-button svg {
+            width: 40px;
+            height: 40px;
+            fill: var(--color-white);
+            margin-left: 6px;
+        }
+
+        /* Vertical Stack - One Per Screen */
+        .vertical-stack {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stack-item {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--spacing-l) var(--spacing-m);
+        }
+
+        .stack-item h3 {
+            margin-bottom: var(--spacing-s);
+        }
+
+        .stack-item p {
+            max-width: 700px;
+        }
+
+        .stack-item .icon {
+            font-size: 5rem;
+            margin-bottom: var(--spacing-s);
+        }
+
+        /* Grid - 2x2 Features */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-l);
+            margin-top: var(--spacing-l);
+        }
+
+        .feature-item {
+            padding: var(--spacing-m);
+            border: 2px solid var(--color-black);
+        }
+
+        .feature-item .icon {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: var(--spacing-s);
+        }
+
+        /* Team - Horizontal Scroll */
+        .team-scroll {
+            display: flex;
+            gap: var(--spacing-m);
+            overflow-x: auto;
+            padding: var(--spacing-m) 0;
+            scroll-snap-type: x mandatory;
+        }
+
+        .team-card {
+            flex: 0 0 400px;
+            scroll-snap-align: start;
+            border: 2px solid var(--color-black);
+            padding: var(--spacing-m);
+        }
+
+        .team-photo {
+            width: 100%;
+            aspect-ratio: 1;
+            background: var(--color-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            font-weight: 900;
+            color: var(--color-white);
+            margin-bottom: var(--spacing-s);
+        }
+
+        .team-name {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-role {
+            color: var(--color-orange);
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        /* Quotes - Full Screen Each */
+        .quote-full {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--spacing-m);
+        }
+
+        .quote-full:nth-child(even) {
+            background: var(--color-black);
+            color: var(--color-white);
+        }
+
+        .quote-full:nth-child(even) .quote-author {
+            color: var(--color-orange);
+        }
+
+        .quote-content {
+            max-width: 900px;
+        }
+
+        .quote-text {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            font-weight: 400;
+            line-height: 1.4;
+            margin-bottom: var(--spacing-s);
+        }
+
+        .quote-author {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--color-orange);
+            text-transform: uppercase;
+        }
+
+        /* Contact - Split */
+        .contact-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-l);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1.25rem;
+            margin-bottom: var(--spacing-s);
+            border: 2px solid var(--color-black);
+            background: var(--color-white);
+            font-size: 1.125rem;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--color-orange);
+        }
+
+        .contact-form textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        .contact-info-item {
+            margin-bottom: var(--spacing-m);
+        }
+
+        .contact-info-item h4 {
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .contact-info-item a {
+            color: var(--color-black);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-info-item a:hover {
+            color: var(--color-orange);
+        }
+
+        /* Footer - Single Line */
+        footer {
+            border-top: 2px solid var(--color-black);
+            padding: var(--spacing-s) var(--spacing-m);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            color: var(--color-gray);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .split,
+            .feature-grid,
+            .contact-split {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            .team-card {
+                flex: 0 0 300px;
+            }
+
+            section {
+                padding: var(--spacing-l) 0;
+            }
+
+            .stack-item {
+                min-height: auto;
+                padding: var(--spacing-m);
+            }
+        }
+
+        /* Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--color-orange);
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            z-index: 100;
+            font-weight: 900;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        *:focus-visible {
+            outline: 3px solid var(--color-orange);
+            outline-offset: 3px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">SKIP TO CONTENT</a>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">CultureStream</a>
+            <ul role="list">
+                <li><a href="#vision">Vision</a></li>
+                <li><a href="#video">Video</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>DAS FENSTER<br>ZUR WELT!!</h1>
+            <p>Verbinden Sie sich mit Menschen weltweit durch innovative Portal-Technologie.</p>
+            <a href="#video" class="btn">ENTDECKEN</a>
+            <div class="scroll-arrow">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 5v14m0 0l-7-7m7 7l7-7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+    </section>
+
+    <main id="main-content">
+        <!-- Portal Concept -->
+        <section class="section-small" style="background: var(--color-black); color: var(--color-white);">
+            <div class="container">
+                <div class="split">
+                    <div>
+                        <h2 style="color: var(--color-white);">GLOBALE<br>VERNETZUNG</h2>
+                    </div>
+                    <div>
+                        <ul style="list-style: none; font-size: 1.25rem; line-height: 2;">
+                            <li>→ Echtzeitkommunikation</li>
+                            <li>→ Kultureller Austausch</li>
+                            <li>→ Authentische Verbindungen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Section -->
+        <section id="video" class="video-section">
+            <div class="video-wrapper">
+                <h2>PORTAL IN AKTION</h2>
+                <p>Erleben Sie die Zukunft der kulturellen Vernetzung</p>
+
+                <div class="video-container" id="videoContainer">
+                    <img class="video-poster" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23666666' width='1920' height='1080'/%3E%3C/svg%3E" alt="Video Thumbnail">
+                    <div class="play-button">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                    <video id="portalVideo" controls>
+                        <source src="./videos/prevideo-culturestream.mp4" type="video/mp4">
+                        Ihr Browser unterstützt das Video-Tag nicht.
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision -->
+        <section id="vision">
+            <div class="container">
+                <h2>UNSERE VISION</h2>
+                <div class="vertical-stack">
+                    <div class="stack-item">
+                        <div class="icon">📡</div>
+                        <h3>Modernste Technologie</h3>
+                        <p>HD-Kameras, hochentwickelte Mikrofone und LED-Technologie schaffen eine nahezu natürliche Übertragung - als würde man direkt vor Ort sein.</p>
+                    </div>
+
+                    <div class="stack-item">
+                        <div class="icon">🌐</div>
+                        <h3>Drei Portal-Größen</h3>
+                        <p>Von kleinen Varianten für Klassenzimmer bis zu großen Portalen für Stadien - maßgeschneidert für jeden Einsatzort.</p>
+                    </div>
+
+                    <div class="stack-item">
+                        <div class="icon">💬</div>
+                        <h3>Barrierefrei Kommunizieren</h3>
+                        <p>Die Sprache sollte nie ein Hindernis sein. Unser digitaler Übersetzer arbeitet im Hintergrund für echtes gegenseitiges Verständnis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="section-small" style="background: #F5F5F5;">
+            <div class="container">
+                <h2>FEATURES</h2>
+
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <span class="icon">🎥</span>
+                        <h3>LIVE-STREAMING</h3>
+                        <p>Kristallklare Übertragung in Echtzeit</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <span class="icon">🤖</span>
+                        <h3>KI-ÜBERSETZUNG</h3>
+                        <p>Sprechen Sie in Ihrer Muttersprache</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <span class="icon">🎮</span>
+                        <h3>GAMIFICATION</h3>
+                        <p>Spielerische Elemente steigern Engagement</p>
+                    </div>
+
+                    <div class="feature-item">
+                        <span class="icon">🔒</span>
+                        <h3>SICHER</h3>
+                        <p>Robuste Infrastruktur ohne Verzögerung</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team -->
+        <section id="team">
+            <div class="container">
+                <h2>UNSER TEAM</h2>
+                <p style="margin-top: var(--spacing-s); margin-bottom: var(--spacing-m);">Scroll →</p>
+
+                <div class="team-scroll">
+                    <div class="team-card">
+                        <div class="team-photo">M</div>
+                        <div class="team-name">MAX</div>
+                        <div class="team-role">Gründer & CEO</div>
+                        <p>Ehemaliger Vermessungstechniker und DJ. Die Idee entstand 2019 aus dem Wunsch, Kunst und Technologie zu verbinden.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-photo">D</div>
+                        <div class="team-name">DORIAN</div>
+                        <div class="team-role">Mitbegründer & Marketing</div>
+                        <p>Webdesigner und KI-Enthusiast. Brückenbauer zwischen Kunst und Technologie.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-photo">M</div>
+                        <div class="team-name">MARTHA</div>
+                        <div class="team-role">Design</div>
+                        <p>FH-Absolventin, selbstständige Designerin und Videokünstlerin. Bringt zeitgemäßes Design-Gespür in jedes Projekt.</p>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-photo">L</div>
+                        <div class="team-name">LEO</div>
+                        <div class="team-role">Creative Director</div>
+                        <p>Bildhauer und kreativer Kopf hinter den Portal-Designs. Gestaltet Räume, die Menschen verbinden.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quotes -->
+        <div>
+            <div class="quote-full">
+                <div class="quote-content">
+                    <div class="quote-text">"Kreativität ist, verschiedene Dinge zu sehen und Verbindungen zwischen ihnen zu finden."</div>
+                    <div class="quote-author">— Ai Weiwei</div>
+                </div>
+            </div>
+
+            <div class="quote-full">
+                <div class="quote-content">
+                    <div class="quote-text">"Der wahre Entdecker ist nicht derjenige, der neue Länder findet, sondern der, der mit neuen Augen sieht."</div>
+                    <div class="quote-author">— Marcel Proust</div>
+                </div>
+            </div>
+
+            <div class="quote-full">
+                <div class="quote-content">
+                    <div class="quote-text">"Ohne Kultur bleibt der Mensch ein Fremder für sich selbst."</div>
+                    <div class="quote-author">— François Mitterrand</div>
+                </div>
+            </div>
+
+            <div class="quote-full">
+                <div class="quote-content">
+                    <div class="quote-text">"The more we share, the more we have."</div>
+                    <div class="quote-author">— Leonard Nimoy</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <section id="kontakt">
+            <div class="container">
+                <h2>KONTAKT</h2>
+
+                <div class="contact-split" style="margin-top: var(--spacing-l);">
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <input type="text" name="name" placeholder="NAME *" required>
+                            <input type="email" name="email" placeholder="EMAIL *" required>
+                            <textarea name="message" placeholder="NACHRICHT *" required></textarea>
+                            <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: var(--spacing-s);">
+                                <input type="checkbox" required style="width: auto; margin: 0;">
+                                <span style="font-size: 0.9rem;">DATENSCHUTZ *</span>
+                            </label>
+                            <button type="submit" class="btn">SENDEN</button>
+                        </form>
+                    </div>
+
+                    <div class="contact-info">
+                        <div class="contact-info-item">
+                            <h4>EMAIL</h4>
+                            <a href="mailto:info@culturestream.at">info@culturestream.at</a>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <h4>WHATSAPP</h4>
+                            <a href="https://wa.me/436504251513">+43 650 4251513</a>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <h4>WEBSITE</h4>
+                            <a href="https://culturestream.at" target="_blank">culturestream.at</a>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <h4>STANDORT</h4>
+                            <p>Wien, Österreich</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 CULTURESTREAM. ALLE RECHTE VORBEHALTEN.</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Video toggle
+        const videoContainer = document.getElementById('videoContainer');
+        const video = document.getElementById('portalVideo');
+
+        videoContainer.addEventListener('click', function(e) {
+            if (!videoContainer.classList.contains('playing')) {
+                videoContainer.classList.add('playing');
+                video.play();
+            }
+        });
+
+        video.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('DANKE FÜR IHRE NACHRICHT!');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

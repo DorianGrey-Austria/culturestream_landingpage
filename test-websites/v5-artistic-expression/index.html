@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CultureStream - Artistic Expression</title>
+    <meta name="description" content="Eine künstlerische Reise durch kulturelle Verbindungen">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Creative Professional Palette */
+            --color-purple: #6366F1;
+            --color-gold: #FBBF24;
+            --color-coral: #F97316;
+            --color-cream: #FDFBF7;
+            --color-dark: #1E1E1E;
+
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #6366F1, #FBBF24);
+            --gradient-accent: linear-gradient(135deg, #F97316, #FBBF24);
+
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--color-dark);
+            background: var(--color-cream);
+            overflow-x: hidden;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            line-height: 1.2;
+            font-weight: 900;
+        }
+
+        h1 { font-size: clamp(3rem, 10vw, 6rem); }
+        h2 { font-size: clamp(2.5rem, 6vw, 4rem); }
+        h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+        p { font-size: 1.125rem; line-height: 1.8; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 2rem;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        nav.scrolled {
+            background: rgba(253, 251, 247, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        nav .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            font-family: 'Playfair Display', serif;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        nav a:not(.logo) {
+            color: var(--color-dark);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s var(--ease-smooth);
+            position: relative;
+        }
+
+        nav a:not(.logo)::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s var(--ease-smooth);
+        }
+
+        nav a:not(.logo):hover::after {
+            width: 100%;
+        }
+
+        /* Hero with Parallax */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            width: 120%;
+            height: 120%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15), transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(251, 191, 36, 0.15), transparent 40%),
+                radial-gradient(circle at 50% 80%, rgba(249, 115, 22, 0.1), transparent 40%);
+            z-index: 0;
+        }
+
+        /* Animated Blobs */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--color-purple);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--color-gold);
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .blob-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--color-coral);
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        .hero h1 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s var(--ease-smooth);
+        }
+
+        .hero p {
+            color: var(--color-dark);
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            animation: fadeInUp 1s 0.2s var(--ease-smooth) backwards;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1.25rem 3rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s var(--ease-smooth);
+            cursor: pointer;
+            border: none;
+            animation: fadeInUp 1s 0.4s var(--ease-smooth) backwards;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        /* Parallax Section */
+        .parallax-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(251, 191, 36, 0.05));
+            transform: translateY(0);
+        }
+
+        /* Video Section with Scroll Trigger */
+        .video-section {
+            background: var(--color-dark);
+            color: white;
+            padding: 8rem 0;
+            position: relative;
+        }
+
+        .video-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+
+        .video-wrapper h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .video-wrapper p {
+            opacity: 0.8;
+            margin-bottom: 3rem;
+        }
+
+        .video-container {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+            background: black;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s var(--ease-smooth);
+        }
+
+        .video-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .video-container video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(251, 191, 36, 0.3));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s;
+        }
+
+        .video-container.playing .video-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .video-play-icon {
+            font-size: 4rem;
+            color: white;
+            opacity: 0.9;
+        }
+
+        /* Artistic Cards */
+        .artistic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .artistic-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.4s var(--ease-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .artistic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s var(--ease-smooth);
+        }
+
+        .artistic-card:hover {
+            transform: translateY(-10px) rotate(-1deg);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .artistic-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            background: var(--gradient-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            transform: rotate(-5deg);
+            transition: transform 0.3s var(--ease-smooth);
+        }
+
+        .artistic-card:hover .card-icon {
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        .artistic-card h3 {
+            margin-bottom: 1rem;
+            color: var(--color-dark);
+        }
+
+        .artistic-card p {
+            color: var(--color-dark);
+            opacity: 0.7;
+        }
+
+        /* Team - Creative Layout */
+        .team-masonry {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.4s var(--ease-smooth);
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .team-card:nth-child(odd) {
+            transform: rotate(1deg);
+        }
+
+        .team-card:nth-child(even) {
+            transform: rotate(-1deg);
+        }
+
+        .team-card:hover {
+            transform: rotate(0deg) translateY(-10px) !important;
+        }
+
+        .team-photo {
+            width: 100%;
+            height: 350px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            font-weight: 900;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-photo::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-accent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .team-card:hover .team-photo::before {
+            opacity: 1;
+        }
+
+        .team-photo-letter {
+            position: relative;
+            z-index: 1;
+        }
+
+        .team-info {
+            padding: 2.5rem;
+        }
+
+        .team-info h3 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .team-role {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* Quotes - Artistic */
+        .quotes-artistic {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .quote-artistic {
+            background: white;
+            padding: 4rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            position: relative;
+            transition: all 0.4s var(--ease-smooth);
+        }
+
+        .quote-artistic::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            font-size: 150px;
+            font-family: 'Playfair Display', serif;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.2;
+            line-height: 1;
+        }
+
+        .quote-artistic:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .quote-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: var(--color-dark);
+        }
+
+        .quote-author {
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Contact - Creative */
+        .contact-creative {
+            background: white;
+            border-radius: 30px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            margin-top: 3rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid rgba(0,0,0,0.1);
+            background: var(--color-cream);
+            border-radius: 15px;
+            color: var(--color-dark);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--color-purple);
+            background: white;
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .contact-info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item-creative {
+            padding: 1.5rem;
+            background: var(--color-cream);
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .contact-item-creative:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(251, 191, 36, 0.1));
+        }
+
+        .contact-item-creative h4 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item-creative a {
+            color: var(--color-dark);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--color-dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        footer a:hover {
+            opacity: 1;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            nav ul {
+                display: none;
+            }
+
+            .contact-grid,
+            .quotes-artistic {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 5rem 0;
+            }
+
+            .hero {
+                margin-top: 60px;
+            }
+        }
+
+        /* Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--color-purple);
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            z-index: 100;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        *:focus-visible {
+            outline: 3px solid var(--color-gold);
+            outline-offset: 3px;
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="container">
+            <a href="#" class="logo">CultureStream</a>
+            <ul role="list">
+                <li><a href="#vision">Vision</a></li>
+                <li><a href="#video">Video</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero with Parallax -->
+    <section class="hero" id="hero">
+        <div class="hero-bg" data-parallax="0.3"></div>
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+
+        <div class="hero-content">
+            <h1>Das Fenster zur Welt!!</h1>
+            <p>Kunst und Kultur verbinden Menschen über alle Grenzen hinweg</p>
+            <a href="#video" class="btn btn-primary">Entdecke die Magie</a>
+        </div>
+    </section>
+
+    <main id="main-content">
+        <!-- Vision -->
+        <section id="vision" class="parallax-section">
+            <div class="parallax-bg" data-parallax="0.2"></div>
+            <div class="container">
+                <h2 style="text-align: center;">Unsere Vision</h2>
+                <p style="text-align: center; max-width: 800px; margin: 1rem auto; opacity: 0.8;">Eine besser vernetzte Welt mit Kulturaustausch zwischen Menschen verschiedenster Hintergründe</p>
+
+                <div class="artistic-grid">
+                    <div class="artistic-card">
+                        <div class="card-icon">🌍</div>
+                        <h3>Globale Vernetzung</h3>
+                        <p>Verbinden Sie sich mit Menschen weltweit. Unsere Portale ermöglichen es Ihnen, Grenzen zu überwinden und authentische Verbindungen in Echtzeit aufzubauen.</p>
+                    </div>
+
+                    <div class="artistic-card">
+                        <div class="card-icon">🎭</div>
+                        <h3>Kultureller Austausch</h3>
+                        <p>Fördern Sie interkulturellen Dialog. Entdecken Sie vielfältige Perspektiven durch lebendige Diskussionen und bauen Sie kulturelle Barrieren ab.</p>
+                    </div>
+
+                    <div class="artistic-card">
+                        <div class="card-icon">🎨</div>
+                        <h3>Kreative Innovation</h3>
+                        <p>Erleben Sie Kunst und Kultur in einer völlig neuen digitalen Dimension. Künstler:innen können ihre Kreativität grenzenlos entfalten.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scroll-Triggered Video -->
+        <section id="video" class="video-section">
+            <div class="video-wrapper">
+                <h2>Portal Magie</h2>
+                <p>Erlebe die transformative Kraft der kulturellen Verbindung</p>
+
+                <div class="video-container" id="videoContainer">
+                    <div class="video-overlay" onclick="playVideo()">
+                        <div class="video-play-icon">▶</div>
+                    </div>
+                    <video id="portalVideo" controls>
+                        <source src="./videos/prevideo-culturestream.mp4" type="video/mp4">
+                        Ihr Browser unterstützt das Video-Tag nicht.
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="parallax-section">
+            <div class="parallax-bg" data-parallax="0.15"></div>
+            <div class="container">
+                <h2>Portal-Technologie</h2>
+                <p style="max-width: 800px;">Hochmoderne interaktive Schnittstellen für Echtzeitkommunikation</p>
+
+                <div class="artistic-grid">
+                    <div class="artistic-card">
+                        <div class="card-icon">📹</div>
+                        <h3>HD Live-Streaming</h3>
+                        <p>Kristallklare Bild- und Tonqualität für natürliche Kommunikation, als wären Sie vor Ort.</p>
+                    </div>
+
+                    <div class="artistic-card">
+                        <div class="card-icon">🤖</div>
+                        <h3>KI-Übersetzung</h3>
+                        <p>Sprechen Sie in Ihrer Muttersprache - unsere KI übersetzt in Echtzeit für echtes Verständnis.</p>
+                    </div>
+
+                    <div class="artistic-card">
+                        <div class="card-icon">🎮</div>
+                        <h3>Gamification</h3>
+                        <p>Spielerische Elemente steigern das Engagement und machen kulturellen Austausch interaktiv.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team -->
+        <section id="team">
+            <div class="container">
+                <h2 style="text-align: center;">Unser Team</h2>
+                <p style="text-align: center; opacity: 0.8; margin-bottom: 1rem;">Die kreativen Köpfe hinter CultureStream</p>
+
+                <div class="team-masonry">
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <span class="team-photo-letter">M</span>
+                        </div>
+                        <div class="team-info">
+                            <h3>Max</h3>
+                            <div class="team-role">Gründer & CEO (Obmann)</div>
+                            <p>Ehemaliger Vermessungstechniker und DJ. Die Idee entstand 2019 aus dem Wunsch, Kunst und Technologie zu verbinden.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <span class="team-photo-letter">D</span>
+                        </div>
+                        <div class="team-info">
+                            <h3>Dorian</h3>
+                            <div class="team-role">Mitbegründer & Marketing</div>
+                            <p>Webdesigner und KI-Enthusiast. Brückenbauer zwischen Kunst und Technologie mit Marketing-Expertise.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <span class="team-photo-letter">M</span>
+                        </div>
+                        <div class="team-info">
+                            <h3>Martha</h3>
+                            <div class="team-role">Design</div>
+                            <p>FH-Absolventin, Designerin und Videokünstlerin. Bringt zeitgemäßes Design-Gespür in jedes Projekt.</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-photo">
+                            <span class="team-photo-letter">L</span>
+                        </div>
+                        <div class="team-info">
+                            <h3>Leo</h3>
+                            <div class="team-role">Creative Director</div>
+                            <p>Bildhauer und kreativer Kopf. Gestaltet Räume, die Menschen verbinden und zum Dialog einladen.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quotes -->
+        <section style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.03), rgba(251, 191, 36, 0.03));">
+            <div class="container">
+                <h2 style="text-align: center;">Inspiration</h2>
+
+                <div class="quotes-artistic">
+                    <div class="quote-artistic">
+                        <div class="quote-text">"Kreativität ist, verschiedene Dinge zu sehen und Verbindungen zwischen ihnen zu finden."</div>
+                        <div class="quote-author">— Ai Weiwei</div>
+                    </div>
+
+                    <div class="quote-artistic">
+                        <div class="quote-text">"Der wahre Entdecker ist nicht derjenige, der neue Länder findet, sondern der, der mit neuen Augen sieht."</div>
+                        <div class="quote-author">— Marcel Proust</div>
+                    </div>
+
+                    <div class="quote-artistic">
+                        <div class="quote-text">"Ohne Kultur bleibt der Mensch ein Fremder für sich selbst."</div>
+                        <div class="quote-author">— François Mitterrand</div>
+                    </div>
+
+                    <div class="quote-artistic">
+                        <div class="quote-text">"The more we share, the more we have."</div>
+                        <div class="quote-author">— Leonard Nimoy</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section id="kontakt">
+            <div class="container">
+                <h2>Lassen Sie uns verbinden</h2>
+
+                <div class="contact-creative">
+                    <div class="contact-grid">
+                        <div class="contact-form">
+                            <form id="contactForm">
+                                <input type="text" name="name" placeholder="Name *" required>
+                                <input type="email" name="email" placeholder="Email *" required>
+                                <textarea name="message" placeholder="Ihre Nachricht *" required></textarea>
+                                <label style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                                    <input type="checkbox" required style="width: auto; margin: 0;">
+                                    <span style="font-size: 0.9rem;">Ich stimme der Datenschutzerklärung zu *</span>
+                                </label>
+                                <button type="submit" class="btn btn-primary">Nachricht senden</button>
+                            </form>
+                        </div>
+
+                        <div class="contact-info-grid">
+                            <div class="contact-item-creative">
+                                <h4>Email</h4>
+                                <a href="mailto:info@culturestream.at">info@culturestream.at</a>
+                            </div>
+
+                            <div class="contact-item-creative">
+                                <h4>WhatsApp</h4>
+                                <a href="https://wa.me/436504251513">+43 650 4251513</a>
+                            </div>
+
+                            <div class="contact-item-creative">
+                                <h4>Website</h4>
+                                <a href="https://culturestream.at" target="_blank">culturestream.at</a>
+                            </div>
+
+                            <div class="contact-item-creative">
+                                <h4>Standort</h4>
+                                <p>Wien, Österreich</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 2rem;">
+                <p>&copy; 2025 CultureStream. Alle Rechte vorbehalten.</p>
+                <div>
+                    <a href="#">Impressum</a> |
+                    <a href="#">Datenschutz</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Parallax Effect
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelectorAll('[data-parallax]').forEach(el => {
+                const speed = parseFloat(el.dataset.parallax);
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Scroll-triggered video visibility
+        const videoContainer = document.getElementById('videoContainer');
+        const video = document.getElementById('portalVideo');
+
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    videoContainer.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        videoObserver.observe(videoContainer);
+
+        function playVideo() {
+            const videoContainer = document.getElementById('videoContainer');
+            const video = document.getElementById('portalVideo');
+            videoContainer.classList.add('playing');
+            video.play();
+        }
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Vielen Dank für Ihre Nachricht! Wir werden uns bald bei Ihnen melden.');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>
