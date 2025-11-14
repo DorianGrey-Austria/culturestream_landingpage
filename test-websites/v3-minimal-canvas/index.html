@@ -38,6 +38,75 @@
             line-height: 1.6;
             color: var(--color-black);
             background: var(--color-white);
+            position: relative;
+        }
+
+        /* ========== SPECIAL FEATURE 1: Geometric Shape Overlays ========== */
+        .geometric-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            opacity: 0.03;
+        }
+
+        .shape-square {
+            width: 300px;
+            height: 300px;
+            background: var(--color-black);
+            top: 10%;
+            right: 5%;
+            transform: rotate(15deg);
+        }
+
+        .shape-triangle {
+            width: 0;
+            height: 0;
+            border-left: 200px solid transparent;
+            border-right: 200px solid transparent;
+            border-bottom: 350px solid var(--color-orange);
+            bottom: 15%;
+            left: 5%;
+            transform: rotate(-25deg);
+        }
+
+        .shape-rectangle {
+            width: 400px;
+            height: 150px;
+            background: var(--color-black);
+            top: 50%;
+            left: 10%;
+            transform: rotate(-10deg);
+        }
+
+        .shape-small-square {
+            width: 150px;
+            height: 150px;
+            background: var(--color-orange);
+            bottom: 5%;
+            right: 15%;
+        }
+
+        /* ========== SPECIAL FEATURE 2: Brutalist Grid Pattern ========== */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 99px, rgba(0, 0, 0, 0.03) 99px, rgba(0, 0, 0, 0.03) 100px),
+                repeating-linear-gradient(90deg, transparent, transparent 99px, rgba(0, 0, 0, 0.03) 99px, rgba(0, 0, 0, 0.03) 100px);
         }
 
         /* Typography - Bold & Oversized */
@@ -323,12 +392,58 @@
         .feature-item {
             padding: var(--spacing-m);
             border: 2px solid var(--color-black);
+            /* ========== SPECIAL FEATURE 3: High-Contrast Hover Reveals ========== */
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--color-white);
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--color-black);
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .feature-item:hover::before {
+            left: 0;
+        }
+
+        .feature-item:hover {
+            border-color: var(--color-orange);
+            transform: translateX(10px);
+        }
+
+        .feature-item:hover * {
+            color: var(--color-white);
+            position: relative;
+            z-index: 1;
         }
 
         .feature-item .icon {
             font-size: 4rem;
             display: block;
             margin-bottom: var(--spacing-s);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-item:hover .icon {
+            transform: scale(1.2) rotate(-5deg);
+        }
+
+        .feature-item h3,
+        .feature-item p {
+            position: relative;
+            z-index: 1;
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* Team - Horizontal Scroll */
@@ -345,6 +460,45 @@
             scroll-snap-align: start;
             border: 2px solid var(--color-black);
             padding: var(--spacing-m);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--color-white);
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-orange);
+            transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .team-card:hover::before {
+            bottom: 0;
+        }
+
+        .team-card:hover {
+            border-color: var(--color-black);
+            transform: translateY(-10px);
+        }
+
+        .team-card:hover .team-name,
+        .team-card:hover .team-role,
+        .team-card:hover p {
+            color: var(--color-white);
+        }
+
+        .team-card .team-name,
+        .team-card .team-role,
+        .team-card p {
+            position: relative;
+            z-index: 1;
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .team-photo {
@@ -358,6 +512,8 @@
             font-weight: 900;
             color: var(--color-white);
             margin-bottom: var(--spacing-s);
+            position: relative;
+            z-index: 1;
         }
 
         .team-name {
@@ -522,6 +678,17 @@
     </style>
 </head>
 <body>
+    <!-- Grid Pattern Background -->
+    <div class="grid-pattern"></div>
+
+    <!-- Geometric Shape Overlays -->
+    <div class="geometric-shapes">
+        <div class="shape shape-square"></div>
+        <div class="shape shape-triangle"></div>
+        <div class="shape shape-rectangle"></div>
+        <div class="shape shape-small-square"></div>
+    </div>
+
     <a href="#main-content" class="skip-link">SKIP TO CONTENT</a>
 
     <!-- Navigation -->
