@@ -40,6 +40,113 @@
             line-height: 1.6;
             color: var(--color-brown);
             background: var(--color-cream);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ========== SPECIAL FEATURE 1: Organic Blob Shapes ========== */
+        .organic-blobs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            opacity: 0.06;
+            filter: blur(40px);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .blob-1 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, var(--color-orange), var(--color-terracotta));
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--color-mocha), var(--color-orange));
+            bottom: 15%;
+            right: 10%;
+            animation-delay: 5s;
+        }
+
+        .blob-3 {
+            width: 350px;
+            height: 350px;
+            background: linear-gradient(135deg, var(--color-terracotta), var(--color-beige));
+            top: 50%;
+            right: 5%;
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            33% {
+                transform: translate(30px, -50px) rotate(120deg) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 30px) rotate(240deg) scale(0.9);
+            }
+        }
+
+        /* ========== SPECIAL FEATURE 2: Gradient Waves ========== */
+        .gradient-waves {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 300px;
+            z-index: -1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(255, 107, 53, 0.05) 25%,
+                rgba(224, 122, 95, 0.08) 50%,
+                rgba(255, 107, 53, 0.05) 75%,
+                transparent 100%);
+            animation: wave 15s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -5s;
+            opacity: 0.7;
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: -10s;
+            opacity: 0.5;
+        }
+
+        @keyframes wave {
+            0% {
+                left: -100%;
+            }
+            100% {
+                left: 0%;
+            }
         }
 
         /* Typography */
@@ -235,17 +342,73 @@
             gap: 0.5rem;
         }
 
+        /* ========== SPECIAL FEATURE 3: Enhanced Live Pulse Indicators ========== */
         .live-pulse {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
             background: white;
             border-radius: 50%;
+            position: relative;
             animation: pulse 2s infinite;
+        }
+
+        .live-pulse::before,
+        .live-pulse::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.7;
+        }
+
+        .live-pulse::before {
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        .live-pulse::after {
+            animation: pulseRing 2s ease-out infinite 1s;
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
+            50% { opacity: 0.6; transform: scale(1.3); }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.7;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(3);
+                opacity: 0;
+            }
+        }
+
+        /* Connection Pulse Indicators on Cards */
+        .vision-card::before,
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 12px;
+            height: 12px;
+            background: var(--color-orange);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .vision-card:hover::before,
+        .team-card:hover::before {
+            opacity: 1;
+            animation: pulse 2s infinite;
         }
 
         .live-info {
@@ -363,6 +526,7 @@
             border-radius: 20px;
             box-shadow: var(--shadow-warm);
             transition: all 0.3s var(--ease-smooth);
+            position: relative;
         }
 
         .vision-card:hover {
@@ -627,6 +791,20 @@
     </style>
 </head>
 <body>
+    <!-- Organic Blob Shapes -->
+    <div class="organic-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Gradient Waves -->
+    <div class="gradient-waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
     <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
 
     <!-- Navigation -->
