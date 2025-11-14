@@ -1,0 +1,362 @@
+/* Modern Design Improvements for CultureStream - Version 2 */
+/* 2025 Professional Web Design Standards */
+
+/* Import Modern Typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Override default font with modern stack */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Modern Color Variables */
+:root {
+    --primary-enhanced: #D65108;
+    --secondary-enhanced: #e67e30;
+    --shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --shadow-primary: 0 8px 24px rgba(214, 81, 8, 0.25);
+}
+
+/* Enhanced Logo Styling - Bigger and More Professional */
+section#hero img[alt*="Logo"] {
+    width: 120px !important;
+    height: 120px !important;
+    border-radius: 24px !important;
+    box-shadow: 0 12px 40px rgba(214, 81, 8, 0.2) !important;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    object-fit: contain !important;
+}
+
+section#hero img[alt*="Logo"]:hover {
+    transform: scale(1.08) rotate(3deg) !important;
+    box-shadow: 0 16px 56px rgba(214, 81, 8, 0.3) !important;
+}
+
+/* Logo Container Enhancement */
+section#hero .group {
+    position: relative;
+}
+
+section#hero .group::before {
+    content: '';
+    position: absolute;
+    inset: -15px;
+    background: linear-gradient(135deg, #D65108, #e67e30);
+    border-radius: 32px;
+    opacity: 0;
+    filter: blur(25px);
+    transition: opacity 0.5s ease;
+    z-index: -1;
+}
+
+section#hero .group:hover::before {
+    opacity: 0.35;
+}
+
+/* Enhanced Hero Section Typography */
+section#hero h1 {
+    font-size: 5rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+    line-height: 1.1 !important;
+}
+
+section#hero p {
+    font-weight: 400 !important;
+    color: #4a5568 !important;
+    font-size: 2rem !important;
+    margin-bottom: 3rem !important;
+}
+
+/* Modern Button Styles */
+button.bg-primary,
+.bg-primary {
+    background: linear-gradient(135deg, #D65108 0%, #e67e30 100%) !important;
+    box-shadow: 0 6px 24px rgba(214, 81, 8, 0.3) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative;
+    overflow: hidden;
+    font-weight: 600 !important;
+    padding: 1.25rem 2.5rem !important;
+}
+
+button.bg-primary::before,
+.bg-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+button.bg-primary:hover::before,
+.bg-primary:hover::before {
+    left: 100%;
+}
+
+button.bg-primary:hover,
+.bg-primary:hover {
+    transform: translateY(-4px) scale(1.03) !important;
+    box-shadow: 0 12px 40px rgba(214, 81, 8, 0.4) !important;
+}
+
+/* Enhanced Header Buttons - Intern Button */
+a[href*="intern"] {
+    background: linear-gradient(135deg, #D65108 0%, #e67e30 100%) !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 16px rgba(214, 81, 8, 0.25) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    font-weight: 600 !important;
+}
+
+a[href*="intern"]:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 24px rgba(214, 81, 8, 0.35) !important;
+}
+
+/* Enhanced Theme Toggle */
+button[aria-label*="Theme"] {
+    background: white !important;
+    border: 2px solid #e5e7eb !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+button[aria-label*="Theme"]:hover {
+    transform: scale(1.15) rotate(15deg) !important;
+    box-shadow: 0 8px 24px rgba(214, 81, 8, 0.2) !important;
+    border-color: #D65108 !important;
+}
+
+/* Enhanced Navigation Dots */
+nav button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+nav button:hover {
+    transform: scale(1.4) !important;
+}
+
+/* Enhanced Hero Background */
+section#hero {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f6f3 40%, #fff5eb 100%) !important;
+    padding: 100px 20px !important;
+}
+
+/* Enhanced Card Styles */
+.rounded-3xl {
+    border-radius: 1.5rem !important;
+}
+
+.shadow-sm {
+    box-shadow: var(--shadow-soft) !important;
+}
+
+.shadow-xl {
+    box-shadow: var(--shadow-strong) !important;
+}
+
+/* Enhanced Images */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+section img:not([alt*="Logo"]) {
+    border-radius: 1.25rem !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.4s ease !important;
+}
+
+section img:not([alt*="Logo"]):hover {
+    transform: scale(1.02) !important;
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Enhanced Team Images */
+section#team img {
+    border-radius: 1.5rem !important;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+section#team .group:hover img {
+    transform: scale(1.05) !important;
+}
+
+/* Enhanced Card Hover Effects */
+.group:hover {
+    transform: translateY(-4px) !important;
+}
+
+/* Better spacing for sections */
+section {
+    padding: 120px 20px !important;
+}
+
+/* Enhanced Typography across all sections */
+h2 {
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+}
+
+h3 {
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+}
+
+p {
+    line-height: 1.7 !important;
+}
+
+/* Enhanced Form Inputs */
+input,
+textarea {
+    border: 2px solid #e5e7eb !important;
+    border-radius: 0.75rem !important;
+    transition: all 0.3s ease !important;
+    background: #f9fafb !important;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #D65108 !important;
+    box-shadow: 0 0 0 3px rgba(214, 81, 8, 0.1) !important;
+    outline: none !important;
+    background: white !important;
+}
+
+/* Enhanced Contact Button */
+button[type="submit"] {
+    background: linear-gradient(135deg, #D65108 0%, #e67e30 100%) !important;
+    box-shadow: 0 6px 24px rgba(214, 81, 8, 0.3) !important;
+    transition: all 0.4s ease !important;
+    font-weight: 600 !important;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 10px 32px rgba(214, 81, 8, 0.4) !important;
+}
+
+/* WhatsApp Button Enhancement */
+a[href*="wa.me"] {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%) !important;
+    box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3) !important;
+    transition: all 0.4s ease !important;
+    font-weight: 600 !important;
+}
+
+a[href*="wa.me"]:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4) !important;
+    background: linear-gradient(135deg, #128C7E 0%, #075E54 100%) !important;
+}
+
+/* Blockquote Enhancement */
+blockquote {
+    border-left: 4px solid #D65108 !important;
+    transition: all 0.3s ease !important;
+}
+
+blockquote:hover {
+    transform: translateX(8px) !important;
+    border-left-width: 6px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+    section#hero h1 {
+        font-size: 3rem !important;
+    }
+
+    section#hero p {
+        font-size: 1.5rem !important;
+    }
+
+    section#hero img[alt*="Logo"] {
+        width: 80px !important;
+        height: 80px !important;
+    }
+
+    section {
+        padding: 80px 20px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    section#hero h1 {
+        font-size: 2rem !important;
+    }
+
+    section#hero p {
+        font-size: 1.25rem !important;
+    }
+
+    section#hero img[alt*="Logo"] {
+        width: 64px !important;
+        height: 64px !important;
+    }
+
+    button.bg-primary,
+    .bg-primary {
+        padding: 1rem 2rem !important;
+    }
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Add subtle animation to all sections */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+section > div {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Enhanced Dark Mode Support */
+.dark body {
+    background: #1a1a1a !important;
+    color: #e5e7eb !important;
+}
+
+.dark section#hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 40%, #1f1f1f 100%) !important;
+}
+
+.dark button[aria-label*="Theme"] {
+    background: #2d2d2d !important;
+    border-color: #404040 !important;
+}
+
+.dark input,
+.dark textarea {
+    background: #2d2d2d !important;
+    border-color: #404040 !important;
+    color: #e5e7eb !important;
+}
+
+.dark input:focus,
+.dark textarea:focus {
+    background: #1a1a1a !important;
+}
