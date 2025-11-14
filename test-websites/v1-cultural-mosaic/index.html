@@ -14,10 +14,77 @@
             --white: #FEFEFE; --gray: #ECF0F1; --ease: cubic-bezier(0.4, 0, 0.2, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--navy); background: var(--white); }
+        body { font-family: 'Inter', sans-serif; line-height: 1.6; color: var(--navy); background: var(--white); position: relative; }
         h1 { font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; }
         h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; }
         h3 { font-size: clamp(1.25rem, 3vw, 1.85rem); font-weight: 700; }
+        
+        /* FEATURE 1: Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blue), var(--green), var(--orange));
+            z-index: 10000;
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 0.1s ease-out;
+        }
+        
+        /* FEATURE 2: Animated Gradient Mesh Background */
+        .gradient-mesh {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            background: 
+                radial-gradient(circle at 20% 50%, var(--blue) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, var(--green) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, var(--orange) 0%, transparent 50%);
+            animation: meshMove 20s ease-in-out infinite;
+        }
+        
+        @keyframes meshMove {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(5%, -5%); }
+            50% { transform: translate(-5%, 5%); }
+            75% { transform: translate(5%, 5%); }
+        }
+        
+        /* FEATURE 3: Floating Particles */
+        .particle {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: var(--blue);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            animation: float linear infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) translateX(var(--drift)) scale(1);
+                opacity: 0;
+            }
+        }
+        
         nav { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 1.5rem 2rem; transition: all 0.3s var(--ease); }
         nav.scrolled { background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); box-shadow: 0 2px 20px rgba(0,0,0,0.08); }
         nav .container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
@@ -36,7 +103,7 @@
         .btn-primary { background: var(--orange); color: white; box-shadow: 0 4px 12px rgba(230,126,34,0.3); }
         .btn-primary:hover { background: #d35400; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(230,126,34,0.4); }
         .container { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
-        section { padding: 7rem 0; }
+        section { padding: 7rem 0; position: relative; }
         .section-header { text-align: center; margin-bottom: 4rem; }
         .section-header p { font-size: 1.25rem; color: var(--slate); max-width: 700px; margin: 1rem auto 0; font-weight: 300; }
         .bento-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 2rem; }
@@ -89,6 +156,15 @@
     </style>
 </head>
 <body>
+    <!-- FEATURE 1: Scroll Progress -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- FEATURE 2: Gradient Mesh -->
+    <div class="gradient-mesh"></div>
+    
+    <!-- FEATURE 3: Particles Container -->
+    <div id="particles"></div>
+
     <nav id="navbar">
         <div class="container">
             <a href="#" class="logo">CultureStream</a>
@@ -359,6 +435,7 @@
     </footer>
 
     <script>
+        // Base functionality
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 100));
         document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -372,6 +449,38 @@
             alert('Vielen Dank für Ihre Nachricht! Wir werden uns bald bei Ihnen melden.');
             e.target.reset();
         });
+
+        // FEATURE 1: Scroll Progress Indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height);
+            document.getElementById('scrollProgress').style.transform = `scaleX(${scrolled})`;
+        });
+
+        // FEATURE 3: Floating Particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.setProperty('--drift', (Math.random() - 0.5) * 200 + 'px');
+            particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            
+            const colors = ['#3498DB', '#27AE60', '#E67E22'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.getElementById('particles').appendChild(particle);
+            
+            setTimeout(() => particle.remove(), 25000);
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 500);
+        // Initial particles
+        for(let i = 0; i < 20; i++) {
+            setTimeout(createParticle, i * 200);
+        }
     </script>
 </body>
 </html>
